@@ -1,5 +1,6 @@
 // crmRecordsData.ts
-// TEMPLATE PLACEHOLDER — populated by Manus during setup and daily refresh.
+// Populated by Manus on 2026-03-12 from Meta CRM
+// DO NOT edit manually — changes will be overwritten on next refresh.
 import { dashboardConfig } from "./dashboard.config";
 
 export interface CRMRecord {
@@ -17,7 +18,99 @@ export interface CRMRecord {
 }
 
 // Populated by Manus during setup and daily refresh
-export const crmRecords: CRMRecord[] = [];
+export const crmRecords: CRMRecord[] = [
+  {
+    id: "ci-612810056579956",
+    clientId: "samsung-electronics-co-ltd---kr(usd)",
+    clientName: "Samsung",
+    clientColor: "#0064E0",
+    type: "CI",
+    date: "2026-03-10",
+    title: "Samsung & Meta Creative Shop Support",
+    status: "qualified",
+    qualified: true,
+    contactMethod: "Messaging",
+    owner: "Pedro Menezes",
+  },
+  {
+    id: "ci-638687166179572-mar",
+    clientId: "amazon.com",
+    clientName: "Amazon",
+    clientColor: "#e05a00",
+    type: "CI",
+    date: "2026-03-04",
+    title: "Rodrigo Almeida | AMAZON SERVICOS DE VAREJO DO BRASIL LTDA. | 2026-03-04",
+    status: "qualified",
+    qualified: true,
+    contactMethod: "In-Person Meeting",
+    owner: "Douglas Mendes",
+  },
+  {
+    id: "ci-301939693888949",
+    clientId: "magazine-luiza",
+    clientName: "Magalu",
+    clientColor: "#0064E0",
+    type: "CI",
+    date: "2026-03-04",
+    title: "Hackathon WA da Lu - WhatsApp Chat",
+    status: "qualified",
+    qualified: true,
+    contactMethod: "Messaging",
+    owner: "Pedro Menezes",
+  },
+  {
+    id: "ci-multi-jan21",
+    clientId: "samsung-electronics-co-ltd---kr(usd)",
+    clientName: "Samsung",
+    clientColor: "#0064E0",
+    type: "CI",
+    date: "2026-01-21",
+    title: "Apresentação Projeto Meta - Galaxy Reels Festival (Presencial na SUNO)",
+    status: "qualified",
+    qualified: true,
+    contactMethod: "VC Meeting",
+    owner: "Bruno Boehringer Mastantuono",
+  },
+  {
+    id: "ci-638687166179572-xcm",
+    clientId: "amazon.com",
+    clientName: "Amazon",
+    clientColor: "#e05a00",
+    type: "CI",
+    date: "2026-01-14",
+    title: "Amazon XCM | 2026",
+    status: "qualified",
+    qualified: true,
+    contactMethod: "VC Meeting",
+    owner: "Douglas Mendes",
+  },
+  {
+    id: "ci-638687166179572-mkteng",
+    clientId: "amazon.com",
+    clientName: "Amazon",
+    clientColor: "#e05a00",
+    type: "CI",
+    date: "2026-01-14",
+    title: "Meta & Amazon: Marketing Engagement",
+    status: "qualified",
+    qualified: true,
+    contactMethod: "VC Meeting",
+    owner: "Douglas Mendes",
+  },
+  {
+    id: "ci-557520800977956",
+    clientId: "samsung-electronics-co-ltd---kr(usd)",
+    clientName: "Samsung",
+    clientColor: "#0064E0",
+    type: "CI",
+    date: "2026-01-07",
+    title: "Briefing Criativo Samsung e Planejamento de marca 2026",
+    status: "qualified",
+    qualified: true,
+    contactMethod: "In-Person Meeting",
+    owner: "Bruno Boehringer Mastantuono",
+  },
+];
 
 // Dynamic summary — works with any client list from config
 const byClient: Record<string, number> = {};
@@ -37,8 +130,8 @@ export const crmRecordsSummary = {
   vcCount: crmRecords.filter((r) => r.contactMethod === "VC Meeting").length,
   byClient,
   topClient: topClientName,
-  dataAsOf: new Date().toISOString().split("T")[0],
-  sourceUrl: dashboardConfig.unidash.ciUrl || "",
+  dataAsOf: "2026-03-12",
+  sourceUrl: dashboardConfig.crm?.ciUrl || dashboardConfig.unidash.ciUrl || "",
 };
 
 // Dynamic client color/label maps from config
