@@ -1,0 +1,484 @@
+/*
+ * DESIGN PHILOSOPHY: Meta Creative Shop Identity
+ * ------------------------------------------------
+ * Movement: Meta Design System + CS Brand Language
+ * Core Principles:
+ *   1. White canvas with luminous gradient accents (CS signature purple→blue)
+ *   2. Dark sidebar (deep navy #0A0F1E) — Meta dark chrome
+ *   3. Meta Blue (#0064E0) as primary interactive color
+ *   4. CS Purple (#7C3AED) for creative/AI elements
+ *   5. Typography-forward — bold geometric headings, clean body
+ * Color Philosophy: Meta's official gradient palette from Slide Backgrounds deck
+ * Layout: Persistent dark sidebar + white main canvas
+ * Signature Elements: Gradient hero banner, pill badges, subtle card shadows
+ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.5rem;
+
+  /* === OFFICIAL META BRAND COLORS (Brand Portal, May 2025) === */
+  /* Primary: Meta Blue #0064E0 | Meta Gray #1C2B33 */
+  --primary: oklch(0.449 0.222 255.0);   /* #0064E0 Meta Blue — exact */
+  --primary-foreground: oklch(1 0 0);    /* White */
+
+  /* Backgrounds — white canvas per Meta guidelines */
+  --background: oklch(1 0 0);            /* #FFFFFF */
+  --foreground: oklch(0.175 0.018 255);  /* #1C2B33 Meta Gray — exact */
+
+  /* Cards — white with subtle gray border */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.175 0.018 255);
+
+  /* Popover */
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.175 0.018 255);
+
+  /* Secondary — Gray 100 #F1F4F7 */
+  --secondary: oklch(0.963 0.006 255);
+  --secondary-foreground: oklch(0.32 0.018 255);  /* Gray 800 #344854 */
+
+  /* Muted — Gray 100 surface */
+  --muted: oklch(0.963 0.006 255);
+  --muted-foreground: oklch(0.50 0.022 255);  /* Gray 600 #67788A */
+
+  /* Accent — Blue 100 #E8F3FF */
+  --accent: oklch(0.965 0.025 255);
+  --accent-foreground: oklch(0.175 0.018 255);
+
+  /* Destructive — Red 800 #B00020 */
+  --destructive: oklch(0.44 0.22 22);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* Borders — Gray 300 #CBD2D9 */
+  --border: oklch(0.875 0.012 255);
+  --input: oklch(0.875 0.012 255);
+  --ring: oklch(0.449 0.222 255.0);  /* Meta Blue */
+
+  /* Charts — Official Meta secondary palette */
+  --chart-1: oklch(0.449 0.222 255);   /* Meta Blue #0064E0 */
+  --chart-2: oklch(0.51 0.24 290);     /* Purple 800 #6441D2 */
+  --chart-3: oklch(0.60 0.19 210);     /* Blue 600 #0082FB */
+  --chart-4: oklch(0.65 0.14 175);     /* Teal 600 #00A8B0 */
+  --chart-5: oklch(0.70 0.18 145);     /* Green 600 #00B140 */
+
+  /* Sidebar — Meta Gray #1C2B33 as dark chrome */
+  --sidebar: oklch(0.175 0.018 255);   /* #1C2B33 Meta Gray */
+  --sidebar-foreground: oklch(0.93 0.005 255);
+  --sidebar-primary: oklch(0.449 0.222 255);  /* Meta Blue */
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.24 0.022 255);    /* Gray 900 #283943 */
+  --sidebar-accent-foreground: oklch(0.93 0.005 255);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.449 0.222 255);
+}
+
+/* === META BRAND CUSTOM PROPERTIES (Official Brand Portal) === */
+:root {
+  /* Primary palette — exact hex values */
+  --meta-blue: #0064E0;         /* Meta Blue — CTAs, blue thread, interactive */
+  --meta-gray: #1C2B33;         /* Meta Gray — headlines, sidebar */
+  --meta-white: #FFFFFF;
+
+  /* Secondary palette — gray scale */
+  --meta-gray-900: #283943;
+  --meta-gray-800: #344854;
+  --meta-gray-600: #67788A;
+  --meta-gray-300: #CBD2D9;
+  --meta-gray-100: #F1F4F7;
+
+  /* Secondary palette — blues */
+  --meta-blue-900: #001E6E;
+  --meta-blue-800: #004BB9;
+  --meta-blue-600: #0082FB;
+  --meta-blue-300: #AFD7FF;
+  --meta-blue-100: #E8F3FF;
+
+  /* Secondary palette — purples (CS accent) */
+  --meta-purple-900: #280578;
+  --meta-purple-800: #6441D2;
+  --meta-purple-600: #8773FF;
+  --meta-purple-300: #D2D2FF;
+  --meta-purple-100: #EEEDFD;
+
+  /* Secondary palette — greens (success) */
+  --meta-green-800: #007A2F;
+  --meta-green-600: #00B140;
+  --meta-green-100: #DFFAEB;
+
+  /* Secondary palette — reds (alert) */
+  --meta-red-800: #B00020;
+  --meta-red-600: #E02020;
+  --meta-red-100: #FFECEC;
+
+  /* Secondary palette — yellows (warning) */
+  --meta-yellow-600: #F0A500;
+  --meta-yellow-100: #FFF8D6;
+
+  /* Secondary palette — teal */
+  --meta-teal-600: #00A8B0;
+  --meta-teal-100: #E0FAFB;
+
+  /* Meta Gradient — official light mode: blue → purple → pink */
+  --meta-gradient: linear-gradient(135deg, #0064E0 0%, #6441D2 50%, #8773FF 100%);
+  --meta-gradient-hero: linear-gradient(135deg, #001E6E 0%, #0064E0 35%, #6441D2 70%, #8773FF 100%);
+  --meta-gradient-subtle: linear-gradient(135deg, rgba(0,100,224,0.06) 0%, rgba(100,65,210,0.06) 50%, rgba(135,115,255,0.06) 100%);
+
+  /* CS Creative Shop accent */
+  --cs-gradient: linear-gradient(135deg, #6441D2 0%, #0064E0 100%);
+
+  /* Shadows — Meta clean elevation system */
+  --meta-shadow-sm: 0 1px 2px rgba(28,43,51,0.06), 0 2px 6px rgba(28,43,51,0.04);
+  --meta-shadow: 0 1px 3px rgba(28,43,51,0.08), 0 4px 12px rgba(28,43,51,0.06);
+  --meta-shadow-md: 0 2px 8px rgba(28,43,51,0.10), 0 8px 24px rgba(28,43,51,0.08);
+  --meta-shadow-lg: 0 4px 16px rgba(28,43,51,0.12), 0 16px 40px rgba(28,43,51,0.10);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Meta official fallback font: Montserrat (Meta Brand Portal, Nov 2024) */
+    font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    /* Meta official fallback: Montserrat for all headings (Meta Brand Portal) */
+    font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--meta-gray);
+  }
+  /* Data values use JetBrains Mono */
+  .font-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+
+  /* CS Hero Banner — Meta official gradient (blue → purple) */
+  .cs-hero-banner {
+    background: var(--meta-gradient-hero);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cs-hero-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('https://d2xsxph8kpxj0f.cloudfront.net/310519663321707387/ncXKdRsdXjEbWytkFjVxwi/cs-hero-banner-SfNKRpF48wV8cKRdBpksgQ.webp');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.85;
+  }
+
+  /* CS Card */
+  .cs-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--meta-shadow);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .cs-card:hover {
+    box-shadow: var(--meta-shadow-md);
+  }
+
+  /* CS Section Label */
+  .cs-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+
+  /* CS Badge */
+  /* === OFFICIAL META BRAND BADGE COLORS === */
+  .cs-badge-blue {
+    background: #E8F3FF;   /* Meta Blue 100 */
+    color: #004BB9;        /* Meta Blue 800 */
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 10px;
+  }
+
+  .cs-badge-purple {
+    background: #EEEDFD;   /* Meta Purple 100 */
+    color: #6441D2;        /* Meta Purple 800 */
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 10px;
+  }
+
+  .cs-badge-green {
+    background: #DFFAEB;   /* Meta Green 100 */
+    color: #007A2F;        /* Meta Green 800 */
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 10px;
+  }
+
+  .cs-badge-amber {
+    background: #FFF8D6;   /* Meta Yellow 100 */
+    color: #9A6700;        /* Meta Yellow 800 */
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 10px;
+  }
+
+  .cs-badge-red {
+    background: #FFECEC;   /* Meta Red 100 */
+    color: #B00020;        /* Meta Red 800 */
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 10px;
+  }
+
+  .cs-badge-teal {
+    background: #E0FAFB;   /* Meta Teal 100 */
+    color: #006B72;        /* Meta Teal 800 */
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 10px;
+  }
+
+  /* CS Sidebar */
+  .cs-sidebar {
+    background: var(--cs-dark);
+    background-image: url('https://d2xsxph8kpxj0f.cloudfront.net/310519663321707387/ncXKdRsdXjEbWytkFjVxwi/cs-sidebar-bg-BWigngRKoCodp8SoufzTLH.webp');
+    background-size: cover;
+    background-position: center top;
+  }
+
+  /* CS Progress Bar — Meta Blue thread */
+  .cs-progress-track {
+    background: #F1F4F7;   /* Meta Gray 100 */
+    border-radius: 100px;
+    height: 6px;
+    overflow: hidden;
+  }
+
+  .cs-progress-fill {
+    background: linear-gradient(90deg, #0064E0 0%, #6441D2 100%);  /* Meta Blue → Purple */
+    height: 100%;
+    border-radius: 100px;
+    transition: width 0.6s ease;
+  }
+
+  /* CS Gradient Text — Meta official gradient */
+  .cs-gradient-text {
+    background: var(--meta-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Sidebar nav item active */
+  .sidebar-nav-active {
+    background: rgba(0, 100, 224, 0.15);
+    border-left: 3px solid #0064E0;
+    color: white;
+  }
+
+  /* Sidebar nav item hover */
+  .sidebar-nav-item {
+    border-left: 3px solid transparent;
+    transition: all 0.15s ease;
+  }
+
+  .sidebar-nav-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-left-color: rgba(0, 100, 224, 0.4);
+  }
+
+  /* Legacy metric-card class → now white card */
+  .metric-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .metric-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+  }
+
+  /* Section header row */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Section title */
+  .section-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.01em;
+  }
+
+  /* Stage badge */
+  .stage-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  /* Monospace data font */
+  .font-mono-data {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Fade-in-up animation */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.4s ease both;
+  }
+
+  .delay-50  { animation-delay: 50ms; }
+  .delay-100 { animation-delay: 100ms; }
+  .delay-150 { animation-delay: 150ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-250 { animation-delay: 250ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-325 { animation-delay: 325ms; }
+  .delay-340 { animation-delay: 340ms; }
+  .delay-350 { animation-delay: 350ms; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}

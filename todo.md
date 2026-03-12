@@ -1,0 +1,76 @@
+
+- [x] Build RS pipeline scraper for Meta CRM pipeline management page
+- [x] Add Refresh RS button to Rec. Solutions section
+- [x] Wire RS scraper to daily 7 AM scheduler
+- [x] Update dashboard.config.ts with RS pipeline URL parameter
+- [x] Update CS_DASHBOARD_RECIPE.md to document RS pipeline scraping
+- [x] Unify calendar data sources: remove meetings array from dashboardData.ts, make both sections read from weeklyMeetingsData.ts
+- [x] Update calendar scraper to write only to weeklyMeetingsData.ts (day-aware, extracts per column)
+- [x] Update recipe to document single-source calendar architecture
+- [x] Fix "Browser not found" error: removed all Puppeteer dependencies, all scrapers return Manus-assisted stubs, refresh button shows helpful info toast
+- [x] Fix "AI Usage could not be reached" error on Refresh AI button in AIUsageSection
+- [x] Fix "CI Dashboard could not be reached" warning on Refresh CI button in CRMInteractionsSection
+- [x] Fix "Workplace could not be reached" warning on Refresh Digest button in WorkplaceDigestSection
+- [x] Fix "RS refresh incomplete" warning on Refresh RS button in SolutionsSection
+- [ ] User to click Publish button in Management UI to go live at pedromenezesdash.manus.space
+- [x] Full static data audit: mapped all hardcoded values and live sources (see DATA_AUDIT.md)
+- [x] Fix Workplace Digest: rewrote workplaceDigestData.ts with live posts from Workplace groups (Mar 10)
+- [x] Refresh AI Usage: rewrote aiUsageData.ts with live Unidash data (Mar 10, 2026) — Week 10 corrected to 6 days ✅, Week 11 awaiting
+- [ ] Fix crmInteractionsData.ts: Manus-assisted refresh needed (Unidash session required)
+- [ ] Fix crmRecordsData.ts: Manus-assisted refresh needed (Unidash session required)
+- [ ] Fix rsPipelineData.ts: verify fully replaced by live RS scraper
+- [x] Set up daily 7 AM BRT scheduled task for full Manus-assisted refresh (Workplace + Calendar + AI Usage)
+- [x] Update CS_DASHBOARD_RECIPE.md AND /setup page to document all data sources and refresh methods
+- [x] Rule: always update both CS_DASHBOARD_RECIPE.md and /setup page together on every recipe change
+- [x] Update CS_DASHBOARD_RECIPE.md to remove all Puppeteer/scraper references and document Manus-assisted workflow (Mar 11, 2026)
+- [x] Update dashboard UI: refresh button now shows 'AI & Workplace' only, toast message updated to note calendar is Manus-assisted
+- [x] Write tRPC updateCalendarData procedure to accept verified payload and write to weeklyMeetingsData.ts
+- [x] Update recipe to document Manus-assisted refresh workflow (Meta primary + Outlook cross-check)
+- [x] Fix 5 PM meeting showing on Tuesday instead of Wednesday in calendar (Content Council moved to Wed Mar 11)
+- [x] Refresh crmRecordsData.ts: navigate to Meta CRM, click into Samsung and Magalu CI records to read Organization under Account Plan, update with verified data (Amazon: 3, Samsung: 3, Magalu: 1)
+- [x] Update CS_DASHBOARD_RECIPE.md and /setup page: replace hardcoded personal links with parameterized IC-agnostic link patterns + filter logic documentation for CRM, Unidash, Workplace, Calendar
+- [x] Add FBID field to Setup Wizard Step 1 (Identity) with auto-fetch from internalfb.com/profile/view/[FBID] URL
+- [x] Auto-generate CRM CI filter URL from FBID in the Setup Wizard generated config
+- [x] Update CS_DASHBOARD_RECIPE.md with fast-pace setup flow: share FBID → Manus pre-builds all personal URLs
+- [x] Navigate to CRM Scorecard page to understand Ultimate Parent client list structure and integrate as cross-reference for client portfolio in Setup Wizard and recipe
+- [x] Add profile auto-fill to Setup Wizard Step 1: fetch name, title, team from internalfb.com/profile/view/[FBID] via tRPC procedure and pre-fill identity fields automatically
+- [x] Setup Wizard Step 1: add "Open Profile" button next to profile URL field that opens internalfb.com/profile/view in a new tab
+- [x] Setup Wizard Step 1: add URL validation on profile URL field — show red error if URL doesn't match internalfb.com/profile/view/[digits]
+- [x] Move Internal Profile URL field to top of Setup Wizard Step 1 (server-side fetch not possible due to Meta SSO; Manus-assisted fetch documented in recipe and wizard tip)
+- [x] Add optional "Fetch Profile Data" button to Setup Wizard Step 1: creates pending DB request + notifies Manus + polls for result to auto-fill fields; graceful fallback to manual fill if Manus unavailable
+- [x] Remove IC Level field from Setup Wizard Step 1 (private info)
+- [x] Read CS org chart (CS Americas pilot: Ceci Seitun sub-tree) and extract all ICs and managers
+- [x] Add predictive autocomplete for Full Name and Manager fields in Setup Wizard Step 1 using CS Americas org data
+- [x] Update Fetch Profile Data button label/tooltip to clarify it's a request to Manus (kept as-is, option C confirmed)
+- [x] Fix autocomplete: show all matching results (not just first options), add "CS Americas only" label, don't show list when field is empty
+- [x] Move Profile URL field back to bottom of Setup Wizard Step 1 (autocomplete now handles name/manager/team auto-fill)
+- [x] Add "Not finding your name?" fallback in Setup Wizard Step 1 — sends Manus notification with the typed name
+- [x] Pre-fill Unidash Sales Rep Name in Step 2 when a name is selected from the CS Americas autocomplete in Step 1
+- [x] Update default CS Workplace group in Setup Wizard Step 3 to "CS: The Work" (group ID 365231093525512)
+- [x] Fix "Updated" date button — now uses new Date() dynamically in aiUsageData.ts and workplaceDigestData.ts
+- [x] Fix Workplace Digest digestDate to use today's date dynamically; re-registered 7 AM BRT daily schedule (session-scoped, re-registered Mar 12)
+- [x] Remove Workplace Digest section from dashboard (unreliable data refresh)
+- [x] Investigate In-Person tracking KPI at internalfb.com/status and integrate — added In-Person Time widget to Overview with weekly breakdown
+- [x] Move In-Person Time widget to bottom of Overview section
+- [x] Add in-office/remote toggle to Setup Wizard Step 1 (controls In-Person widget visibility)
+- [x] Remove Workplace Digest step from Setup Wizard (now 4 steps)
+- [x] Wire isInOffice config flag to In-Person Time widget — hide widget for remote peers
+- [x] Add CS: The Work quick-link card to Overview
+- [x] Move CS: The Work button to the dashboard header (remove standalone widget from Overview)
+- [x] Make header Workplace button configurable — read group name/URL from dashboard.config.ts; add group field to Setup Wizard
+- [x] Fix hardcoded "Pedro" in OverviewSection greeting — read from dashboardConfig.profile.firstName
+- [x] Wire dashboardConfig.clients[] into ClientsSection so client descriptions come from config, not hardcoded strings
+- [x] Wire dashboardConfig.clients[] into dashboardData.ts so client portfolio reads from config
+- [x] Replace hardcoded "Pedro Menezes" attendee names in meetings/key dates with dashboardConfig.profile.name
+- [x] Fix ClientsSection hardcoded summaries that reference "Pedro's #1 priority" etc.
+- [x] Remove Workplace group fields (primaryGroupName, primaryGroupUrl) from Setup Wizard Step 2 (Unidash)
+- [x] Rewrite Setup Wizard final screen: clear first-time Manus user instructions + "Copy ready-to-send message" button
+- [x] Personalize ready-to-send message with peer's first name from wizard Step 1
+- [x] Show full ready-to-send message preview on Setup Wizard final screen (before copying)
+- [x] Add "What happens next?" accordion on Setup Wizard final screen explaining each Manus step
+- [x] Restructure ready-to-send message: instruction line first, then config — works correctly when Manus receives it as a .txt attachment
+- [x] Add "Copy setup link" button to sidebar footer that copies pedromenezesdash.manus.space/setup
+- [x] Add timezone and refresh time picker to Setup Wizard Step 2 (Unidash) — embedded in ready-to-send message
+- [x] Add "Send feedback" link on Setup Wizard final screen linking to Pedro's Workplace profile
+- [ ] Push clean template to github.com/pedro-mnz/cs-dashboard-template (neutralize personal data files)
+- [ ] Update ready-to-send message to reference GitHub clone URL
