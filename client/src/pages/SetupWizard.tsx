@@ -670,19 +670,14 @@ Please do the following IN ORDER:
       - Filter by Sales Rep = "\${data.salesRepName}" and current quarter
       - Read AI usage breakdown by pillar and write into aiUsageData.ts
 
-   d) WORKPLACE DIGEST (client/src/lib/workplaceDigestData.ts)
-      - Open: https://www.workplace.com
-      - Read the top 5 posts from my feed
-      - Write them into workplaceDigestData.ts following the existing file structure
-
-   e) RS PIPELINE (client/src/lib/rsPipelineData.ts)
+   d) RS PIPELINE (client/src/lib/rsPipelineData.ts)
       - Open: https://www.internalfb.com/crm/client_interactions (RS/pipeline view)
       - Read active pipeline items for my clients and write into rsPipelineData.ts
 
 4. SAVE A CHECKPOINT and let me know it is ready so I can click Publish.
 
 5. SET UP DAILY REFRESH
-   Schedule a recurring task to run every weekday at \${refreshLabel} that re-scrapes all 5 sources above and updates the data files automatically.
+   Schedule a recurring task to run every weekday at \${refreshLabel} that re-scrapes all 4 sources above and updates the data files automatically.
 
 Note: For any step that requires Meta SSO authentication, please ask me to log in via browser takeover before proceeding.
 

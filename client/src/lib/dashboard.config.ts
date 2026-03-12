@@ -5,7 +5,6 @@
 // Fill in your details below, then the dashboard will automatically:
 //   • Filter Unidash (CI + AI Usage) to your name
 //   • Show your Meta calendar meetings
-//   • Pull your Workplace Digest from your groups
 //   • Display your client portfolio and RS pipeline
 //
 // After editing, click "Updated [date]" to trigger a full refresh.
