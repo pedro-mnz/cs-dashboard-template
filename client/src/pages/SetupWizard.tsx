@@ -652,34 +652,42 @@ Please do the following IN ORDER:
    Paste the config at the bottom of this message into: client/src/lib/dashboard.config.ts
    (Replace the entire file content with the config below.)
 
-3. POPULATE DATA — scrape each source below and write the results into the corresponding data files:
+IMPORTANT — ALL INTERNAL META SOURCES REQUIRE BROWSER TAKEOVER:
+   internalfb.com and workplace.com are only accessible via my personal Meta SSO session.
+   Your sandbox browser cannot access these URLs directly — this is a network policy restriction, not an auth issue.
+   For EACH source below: navigate to the URL in the browser, then ask me to take over the browser so I can log in with my Meta SSO. Once I confirm I'm logged in and you can see the page, take back control and scrape the data.
+
+3. POPULATE DATA — for each source, ask me to take over the browser first, then scrape:
 
    a) META CALENDAR (client/src/lib/weeklyMeetingsData.ts)
-      - Open: https://www.workplace.com/calendar
-      - Log in with my Meta SSO if needed (ask me to authenticate via browser takeover)
+      - Navigate to: https://www.internalfb.com/calendar
+      - Ask me to take over the browser and log in with Meta SSO
+      - Once I confirm the page is loaded, take back control
       - Read all events for the current week (Mon-Fri)
       - Write them into weeklyMeetingsData.ts following the existing file structure
 
    b) CRM CLIENT INTERACTIONS (client/src/lib/crmInteractionsData.ts + crmRecordsData.ts)
-      - Open my CRM CI filter URL: ${data.crmCiUrl || 'https://www.internalfb.com/crm/client_interactions'}
+      - Navigate to: ${data.crmCiUrl || 'https://www.internalfb.com/crm/client_interactions'}
+      - Ask me to take over the browser and log in with Meta SSO (if not already logged in from step a)
       - If no filter URL was provided, apply these filters manually: Participant is in my BoB > This quarter > Is qualified > Participant contains "${data.salesRepName}"
       - Read all CI records and write them into crmInteractionsData.ts and crmRecordsData.ts
 
    c) UNIDASH AI USAGE (client/src/lib/aiUsageData.ts)
-      - Open: https://www.internalfb.com/unidash/dashboard/engagement_management_process_dashboard/dcmp_client_interaction_insights/
+      - Navigate to: https://www.internalfb.com/unidash/dashboard/engagement_management_process_dashboard/dcmp_client_interaction_insights/
+      - Ask me to take over the browser if the session has expired
       - Filter by Sales Rep = "${data.salesRepName}" and current quarter
       - Read AI usage breakdown by pillar and write into aiUsageData.ts
 
    d) RS PIPELINE (client/src/lib/rsPipelineData.ts)
-      - Open: https://www.internalfb.com/crm/client_interactions (RS/pipeline view)
+      - Navigate to: https://www.internalfb.com/crm/pipeline_management
+      - Ask me to take over the browser if the session has expired
       - Read active pipeline items for my clients and write into rsPipelineData.ts
 
 4. SAVE A CHECKPOINT and let me know it is ready so I can click Publish.
 
 5. SET UP DAILY REFRESH
    Schedule a recurring task to run every weekday at ${refreshLabel} that re-scrapes all 4 sources above and updates the data files automatically.
-
-Note: For any step that requires Meta SSO authentication, please ask me to log in via browser takeover before proceeding.
+   Note: The daily refresh will also require browser takeover each time to access internalfb.com.
 
 ---
 MY PERSONAL CONFIG (paste into client/src/lib/dashboard.config.ts):
@@ -759,9 +767,10 @@ ${configText}`;
                     {[
                       { emoji: "📁", text: "Manus clones the exact CS Dashboard template from GitHub — same design, same components, same everything" },
                       { emoji: "⚙️", text: `Manus pastes your config into dashboard.config.ts — your name, team, clients, and colors are applied instantly` },
-                      { emoji: "📅", text: "Manus opens your Meta calendar and reads this week's meetings, writing them to the calendar data file" },
-                      { emoji: "🤖", text: "Manus reads your AI Usage from Unidash and updates the My AI Usage section" },
-                      { emoji: "⏰", text: `Manus sets up a daily ${refreshLabel} scheduled task to keep all data current automatically` },
+                      { emoji: "📅", text: "Manus asks you to take over the browser so you can log in with Meta SSO — then reads your calendar, CRM, AI Usage, and RS Pipeline data" },
+                      { emoji: "🎯", text: "Manus populates your CI Dashboard, Recommended Solutions, and AI Usage sections from the scraped data" },
+                      { emoji: "🔒", text: "Note: internalfb.com is only accessible via your personal Meta SSO session — browser takeover is required for all 4 data sources" },
+                      { emoji: "⏰", text: `Manus sets up a daily ${refreshLabel} scheduled task to keep all 4 data sources current automatically` },
                       { emoji: "🚀", text: "Manus tells you it's ready — you click Publish and your dashboard goes live at a permanent URL" },
                     ].map(({ emoji, text }, i) => (
                       <li key={i} className="flex gap-2.5 items-start">
