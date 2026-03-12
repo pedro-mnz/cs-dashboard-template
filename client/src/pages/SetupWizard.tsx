@@ -661,13 +661,13 @@ Please do the following IN ORDER:
       - Write them into weeklyMeetingsData.ts following the existing file structure
 
    b) CRM CLIENT INTERACTIONS (client/src/lib/crmInteractionsData.ts + crmRecordsData.ts)
-      - Open my CRM CI filter URL: \${data.crmCiUrl || 'https://www.internalfb.com/crm/client_interactions'}
-      - If no filter URL was provided, apply these filters manually: Participant is in my BoB > This quarter > Is qualified > Participant contains "\${data.salesRepName}"
+      - Open my CRM CI filter URL: ${data.crmCiUrl || 'https://www.internalfb.com/crm/client_interactions'}
+      - If no filter URL was provided, apply these filters manually: Participant is in my BoB > This quarter > Is qualified > Participant contains "${data.salesRepName}"
       - Read all CI records and write them into crmInteractionsData.ts and crmRecordsData.ts
 
    c) UNIDASH AI USAGE (client/src/lib/aiUsageData.ts)
       - Open: https://www.internalfb.com/unidash/dashboard/engagement_management_process_dashboard/dcmp_client_interaction_insights/
-      - Filter by Sales Rep = "\${data.salesRepName}" and current quarter
+      - Filter by Sales Rep = "${data.salesRepName}" and current quarter
       - Read AI usage breakdown by pillar and write into aiUsageData.ts
 
    d) RS PIPELINE (client/src/lib/rsPipelineData.ts)
@@ -677,7 +677,7 @@ Please do the following IN ORDER:
 4. SAVE A CHECKPOINT and let me know it is ready so I can click Publish.
 
 5. SET UP DAILY REFRESH
-   Schedule a recurring task to run every weekday at \${refreshLabel} that re-scrapes all 4 sources above and updates the data files automatically.
+   Schedule a recurring task to run every weekday at ${refreshLabel} that re-scrapes all 4 sources above and updates the data files automatically.
 
 Note: For any step that requires Meta SSO authentication, please ask me to log in via browser takeover before proceeding.
 
@@ -685,7 +685,7 @@ Note: For any step that requires Meta SSO authentication, please ask me to log i
 MY PERSONAL CONFIG (paste into client/src/lib/dashboard.config.ts):
 ---
 
-\${configText}`;
+${configText}`;
 
   const copyReadyToSend = async () => {
     await navigator.clipboard.writeText(readyToSendMessage);
