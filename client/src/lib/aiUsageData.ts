@@ -1,21 +1,20 @@
-// AI Usage data — populated by Manus during setup from your Unidash AI Usage page
-// This file is refreshed daily by Manus.
+// aiUsageData.ts
+// TEMPLATE PLACEHOLDER — populated by Manus during setup and daily refresh.
+// Manus scrapes Unidash AI Usage dashboard and writes data here.
 
-export interface AISession {
-  date: string;
-  tool: string;
+export interface AIUsageEntry {
   pillar: string;
-  useCase: string;
-  client?: string;
-  outcome?: string;
+  sessions: number;
+  percentage: number;
+  color: string;
 }
-
-export const aiSessions: AISession[] = [];
 
 export const aiUsageSummary = {
   totalSessions: 0,
-  byPillar: {} as Record<string, number>,
-  byTool: {} as Record<string, number>,
-  byClient: {} as Record<string, number>,
-  weeklyTrend: [] as { week: string; count: number }[],
+  byPillar: [] as AIUsageEntry[],
+  topPillar: "",
+  quarter: "",
+  salesRep: "",
+  dataAsOf: new Date().toISOString().split("T")[0],
+  sourceUrl: "https://www.internalfb.com/unidash/dashboard/engagement_management_process_dashboard/dcmp_client_interaction_insights/",
 };

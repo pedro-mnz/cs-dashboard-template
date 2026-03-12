@@ -1,22 +1,25 @@
-// CRM Interactions data — populated by Manus during setup from your CI Dashboard
-// This file is refreshed daily by Manus.
+// crmInteractionsData.ts
+// TEMPLATE PLACEHOLDER — populated by Manus during setup and daily refresh.
+// Manus scrapes Meta CRM Client Interactions and writes data here.
 
-export interface CRMInteraction {
+export interface CIRecord {
   id: string;
+  clientId: string;
+  clientName: string;
   date: string;
-  client: string;
   type: string;
-  summary: string;
-  attendees: string[];
-  outcome?: string;
-  nextSteps?: string;
+  topic: string;
+  participants: string[];
+  isQualified: boolean;
+  quarter: string;
 }
 
-export const crmInteractions: CRMInteraction[] = [];
+export const crmInteractions: CIRecord[] = [];
+// Manus will populate this array during setup and daily refresh.
 
-export const crmSummary = {
+export const ciSummary = {
   totalCIs: 0,
-  thisQuarter: 0,
+  qualifiedCIs: 0,
   byClient: {} as Record<string, number>,
-  byType: {} as Record<string, number>,
+  dataAsOf: new Date().toISOString().split("T")[0],
 };

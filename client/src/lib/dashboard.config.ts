@@ -14,15 +14,15 @@
 export const dashboardConfig = {
   // ── Your Identity ──────────────────────────────────────────
   profile: {
-    name: "Pedro Menezes",           // Your full name (must match Unidash Sales Rep filter exactly)
-    firstName: "Pedro",              // Used in the greeting ("Good morning, Pedro 👋")
-    role: "Creative Strategist",     // Your job title
-    team: "Creative Shop LATAM",     // Your team name
+    name: "Your Name",               // Your full name (must match Unidash Sales Rep filter exactly)
+    firstName: "YourFirstName",      // Used in the greeting ("Good morning, YourFirstName 👋")
+    role: "Your Role",               // Your job title
+    team: "Your Team",               // Your team name
     company: "Meta",
-    territory: "Brazil (GBG-LATAM)", // Your territory label shown in the header
-    manager: "Gustavo Borrmann",     // Your manager's name
+    territory: "Your Territory",     // Your territory label shown in the header
+    manager: "Your Manager",         // Your manager's name
     level: "IC5",                    // Your level (IC3, IC4, IC5, IC6, M1, M2...)
-    initials: "PM",                  // 2-letter initials for the avatar
+    initials: "YN",                  // 2-letter initials for the avatar
     avatarColor: "#7C3AED",          // Avatar background color (hex)
     isInOffice: true,                // Set to false if you are a remote employee (hides In-Person Time widget)
   },
@@ -30,7 +30,7 @@ export const dashboardConfig = {
   // ── Unidash Filters ────────────────────────────────────────
   // These are used by the scraper to filter Unidash dashboards to YOUR data.
   unidash: {
-    salesRepName: "Pedro Menezes",   // Exact name as it appears in the Unidash "Sales Rep" filter dropdown
+    salesRepName: "Your Name",       // Exact name as it appears in the Unidash "Sales Rep" filter dropdown
     quarter: "Q1 2026",              // Current quarter for CI tracking (e.g. "Q1 2026", "Q2 2026")
     ciMinTarget: 3,                  // Minimum validated CIs required per quarter
     ciUrl: "https://www.internalfb.com/unidash/dashboard/engagement_management_process_dashboard/dcmp_client_interaction_insights/",
@@ -87,48 +87,19 @@ export const dashboardConfig = {
   // and Recommended Solutions sections. You can add/remove clients freely.
   // Each client needs: id, name, shortName, tier, color, and a brief summary.
   clients: [
-    {
-      id: "magalu",
-      name: "Magazine Luiza",
-      shortName: "Magalu",
-      tier: "A+",
-      color: "#0066CC",
-      lightColor: "#EBF4FF",
-      logo: "🛒",
-      summary: "Magazine Luiza — #1 priority client. Focus: A+ Catalog and Partnership Ads.",
-    },
-    {
-      id: "samsung",
-      name: "Samsung Electronics",
-      shortName: "Samsung",
-      tier: "A",
-      color: "#1428A0",
-      lightColor: "#EEF0FF",
-      logo: "📱",
-      summary: "Samsung — #2 priority. Global account, CTX adoption and Creative Diversification.",
-    },
-    {
-      id: "amazon",
-      name: "Amazon",
-      shortName: "Amazon",
-      tier: "A+",
-      color: "#FF9900",
-      lightColor: "#FFF8ED",
-      logo: "📦",
-      summary: "Amazon — #3 priority. Largest global AR. Focus: A+ Catalog Video and Partnership Ads.",
-    },
-    {
-      id: "abi",
-      name: "Anheuser-Busch InBev",
-      shortName: "ABI",
-      tier: "A",
-      color: "#C8A84B",
-      lightColor: "#FDF9EE",
-      logo: "🍺",
-      summary: "ABI — Global PoC. Creative Diversification and Partnership Ads for Corona, Budweiser, Zé Delivery.",
-    },
-    // To add a new client, copy a block above and fill in your values.
-    // To remove a client, delete their block.
+    // ── YOUR CLIENTS WILL BE ADDED HERE BY THE SETUP WIZARD ──
+    // Each client entry follows this shape:
+    // {
+    //   id: "client-id",          // lowercase, no spaces
+    //   name: "Full Client Name",
+    //   shortName: "Short",
+    //   tier: "A+" | "A" | "B",
+    //   color: "#HEX",            // primary brand color
+    //   lightColor: "#HEX",       // light tint for backgrounds
+    //   logo: "emoji",            // optional emoji icon
+    //   summary: "One-line description of your relationship and focus areas.",
+    // },
+    // To add a client manually, copy the block above and fill in your values.
   ],
 };
 

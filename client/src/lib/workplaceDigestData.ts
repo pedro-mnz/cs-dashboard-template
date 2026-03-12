@@ -1,14 +1,23 @@
-// Workplace digest data — populated by Manus during setup from Workplace
-// This file is refreshed daily by Manus.
+// workplaceDigestData.ts
+// TEMPLATE PLACEHOLDER — populated by Manus during setup and daily refresh.
+// Manus scrapes Workplace feed and writes the top posts here.
 
-export interface DigestItem {
+export interface WorkplacePost {
   id: string;
-  type: "post" | "announcement" | "event";
-  title: string;
-  group: string;
-  date: string;
+  author: string;
+  authorRole?: string;
+  content: string;
+  timestamp: string;
+  likes: number;
+  comments: number;
+  groupName?: string;
   url?: string;
-  summary?: string;
 }
 
-export const workplaceDigest: DigestItem[] = [];
+export const workplacePosts: WorkplacePost[] = [];
+// Manus will populate this array during setup and daily refresh.
+
+export const digestSummary = {
+  dataAsOf: new Date().toISOString().split("T")[0],
+  sourceUrl: "https://www.workplace.com",
+};

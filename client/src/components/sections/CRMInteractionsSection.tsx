@@ -1,11 +1,11 @@
 // CRM Client Interactions Section
 // Sources:
 //   1. Meta DCMP Unidash: internalfb.com/unidash/dashboard/engagement_management_process_dashboard/dcmp_client_interaction_insights/
-//   2. Meta CRM Records: internalfb.com/crm/client_interactions (Q1 2026, Qualified, Pedro Menezes)
+//   2. Meta CRM Records: internalfb.com/crm/client_interactions (filtered to your name)
 //
 // Business logic:
-//   - Dedicated BoB clients: Magalu, Amazon, Samsung → min 3 validated CIs/quarter goal
-//   - ABI: CS Global POC (not in BoB) → tracked separately, no coverage KPI
+//   - Dedicated BoB clients: your clients from config → min CI target/quarter goal
+//   - POC clients (not in BoB) → tracked separately, no coverage KPI
 //
 // Design: Warm Structured Intelligence
 
@@ -283,7 +283,7 @@ export default function CRMInteractionsSection() {
             </h2>
           </div>
           <p className="text-sm text-muted-foreground">
-            Q1 2026 · Min <strong>3 validated CIs/quarter</strong> per dedicated client · ABI tracked as CS Global POC
+            {dashboardConfig.unidash.quarter} · Min <strong>{dashboardConfig.unidash.ciMinTarget} validated CIs/quarter</strong> per dedicated client
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -344,16 +344,19 @@ export default function CRMInteractionsSection() {
           ))}
         </div>
 
-        {/* ABI — POC row */}
-        <div className="flex items-center gap-2 mb-2">
-          <Star size={12} style={{ color: "#7C3AED" }} />
-          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide">CS Global POC — Not in BoB</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {pocGoals.map((goal) => (
-            <ClientGoalCard key={goal.clientId} goal={goal} />
-          ))}
-        </div>
+        {pocGoals.length > 0 && (
+          <>
+            <div className="flex items-center gap-2 mb-2">
+              <Star size={12} style={{ color: "#7C3AED" }} />
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide">CS Global POC — Not in BoB</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {pocGoals.map((goal) => (
+                <ClientGoalCard key={goal.clientId} goal={goal} />
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Cross-reference banner */}
@@ -363,8 +366,7 @@ export default function CRMInteractionsSection() {
           <strong>Cross-reference:</strong> Unidash reports <strong>4 Live CIs QTD</strong> (GBG Direct, L2). 
           Meta CRM shows <strong>{crmRecordsSummary.qualifiedCount} qualified interactions</strong> — 
           <strong> {crmRecordsSummary.inPersonCount} in-person</strong>, <strong>{crmRecordsSummary.vcCount} VC</strong>. 
-          Amazon leads with <strong>{crmRecordsSummary.byClient.amazon} CIs</strong>. 
-          Magalu has <strong>0 CIs logged</strong> — priority action needed.
+          Top client: <strong>{crmRecordsSummary.topClient || "—"} CIs</strong> leading this quarter.
         </div>
       </div>
 

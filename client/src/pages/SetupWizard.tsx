@@ -203,23 +203,9 @@ function StepIdentity({ data, onChange }: { data: WizardData; onChange: (d: Part
     setManagerOpen(false);
   };
 
-  // Extract FBID from profile URL automatically
-  const handleProfileUrl = (url: string) => {
-    const match = url.match(/\/profile\/view\/(\d+)/);
-    const fbid = match ? match[1] : "";
-    onChange({ profileUrl: url, fbid });
-  };
-
-  // ── Fetch Profile Data state ──────────────────────────────
-  const [fetchState, setFetchState] = useState<FetchState>({ phase: "idle" });
-  const pollTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const pollStartRef = useRef<number>(0);
-
   // tRPC mutations & queries
-  const requestMutation = trpc.profileFetch.request.useMutation();
   const requestToBeAddedMutation = trpc.profileFetch.requestToBeAdded.useMutation();
   const [addRequested, setAddRequested] = useState(false);
-  const utils = trpc.useUtils();
 
   const handleRequestToBeAdded = async () => {
     if (!data.name.trim()) return;
@@ -235,94 +221,6 @@ function StepIdentity({ data, onChange }: { data: WizardData; onChange: (d: Part
     }
   };
 
-  // Stop polling helper
-  const stopPolling = () => {
-    if (pollTimerRef.current) {
-      clearInterval(pollTimerRef.current);
-      pollTimerRef.current = null;
-    }
-  };
-
-  // Cleanup on unmount
-  useEffect(() => () => stopPolling(), []);
-
-  const handleFetchProfile = async () => {
-    if (!data.fbid) {
-      toast.error("Paste your profile URL first", {
-        description: "FBID must be detected before Manus can fetch your profile.",
-      });
-      return;
-    }
-
-    setFetchState({ phase: "requesting" });
-    try {
-      const { requestId } = await requestMutation.mutateAsync({ fbid: data.fbid });
-      setFetchState({ phase: "waiting", requestId });
-      toast.info("Request sent to Manus", {
-        description: "Manus will navigate to your profile and fill the fields. This usually takes 15–30 seconds.",
-        duration: 8000,
-      });
-
-      // Open the profile page in a new tab so Manus can navigate to it
-      window.open(`https://www.internalfb.com/profile/view/${data.fbid}`, "_blank");
-
-      pollStartRef.current = Date.now();
-      pollTimerRef.current = setInterval(async () => {
-        // Client-side timeout guard
-        if (Date.now() - pollStartRef.current > POLL_TIMEOUT_MS) {
-          stopPolling();
-          setFetchState({ phase: "timed_out" });
-          toast.warning("Auto-fill timed out", {
-            description: "Manus didn't respond in time. Fill the fields manually or try again.",
-          });
-          return;
-        }
-
-        try {
-          const result = await utils.profileFetch.poll.fetch({ requestId });
-          if (result.status === "fulfilled") {
-            stopPolling();
-            setFetchState({ phase: "fulfilled" });
-            // Map profile data to wizard fields
-            const firstName = result.data.fullName.split(" ")[0] ?? "";
-            const initials = result.data.fullName
-              .split(" ")
-              .filter(Boolean)
-              .map((n) => n[0])
-              .join("")
-              .slice(0, 2)
-              .toUpperCase();
-            onChange({
-              name: result.data.fullName,
-              firstName,
-              initials,
-              salesRepName: result.data.fullName,
-              role: result.data.jobTitle || data.role,
-              team: result.data.team || data.team,
-              manager: result.data.manager || data.manager,
-            });
-            toast.success("Profile data loaded!", {
-              description: "All fields have been pre-filled. Review and adjust anything that looks off.",
-            });
-          } else if (result.status === "timed_out") {
-            stopPolling();
-            setFetchState({ phase: "timed_out" });
-            toast.warning("Auto-fill timed out", {
-              description: "Manus didn't respond in time. Fill the fields manually or try again.",
-            });
-          }
-        } catch {
-          // Ignore transient poll errors
-        }
-      }, POLL_INTERVAL_MS);
-    } catch (err: any) {
-      setFetchState({ phase: "error", message: err?.message ?? "Unknown error" });
-      toast.error("Request failed", {
-        description: "Could not send the fetch request. Fill the fields manually.",
-      });
-    }
-  };
-
   // Derive display values in real time
   const displayInitials = data.initials ||
     data.name.split(" ").filter(Boolean).map((n) => n[0]).join("").slice(0, 2).toUpperCase() ||
@@ -330,8 +228,6 @@ function StepIdentity({ data, onChange }: { data: WizardData; onChange: (d: Part
   const displayName = data.name || "Your Name";
   const displayRole = data.role || "Creative Strategist";
   const displayTeam = data.team || "Creative Shop";
-
-  const isFetching = fetchState.phase === "requesting" || fetchState.phase === "waiting";
 
   return (
     <div className="space-y-4">
@@ -525,107 +421,7 @@ function StepIdentity({ data, onChange }: { data: WizardData; onChange: (d: Part
             </div>
           </div>
 
-          {/* ── Profile URL (bottom) ────────────────────────────── */}
-          <div className="col-span-2 pt-2 border-t border-gray-100">
-            <Label htmlFor="profileUrl">
-              Internal Profile URL{" "}
-              <span className="text-gray-400 font-normal">(optional — used to auto-generate your CRM CI filter)</span>
-            </Label>
-            <div className="flex gap-2 mt-1">
-              <Input
-                id="profileUrl"
-                value={data.profileUrl}
-                onChange={(e) => handleProfileUrl(e.target.value)}
-                placeholder="https://www.internalfb.com/profile/view/1234567890"
-                className={[
-                  "font-mono text-xs flex-1",
-                  data.profileUrl && !data.fbid ? "border-red-400 focus-visible:ring-red-400" : "",
-                  data.fbid ? "border-green-400 focus-visible:ring-green-400" : "",
-                ].join(" ")}
-              />
-              <a
-                href="https://www.internalfb.com/profile/view"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors shrink-0"
-                title="Open your internal profile page to copy the URL"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-                Open Profile
-              </a>
-            </div>
-            {data.fbid ? (
-              <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
-                <span className="inline-block w-2 h-2 rounded-full bg-green-500"></span>
-                FBID detected: <strong>{data.fbid}</strong> — CRM CI filter URL will be auto-generated
-              </p>
-            ) : data.profileUrl ? (
-              <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
-                <span className="inline-block w-2 h-2 rounded-full bg-red-500"></span>
-                URL not recognized — paste the full URL from your profile page, e.g.{" "}
-                <code className="bg-red-50 px-1 rounded">https://www.internalfb.com/profile/view/1234567890</code>
-              </p>
-            ) : (
-              <p className="text-xs text-gray-500 mt-1">
-                Click <strong>Open Profile</strong>, copy the URL from your browser address bar, and paste it here.
-              </p>
-            )}
 
-            {/* ── Fetch Profile Data button ─────────────────────── */}
-            <div className="mt-3">
-              {fetchState.phase === "fulfilled" ? (
-                <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-2.5">
-                  <CheckCircle className="w-4 h-4 shrink-0" />
-                  <span><strong>Profile data loaded!</strong> Review the fields above and adjust anything that looks off.</span>
-                </div>
-              ) : fetchState.phase === "timed_out" ? (
-                <div className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2.5">
-                  <span className="text-amber-500">⏱</span>
-                  <span>Manus didn't respond in time. Fill the fields manually, or{" "}
-                    <button onClick={() => setFetchState({ phase: "idle" })} className="underline font-medium">try again</button>.
-                  </span>
-                </div>
-              ) : fetchState.phase === "error" ? (
-                <div className="flex items-center gap-2 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
-                  <span>Request failed. Fill the fields manually, or{" "}
-                    <button onClick={() => setFetchState({ phase: "idle" })} className="underline font-medium">try again</button>.
-                  </span>
-                </div>
-              ) : (
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  disabled={!data.fbid || isFetching}
-                  onClick={handleFetchProfile}
-                  className="gap-2 border-purple-300 text-purple-700 hover:bg-purple-50 hover:border-purple-400 disabled:opacity-50"
-                  title={!data.fbid ? "Paste your profile URL first" : "Ask Manus to read your profile and auto-fill all fields"}
-                >
-                  {isFetching ? (
-                    <>
-                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      {fetchState.phase === "requesting" ? "Sending request…" : "Waiting for Manus…"}
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-3.5 h-3.5" />
-                      Fetch Profile Data
-                      <span className="text-xs text-purple-400 font-normal ml-1">(optional)</span>
-                    </>
-                  )}
-                </Button>
-              )}
-              {fetchState.phase === "waiting" && (
-                <p className="text-xs text-gray-500 mt-1.5">
-                  Polling for response every 5 s · timeout in {Math.round(POLL_TIMEOUT_MS / 1000)} s · fill manually if Manus is unavailable
-                </p>
-              )}
-            </div>
-          </div>
         </div>
     </div>
   );
@@ -634,19 +430,13 @@ function StepIdentity({ data, onChange }: { data: WizardData; onChange: (d: Part
 function StepUnidash({ data, onChange }: { data: WizardData; onChange: (d: Partial<WizardData>) => void }) {
   return (
     <div className="space-y-4">
+      {/* Unidash name instruction */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800">
         <strong>How to find your Unidash name:</strong> Go to{" "}
         <a href="https://www.internalfb.com/unidash/dashboard/engagement_management_process_dashboard/dcmp_client_interaction_insights/" target="_blank" rel="noreferrer" className="underline font-medium">
           Unidash CI Dashboard
         </a>
         , click the "Sales Rep" filter, search for yourself, and copy the name exactly as shown — including accents.
-      </div>
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800">
-        <strong>How to get your CRM CI filter URL:</strong> Go to{" "}
-        <a href="https://www.internalfb.com/crm/client_interactions" target="_blank" rel="noreferrer" className="underline font-medium">
-          Meta CRM Client Interactions
-        </a>
-        , then apply these quick filters: <strong>Participant is in my BoB</strong> → <strong>This quarter</strong> → <strong>Is qualified</strong> → add filter <strong>"Participant contains any of [Your Name]"</strong>. Once the list shows only your CIs, copy the full URL from your browser address bar and paste it below.
       </div>
       <div>
         <Label htmlFor="salesRepName">Unidash Sales Rep Name <span className="text-red-500">*</span></Label>
@@ -663,6 +453,14 @@ function StepUnidash({ data, onChange }: { data: WizardData; onChange: (d: Parti
           <Input id="ciMinTarget" type="number" min={1} value={data.ciMinTarget} onChange={(e) => onChange({ ciMinTarget: e.target.value })} placeholder="3" className="mt-1" />
         </div>
       </div>
+      {/* CRM instruction immediately above the CRM URL field */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800">
+        <strong>How to get your CRM CI filter URL:</strong> Go to{" "}
+        <a href="https://www.internalfb.com/crm/client_interactions" target="_blank" rel="noreferrer" className="underline font-medium">
+          Meta CRM Client Interactions
+        </a>
+        , then apply these quick filters: <strong>Participant is in my BoB</strong> → <strong>This quarter</strong> → <strong>Is qualified</strong> → add filter <strong>"Participant contains any of [Your Name]"</strong>. Once the list shows only your CIs, copy the full URL from your browser address bar and paste it below.
+      </div>
       <div>
         <Label htmlFor="crmCiUrl">Your CRM CI Filter URL <span className="text-gray-400 font-normal">(optional)</span></Label>
         <Input
@@ -674,8 +472,6 @@ function StepUnidash({ data, onChange }: { data: WizardData; onChange: (d: Parti
         />
         <p className="text-xs text-gray-500 mt-1">Paste the URL from your browser after applying the 4 filters above. If left blank, Manus will apply the filters manually during each refresh.</p>
       </div>
-
-
     </div>
   );
 }
@@ -839,22 +635,62 @@ export default function SetupWizard() {
   };
   const refreshLabel = `${formatRefreshTime(data.dailyRefreshTime)} ${timezoneLabels[data.timezone] ?? data.timezone}`;
 
+  const projectName = peerFirstName
+    ? `${peerFirstName.toLowerCase().replace(/[^a-z0-9]/g, "")}-dashboard`
+    : "my-cs-dashboard";
+
   const readyToSendMessage = `Hi Manus! I'm ${peerFirstName} and I'd like to set up my own Creative Shop Dashboard.
 
-Please do the following:
-1. Create a new Manus project using the CS Dashboard template (pedro-dashboard)
-2. Paste my personal config (below) into client/src/lib/dashboard.config.ts
-3. Refresh my calendar from my Meta calendar page and update the meetings data
-4. Set up a daily ${refreshLabel} refresh schedule
-5. Let me know when it's ready so I can click Publish
+Please do the following IN ORDER:
 
-Note: This is a brand new dashboard for me — please create a new project, not modify any existing one.
+1. CLONE THE TEMPLATE REPO
+   Clone this exact repo: https://github.com/pedro-mnz/cs-dashboard-template
+   Initialize it as a new Manus web project named "${projectName}" with db+server+user features.
+   Do NOT build from scratch. Do NOT modify any existing project.
+
+2. APPLY MY PERSONAL CONFIG
+   Paste the config at the bottom of this message into: client/src/lib/dashboard.config.ts
+   (Replace the entire file content with the config below.)
+
+3. POPULATE DATA — scrape each source below and write the results into the corresponding data files:
+
+   a) META CALENDAR (client/src/lib/weeklyMeetingsData.ts)
+      - Open: https://www.workplace.com/calendar
+      - Log in with my Meta SSO if needed (ask me to authenticate via browser takeover)
+      - Read all events for the current week (Mon-Fri)
+      - Write them into weeklyMeetingsData.ts following the existing file structure
+
+   b) CRM CLIENT INTERACTIONS (client/src/lib/crmInteractionsData.ts + crmRecordsData.ts)
+      - Open my CRM CI filter URL: \${data.crmCiUrl || 'https://www.internalfb.com/crm/client_interactions'}
+      - If no filter URL was provided, apply these filters manually: Participant is in my BoB > This quarter > Is qualified > Participant contains "\${data.salesRepName}"
+      - Read all CI records and write them into crmInteractionsData.ts and crmRecordsData.ts
+
+   c) UNIDASH AI USAGE (client/src/lib/aiUsageData.ts)
+      - Open: https://www.internalfb.com/unidash/dashboard/engagement_management_process_dashboard/dcmp_client_interaction_insights/
+      - Filter by Sales Rep = "\${data.salesRepName}" and current quarter
+      - Read AI usage breakdown by pillar and write into aiUsageData.ts
+
+   d) WORKPLACE DIGEST (client/src/lib/workplaceDigestData.ts)
+      - Open: https://www.workplace.com
+      - Read the top 5 posts from my feed
+      - Write them into workplaceDigestData.ts following the existing file structure
+
+   e) RS PIPELINE (client/src/lib/rsPipelineData.ts)
+      - Open: https://www.internalfb.com/crm/client_interactions (RS/pipeline view)
+      - Read active pipeline items for my clients and write into rsPipelineData.ts
+
+4. SAVE A CHECKPOINT and let me know it is ready so I can click Publish.
+
+5. SET UP DAILY REFRESH
+   Schedule a recurring task to run every weekday at \${refreshLabel} that re-scrapes all 5 sources above and updates the data files automatically.
+
+Note: For any step that requires Meta SSO authentication, please ask me to log in via browser takeover before proceeding.
 
 ---
 MY PERSONAL CONFIG (paste into client/src/lib/dashboard.config.ts):
 ---
 
-${configText}`;
+\${configText}`;
 
   const copyReadyToSend = async () => {
     await navigator.clipboard.writeText(readyToSendMessage);
@@ -926,7 +762,7 @@ ${configText}`;
                 <div className="bg-purple-50 border border-purple-100 rounded-xl p-4 mb-3 text-sm text-purple-900">
                   <ol className="space-y-2.5 list-none">
                     {[
-                      { emoji: "📁", text: "Manus creates a new project from the CS Dashboard template" },
+                      { emoji: "📁", text: "Manus clones the exact CS Dashboard template from GitHub — same design, same components, same everything" },
                       { emoji: "⚙️", text: `Manus pastes your config into dashboard.config.ts — your name, team, clients, and colors are applied instantly` },
                       { emoji: "📅", text: "Manus opens your Meta calendar and reads this week's meetings, writing them to the calendar data file" },
                       { emoji: "🤖", text: "Manus reads your AI Usage from Unidash and updates the My AI Usage section" },

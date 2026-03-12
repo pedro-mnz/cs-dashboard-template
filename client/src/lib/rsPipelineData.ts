@@ -1,21 +1,19 @@
-// Recommended Solutions pipeline data — populated by Manus during setup
-// This file is refreshed daily by Manus.
+// rsPipelineData.ts
+// TEMPLATE PLACEHOLDER — populated by Manus during setup and daily refresh.
+// Manus scrapes CRM RS/pipeline view and writes active pipeline items here.
 
-export interface RSOpportunity {
+export interface PipelineItem {
   id: string;
-  client: string;
-  solution: string;
+  clientId: string;
+  clientName: string;
+  title: string;
   stage: string;
   value?: number;
+  currency?: string;
   dueDate?: string;
   owner: string;
-  notes?: string;
+  status: "active" | "closed" | "paused";
 }
 
-export const rsPipeline: RSOpportunity[] = [];
-
-export const rsSummary = {
-  total: 0,
-  byStage: {} as Record<string, number>,
-  byClient: {} as Record<string, number>,
-};
+export const rsPipeline: PipelineItem[] = [];
+// Manus will populate this array during setup and daily refresh.

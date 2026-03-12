@@ -1,4 +1,4 @@
-// Home — Pedro Menezes | Creative Shop Dashboard
+// Home — Creative Shop Dashboard
 // Design: Meta Creative Shop Identity
 // Layout: Dark navy sidebar (CS brand) + pure white main canvas
 // Colors: Meta Blue #0064E0, CS Purple #7C3AED, white surfaces
