@@ -746,6 +746,15 @@ ${configText}`;
             </div>
           </div>
 
+          {/* Browser takeover heads-up */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex gap-3">
+            <span className="text-amber-500 text-lg flex-shrink-0">⚠️</span>
+            <div className="text-sm text-amber-800">
+              <p className="font-semibold mb-1">Stay at your computer during setup</p>
+              <p>Manus will need you to <strong>take over the browser</strong> to log in with your Meta SSO when it reaches the data scraping steps. This is required for all 4 internal Meta sources (internalfb.com). Don't start the process if you're about to step away — the setup will pause and wait for you.</p>
+            </div>
+          </div>
+
           {/* Step 2 — Open Manus */}
           <div className="flex gap-4 mb-6">
             <div className="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">2</div>
