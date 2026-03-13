@@ -185,7 +185,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
         <div className="metric-card animate-fade-in-up delay-200">
           <div className="section-header">
             <h3 className="section-title">AR Headroom by Client</h3>
-            <span className="text-xs text-muted-foreground">Q1–Q2 2026 · Brazil</span>
+            <span className="text-xs text-muted-foreground" title="Source of truth: Unidash Individual Opportunities (fburl.com/datainsights/x5oismt6). AR Headroom = revenue gap between current spend and full potential.">Source: Unidash · {portfolioARSummary.dataAsOf}</span>
           </div>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={arChartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
@@ -216,7 +216,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
         <div className="metric-card animate-fade-in-up delay-250">
           <div className="section-header">
             <h3 className="section-title">Client Priority Ranking</h3>
-            <span className="text-xs text-muted-foreground">By AR Headroom</span>
+            <span className="text-xs text-muted-foreground" title="Ranked by AR Headroom from Unidash — the revenue gap each client still has to close.">By AR Headroom · Unidash</span>
           </div>
           <div className="space-y-3">
             {[...clients]
@@ -281,7 +281,10 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
       {/* Top RS Pipeline */}
       <div className="metric-card animate-fade-in-up delay-300">
         <div className="section-header">
-          <h3 className="section-title">Top Open Recommended Solutions</h3>
+          <div>
+            <h3 className="section-title">Top Open Recommended Solutions</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">Each RS is a lever to close the client's AR Headroom gap · Source: CRM Pipeline</p>
+          </div>
           <button
             onClick={() => onSectionChange("solutions")}
             className="text-xs font-medium hover:underline"
@@ -297,7 +300,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                 <th className="text-left pb-2 text-xs font-semibold text-muted-foreground pr-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Client</th>
                 <th className="text-left pb-2 text-xs font-semibold text-muted-foreground pr-4">Initiative</th>
                 <th className="text-left pb-2 text-xs font-semibold text-muted-foreground pr-4">Stage</th>
-                <th className="text-right pb-2 text-xs font-semibold text-muted-foreground">AR Headroom</th>
+                <th className="text-right pb-2 text-xs font-semibold text-muted-foreground" title="Eligible Target Revenue: the potential revenue this RS can unlock toward closing the client's AR Headroom gap.">Eligible Rev.</th>
               </tr>
             </thead>
             <tbody className="divide-y" style={{ borderColor: "oklch(0.96 0.003 75)" }}>
