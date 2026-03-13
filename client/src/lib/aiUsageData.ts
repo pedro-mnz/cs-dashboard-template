@@ -25,6 +25,7 @@ export interface AIUsageWeek {
 }
 
 // Weekly AI usage history for Pedro Menezes (last 13 weeks)
+// Last refreshed: 2026-03-13 (Friday of week 11)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
