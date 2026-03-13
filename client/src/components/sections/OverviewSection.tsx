@@ -194,7 +194,17 @@ function InitiativeChart({ onSectionChange }: { onSectionChange: (section: strin
         <p className="text-sm text-muted-foreground text-center py-8">No initiatives found for this client.</p>
       ) : (
         <ResponsiveContainer width="100%" height={Math.max(filteredData.length * 44, 200)}>
-          <BarChart data={filteredData} layout="vertical" margin={{ top: 4, right: 60, left: 8, bottom: 0 }}>
+          <BarChart
+            data={filteredData}
+            layout="vertical"
+            margin={{ top: 4, right: 60, left: 8, bottom: 0 }}
+            onClick={(data) => {
+              if (data?.activePayload?.[0]?.payload?.fullName) {
+                onSectionChange("solutions", data.activePayload[0].payload.fullName);
+              }
+            }}
+            style={{ cursor: "pointer" }}
+          >
             <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0.004 75)" horizontal={false} />
             <XAxis
               type="number"
@@ -227,8 +237,8 @@ function InitiativeChart({ onSectionChange }: { onSectionChange: (section: strin
                 border: "1px solid oklch(0.90 0.008 75)",
               }}
             />
-            <Bar dataKey="headroom" fill="oklch(0.55 0.18 250)" radius={[0, 4, 4, 0]} name="headroom" />
-            <Bar dataKey="accrued" fill="oklch(0.45 0.18 155)" radius={[0, 4, 4, 0]} name="accrued" />
+            <Bar dataKey="headroom" fill="oklch(0.55 0.18 250)" radius={[0, 4, 4, 0]} name="headroom" cursor="pointer" />
+            <Bar dataKey="accrued" fill="oklch(0.45 0.18 155)" radius={[0, 4, 4, 0]} name="accrued" cursor="pointer" />
           </BarChart>
         </ResponsiveContainer>
       )}
@@ -402,6 +412,14 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
             <h3 className="section-title">Client Priority Ranking</h3>
             <span className="text-xs text-muted-foreground" title="Ranked by AR Headroom from Unidash — the revenue gap each client still has to close.">By AR Headroom · Unidash</span>
           </div>
+          {/* Column headers */}
+          <div className="flex items-center justify-between mb-1 pb-1" style={{ borderBottom: "1px solid oklch(0.93 0.004 75)" }}>
+            <span className="text-xs text-muted-foreground">Client</span>
+            <div className="flex items-center gap-4">
+              <span className="text-xs text-muted-foreground text-right" style={{ minWidth: 72 }} title="Revenue attributed to CS solutions this quarter">Accrued QTD</span>
+              <span className="text-xs text-muted-foreground text-right" style={{ minWidth: 72 }} title="Remaining revenue gap to close">AR Headroom</span>
+            </div>
+          </div>
           <div className="space-y-3">
             {[...clients]
               .sort((a, b) => {
@@ -437,15 +455,20 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                         {client.tier}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {pctOfTarget > 0 && (
-                        <span className="text-xs text-muted-foreground font-mono-data" title={`Accrued QTD: ${formatCurrency(accruedQTD)} / Target: ${formatCurrency(targetRev)}`}>
-                          {pctOfTarget}% of target
+                    <div className="flex items-center gap-4">
+                      <div className="text-right" style={{ minWidth: 72 }}>
+                        <span className="text-sm font-bold font-mono-data" style={{ color: "#059669" }}>
+                          {accruedQTD > 0 ? formatCurrency(accruedQTD) : "—"}
                         </span>
-                      )}
-                      <span className="text-sm font-bold font-mono-data" style={{ color: client.color }}>
-                        {ar > 0 ? formatCurrency(ar) : "—"}
-                      </span>
+                        {pctOfTarget > 0 && (
+                          <p className="text-muted-foreground font-mono-data" style={{ fontSize: "10px" }}>{pctOfTarget}% of target</p>
+                        )}
+                      </div>
+                      <div className="text-right" style={{ minWidth: 72 }}>
+                        <span className="text-sm font-bold font-mono-data" style={{ color: client.color }}>
+                          {ar > 0 ? formatCurrency(ar) : "—"}
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <div className="h-1.5 rounded-full overflow-hidden bg-gray-100">

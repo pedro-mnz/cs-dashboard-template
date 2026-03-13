@@ -73,6 +73,7 @@ export async function runDailyRefresh() {
 export function startScheduler() {
   console.log("[Scheduler] Daily auto-refresh scheduled for 7:00 AM BRT (10:00 AM UTC)");
 
+  // Daily 7 AM BRT refresh
   cron.schedule("0 0 10 * * *", async () => {
     console.log("[Scheduler] Triggering daily 7:00 AM BRT refresh...");
     try {
@@ -83,4 +84,28 @@ export function startScheduler() {
   }, {
     timezone: "UTC",
   });
+
+  // Weekly Monday 8 AM BRT (11:00 AM UTC) — Unidash CSV refresh reminder
+  // Reminds the user to export fresh CSV from fburl.com/datainsights/x5oismt6
+  cron.schedule("0 0 11 * * 1", async () => {
+    console.log("[Scheduler] Weekly Unidash CSV refresh reminder triggered (Monday 8 AM BRT)");
+    const logPath = path.resolve(process.cwd(), ".manus-logs/scheduler.log");
+    try {
+      const existing = fs.existsSync(logPath) ? fs.readFileSync(logPath, "utf-8") : "[]";
+      const logs = JSON.parse(existing);
+      logs.unshift({
+        timestamp: new Date().toISOString(),
+        date: todayBRT(),
+        type: "unidash-weekly-reminder",
+        message: "Weekly Unidash CSV refresh due. Export from fburl.com/datainsights/x5oismt6 filtered by your name in Specialist(s) Contributor(s) column, then update rsPipelineData.ts.",
+      });
+      fs.writeFileSync(logPath, JSON.stringify(logs.slice(0, 30), null, 2));
+    } catch {
+      // ignore
+    }
+  }, {
+    timezone: "UTC",
+  });
+
+  console.log("[Scheduler] Weekly Unidash CSV reminder scheduled for Monday 8:00 AM BRT (11:00 AM UTC)");
 }

@@ -1,4 +1,4 @@
-// Home — Creative Shop Dashboard
+// Home — Pedro Menezes | Creative Shop Dashboard
 // Design: Meta Creative Shop Identity
 // Layout: Dark navy sidebar (CS brand) + pure white main canvas
 // Colors: Meta Blue #0064E0, CS Purple #7C3AED, white surfaces
@@ -35,6 +35,7 @@ const sectionTitles: Record<string, string> = {
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("overview");
+  const [sectionFilter, setSectionFilter] = useState<string | null>(null);
   const [activeClient, setActiveClient] = useState<string | null>(null);
   const mainRef = useRef<HTMLElement>(null);
   const scrollTargetRef = useRef<string | null>(null);
@@ -115,7 +116,7 @@ export default function Home() {
         return (
           <OverviewSection
             onClientChange={(id) => setActiveClient(id)}
-            onSectionChange={setActiveSection}
+            onSectionChange={(section, filter) => { setActiveSection(section); setSectionFilter(filter ?? null); }}
           />
         );
       case "meetings":
@@ -128,7 +129,7 @@ export default function Home() {
           />
         );
       case "solutions":
-        return <SolutionsSection />;
+        return <SolutionsSection initialInitiative={sectionFilter} />;
       case "interactions":
         return <InteractionsSection />;
       case "keydates":

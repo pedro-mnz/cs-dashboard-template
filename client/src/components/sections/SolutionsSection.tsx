@@ -17,10 +17,15 @@ function fmt(n: number) {
   return `$${n}`;
 }
 
-export default function SolutionsSection() {
+const VALID_STAGES: string[] = ["discovery", "pitching", "scoping", "committed", "actioned", "partial", "adopted", "closed"];
+
+export default function SolutionsSection({ initialInitiative }: { initialInitiative?: string | null }) {
+  // Determine if the initial filter is a stage or an initiative name
+  const isStageFilter = initialInitiative ? VALID_STAGES.includes(initialInitiative) : false;
   const [filterClient, setFilterClient] = useState<string>("ALL");
-  const [filterStage, setFilterStage] = useState<string>("ALL");
+  const [filterStage, setFilterStage] = useState<string>(isStageFilter && initialInitiative ? initialInitiative : "ALL");
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
+  const [filterInitiative, setFilterInitiative] = useState<string | null>(!isStageFilter ? (initialInitiative ?? null) : null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const refreshRS = trpc.scraper.refreshRS.useMutation({
@@ -54,7 +59,8 @@ export default function SolutionsSection() {
     const stageMatch = filterStage === "ALL" || rs.stage === filterStage;
     // No status field in new schema — status filter shows all
     const statusMatch = filterStatus === "ALL" || filterStatus === "Clean";
-    return clientMatch && stageMatch && statusMatch;
+    const initiativeMatch = !filterInitiative || rs.initiative === filterInitiative;
+    return clientMatch && stageMatch && statusMatch && initiativeMatch;
   });
 
   const totalOpportunity = filtered.reduce((s, r) => s + r.oppSize, 0);
@@ -118,6 +124,19 @@ export default function SolutionsSection() {
           </div>
         ))}
       </div>
+
+      {/* Active initiative filter banner */}
+      {filterInitiative && (
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium animate-fade-in-up" style={{ background: "#EBF4FF", color: "#0066CC", border: "1px solid #BFDBFE" }}>
+          <span>Filtered by initiative:</span>
+          <span className="font-semibold truncate max-w-[300px]" title={filterInitiative}>{filterInitiative}</span>
+          <button
+            onClick={() => setFilterInitiative(null)}
+            className="ml-auto text-xs hover:opacity-70 font-bold"
+            style={{ color: "#0066CC" }}
+          >✕ Clear</button>
+        </div>
+      )}
 
       {/* Stage Pipeline Funnel */}
       <div className="metric-card animate-fade-in-up delay-100">
