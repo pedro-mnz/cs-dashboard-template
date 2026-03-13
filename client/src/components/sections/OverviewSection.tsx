@@ -1,6 +1,7 @@
 // Overview Section — Portfolio summary, AR headroom, top priorities
 // Design: Warm Structured Intelligence
 
+import { useState } from "react";
 import { clients, formatCurrency, stageConfig } from "@/lib/dashboardData";
 import { rsPipeline, clientARData, portfolioARSummary, rsStageConfig, initiativeARData, stageDistribution } from "@/lib/rsPipelineData";
 import { clientCIGoals, crmRecordsSummary } from "@/lib/crmRecordsData";
@@ -13,7 +14,7 @@ import { TrendingUp, Target, Users, Calendar, ExternalLink, CheckCircle2, AlertC
 
 interface OverviewSectionProps {
   onClientChange: (id: string) => void;
-  onSectionChange: (section: string) => void;
+  onSectionChange: (section: string, filter?: string) => void;
 }
 
 const metricCards = [
@@ -121,6 +122,131 @@ function getTodayDayLabel(): string {
   return map[dayName] ?? dayName.slice(0, 3);
 }
 
+function InitiativeChart({ onSectionChange }: { onSectionChange: (section: string, filter?: string) => void }) {
+  const [activeClient, setActiveClient] = useState<string>("all");
+
+  // Build per-client initiative data from rsPipeline
+  const filteredData = [...rsPipeline]
+    .filter((rs) => activeClient === "all" || rs.client === activeClient)
+    .reduce((acc, rs) => {
+      const existing = acc.find((d) => d.fullName === rs.initiative);
+      if (existing) {
+        existing.headroom += Math.round(rs.arHeadroom / 1000);
+        existing.accrued += Math.round(rs.accruedARQTD / 1000);
+        existing.count += 1;
+      } else {
+        acc.push({
+          name: rs.initiative.length > 28 ? rs.initiative.slice(0, 28) + "…" : rs.initiative,
+          fullName: rs.initiative,
+          headroom: Math.round(rs.arHeadroom / 1000),
+          accrued: Math.round(rs.accruedARQTD / 1000),
+          count: 1,
+        });
+      }
+      return acc;
+    }, [] as Array<{ name: string; fullName: string; headroom: number; accrued: number; count: number }>)
+    .sort((a, b) => b.headroom - a.headroom);
+
+  const clientTabs = [
+    { id: "all", label: "All Clients" },
+    ...clients.map((c) => ({ id: c.id, label: c.shortName, color: c.color })),
+  ];
+
+  return (
+    <div className="metric-card animate-fade-in-up delay-305">
+      <div className="section-header">
+        <div>
+          <h3 className="section-title">AR Headroom by Initiative</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Which Creative Shop initiatives have the most remaining revenue upside · Source: Unidash
+          </p>
+        </div>
+        <button
+          onClick={() => onSectionChange("solutions")}
+          className="text-xs font-medium hover:underline"
+          style={{ color: "oklch(0.55 0.18 250)" }}
+        >
+          View all RS →
+        </button>
+      </div>
+
+      {/* Client filter tabs */}
+      <div className="flex gap-2 mb-4 flex-wrap">
+        {clientTabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveClient(tab.id)}
+            className="px-3 py-1 rounded-full text-xs font-semibold transition-all"
+            style={{
+              background: activeClient === tab.id
+                ? (tab.id === "all" ? "oklch(0.55 0.18 250)" : (tab as {color?: string}).color ?? "oklch(0.55 0.18 250)")
+                : "oklch(0.96 0.004 75)",
+              color: activeClient === tab.id ? "white" : "oklch(0.45 0.02 75)",
+              fontFamily: "'Montserrat', sans-serif",
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {filteredData.length === 0 ? (
+        <p className="text-sm text-muted-foreground text-center py-8">No initiatives found for this client.</p>
+      ) : (
+        <ResponsiveContainer width="100%" height={Math.max(filteredData.length * 44, 200)}>
+          <BarChart data={filteredData} layout="vertical" margin={{ top: 4, right: 60, left: 8, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0.004 75)" horizontal={false} />
+            <XAxis
+              type="number"
+              tick={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace" }}
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(v) => `$${v}K`}
+            />
+            <YAxis
+              type="category"
+              dataKey="name"
+              tick={{ fontSize: 11, fontFamily: "'Montserrat', sans-serif" }}
+              axisLine={false}
+              tickLine={false}
+              width={200}
+            />
+            <Tooltip
+              formatter={(value: number, name: unknown) => [
+                `$${(value as number).toLocaleString()}K`,
+                name === "headroom" ? "AR Headroom" : "Accrued QTD",
+              ]}
+              labelFormatter={(label: unknown, payload: unknown[]) => {
+                const first = (payload as Array<{ payload: { fullName: string; count: number } }>)?.[0]?.payload;
+                return first?.fullName ? `${first.fullName} (${first.count} RS)` : String(label);
+              }}
+              contentStyle={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 12,
+                borderRadius: 8,
+                border: "1px solid oklch(0.90 0.008 75)",
+              }}
+            />
+            <Bar dataKey="headroom" fill="oklch(0.55 0.18 250)" radius={[0, 4, 4, 0]} name="headroom" />
+            <Bar dataKey="accrued" fill="oklch(0.45 0.18 155)" radius={[0, 4, 4, 0]} name="accrued" />
+          </BarChart>
+        </ResponsiveContainer>
+      )}
+
+      <div className="flex gap-4 mt-3">
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded" style={{ background: "oklch(0.55 0.18 250)" }} />
+          <span className="text-xs text-muted-foreground">AR Headroom (remaining upside)</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded" style={{ background: "oklch(0.45 0.18 155)" }} />
+          <span className="text-xs text-muted-foreground">Accrued QTD</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function OverviewSection({ onClientChange, onSectionChange }: OverviewSectionProps) {
   const greeting = getBrazilGreeting();
   const todayDayLabel = getTodayDayLabel();
@@ -182,6 +308,10 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {metricCards.map((card, i) => {
           const Icon = card.icon;
+          const isARCard = card.label === "Accrued AR (QTD)";
+          const pctOfTarget = isARCard && portfolioARSummary.totalTargetEligibleRevenue > 0
+            ? Math.round((portfolioARSummary.totalAccruedQTD / portfolioARSummary.totalTargetEligibleRevenue) * 100)
+            : null;
           return (
             <div
               key={card.label}
@@ -203,6 +333,20 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
               </p>
               <p className="text-xs font-semibold text-foreground/80">{card.label}</p>
               <p className="text-xs text-muted-foreground mt-0.5">{card.sub}</p>
+              {isARCard && pctOfTarget !== null && (
+                <div className="mt-2">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-muted-foreground">% of Target Eligible Rev.</span>
+                    <span className="text-xs font-bold font-mono-data" style={{ color: card.color }}>{pctOfTarget}%</span>
+                  </div>
+                  <div className="h-1.5 rounded-full overflow-hidden bg-gray-100">
+                    <div
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{ width: `${Math.min(pctOfTarget, 100)}%`, background: card.color }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
@@ -210,7 +354,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
 
       {/* AR Headroom Chart + Client Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* AR Chart */}
+        {/* AR Headroom by Client */}
         <div className="metric-card animate-fade-in-up delay-200">
           <div className="section-header">
             <div>
@@ -377,73 +521,52 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
         </div>
       </div>
 
-      {/* RS Stage Progression + AR Headroom by Initiative */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Stage Progression */}
-        <div className="metric-card animate-fade-in-up delay-310">
-          <div className="section-header">
-            <div>
-              <h3 className="section-title">RS Stage Progression</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">{rsPipeline.length} active solutions · moving toward Adopted</p>
-            </div>
-            <span className="text-xs text-muted-foreground">{portfolioARSummary.dataAsOf}</span>
-          </div>
-          <div className="space-y-2.5 mt-2">
-            {stageProgressData.map((d) => (
-              <div key={d.stage}>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-semibold" style={{ color: d.color, fontFamily: "'Montserrat', sans-serif" }}>{d.stage}</span>
-                  <span className="text-xs font-bold font-mono-data" style={{ color: d.color }}>{d.count}</span>
-                </div>
-                <div className="h-2 rounded-full overflow-hidden bg-gray-100">
-                  <div
-                    className="h-full rounded-full transition-all duration-700"
-                    style={{ width: `${Math.round((d.count / rsPipeline.length) * 100)}%`, background: d.color }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-3 pt-3 border-t flex items-center gap-4" style={{ borderColor: "oklch(0.92 0.004 75)" }}>
-            <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full" style={{ background: "#059669" }} />
-              <span className="text-xs text-muted-foreground">{stageDistribution.adopted} Adopted</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full" style={{ background: "#10B981" }} />
-              <span className="text-xs text-muted-foreground">{stageDistribution.partial} Partially Adopted</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full" style={{ background: "#F59E0B" }} />
-              <span className="text-xs text-muted-foreground">{stageDistribution.pitching + stageDistribution.discovery + stageDistribution.scoping} In Progress</span>
-            </div>
-          </div>
-        </div>
+      {/* AR Headroom by Initiative — Full Width, Prominent */}
+      <InitiativeChart onSectionChange={onSectionChange} />
 
-        {/* AR Headroom by Initiative */}
-        <div className="metric-card animate-fade-in-up delay-315">
-          <div className="section-header">
-            <div>
-              <h3 className="section-title">AR Headroom by Initiative</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Which macro-solutions have the most remaining upside</p>
-            </div>
+      {/* RS Stage Progression */}
+      <div className="metric-card animate-fade-in-up delay-310">
+        <div className="section-header">
+          <div>
+            <h3 className="section-title">RS Stage Progression</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">{rsPipeline.length} active solutions · click a stage to filter the Solutions view</p>
           </div>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={initiativeChartData} layout="vertical" margin={{ top: 4, right: 40, left: 4, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0.004 75)" horizontal={false} />
-              <XAxis type="number" tick={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace" }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}K`} />
-              <YAxis type="category" dataKey="name" tick={{ fontSize: 10, fontFamily: "'Montserrat', sans-serif" }} axisLine={false} tickLine={false} width={120} />
-              <Tooltip
-                formatter={(value: number, name: unknown) => [`$${(value as number).toLocaleString()}K`, name === "headroom" ? "AR Headroom" : "Accrued QTD"]}
-                labelFormatter={(label: unknown, payload: unknown[]) => (payload as Array<{payload: {fullName: string}}>)?.[0]?.payload?.fullName ?? label}
-                contentStyle={{ fontFamily: "'Montserrat', sans-serif", fontSize: 12, borderRadius: 8, border: "1px solid oklch(0.90 0.008 75)" }}
-              />
-              <Bar dataKey="headroom" fill="oklch(0.55 0.18 250)" radius={[0, 4, 4, 0]} name="headroom" />
-              <Bar dataKey="accrued" fill="oklch(0.45 0.18 155)" radius={[0, 4, 4, 0]} name="accrued" />
-            </BarChart>
-          </ResponsiveContainer>
+          <span className="text-xs text-muted-foreground">{portfolioARSummary.dataAsOf}</span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 mt-2">
+          {stageProgressData.map((d) => (
+            <button
+              key={d.stage}
+              onClick={() => onSectionChange("solutions", d.stage.toLowerCase())}
+              className="flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all hover:shadow-md hover:scale-105 cursor-pointer"
+              style={{ borderColor: `${d.color}30`, background: `${d.color}08` }}
+              title={`View ${d.stage} solutions`}
+            >
+              <span className="text-2xl font-bold font-mono-data" style={{ color: d.color }}>{d.count}</span>
+              <span className="text-xs font-semibold text-center" style={{ color: d.color, fontFamily: "'Montserrat', sans-serif" }}>{d.stage}</span>
+              <div className="w-full h-1 rounded-full" style={{ background: `${d.color}30` }}>
+                <div className="h-full rounded-full" style={{ width: `${Math.round((d.count / rsPipeline.length) * 100)}%`, background: d.color }} />
+              </div>
+            </button>
+          ))}
+        </div>
+        <div className="mt-3 pt-3 border-t flex items-center gap-4" style={{ borderColor: "oklch(0.92 0.004 75)" }}>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full" style={{ background: "#059669" }} />
+            <span className="text-xs text-muted-foreground">{stageDistribution.adopted} Adopted</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full" style={{ background: "#10B981" }} />
+            <span className="text-xs text-muted-foreground">{stageDistribution.partial} Partially Adopted</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full" style={{ background: "#F59E0B" }} />
+            <span className="text-xs text-muted-foreground">{stageDistribution.pitching + stageDistribution.discovery + stageDistribution.scoping} In Progress</span>
+          </div>
         </div>
       </div>
+
+
 
       {/* CI Goal Widget */}
       <div className="metric-card animate-fade-in-up delay-325">
