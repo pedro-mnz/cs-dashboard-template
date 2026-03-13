@@ -678,15 +678,25 @@ IMPORTANT — ALL INTERNAL META SOURCES REQUIRE BROWSER TAKEOVER:
       - Filter by Sales Rep = "${data.salesRepName}" and current quarter
       - Read AI usage breakdown by pillar and write into aiUsageData.ts
 
-   d) RS PIPELINE (client/src/lib/rsPipelineData.ts)
+   d) RS PIPELINE (client/src/lib/rsPipelineData.ts — rsPipeline array)
       - Navigate to: https://www.internalfb.com/crm/pipeline_management
       - Ask me to take over the browser if the session has expired
-      - Read active pipeline items for my clients and write into rsPipelineData.ts
+      - Set filters: Role = Creative Strategist, Period = Current Quarter, Tab = Your Solutions, Status = Active
+      - Read all active RS items and write them into the rsPipeline array in rsPipelineData.ts
+      - Also update rsSummary (total count, stageBreakdown, dataAsOf)
+
+   e) CRM SCORECARD — AR HEADROOM BY CLIENT (client/src/lib/rsPipelineData.ts — clientARData + portfolioARSummary)
+      - Navigate to: https://www.internalfb.com/crm/guidance_home?currentTab=SCORECARD&granularity=ORGANIZATION&guidanceType=PERFORMANCE_FIVE
+      - Ask me to take over the browser if the session has expired
+      - Read the AR Headroom and CS-Eligible AR for each of my dedicated clients (${data.clients.filter(c => c.name).map(c => c.name).join(', ')})
+      - Update the clientARData array in rsPipelineData.ts with { clientId, clientName, totalAR, csEligibleAR } for each client
+      - Update portfolioARSummary with the summed totals and topOpportunity (client with highest AR)
+      - This powers the AR Headroom by Client chart and the metric cards in the Overview
 
 4. SAVE A CHECKPOINT and let me know it is ready so I can click Publish.
 
 5. SET UP DAILY REFRESH
-   Schedule a recurring task to run every weekday at ${refreshLabel} that re-scrapes all 4 sources above and updates the data files automatically.
+   Schedule a recurring task to run every weekday at ${refreshLabel} that re-scrapes all 5 sources above and updates the data files automatically.
    Note: The daily refresh will also require browser takeover each time to access internalfb.com.
 
 ---
@@ -778,8 +788,8 @@ ${configText}`;
                       { emoji: "⚙️", text: `Manus pastes your config into dashboard.config.ts — your name, team, clients, and colors are applied instantly` },
                       { emoji: "📅", text: "Manus asks you to take over the browser so you can log in with Meta SSO — then reads your calendar, CRM, AI Usage, and RS Pipeline data" },
                       { emoji: "🎯", text: "Manus populates your CI Dashboard, Recommended Solutions, and AI Usage sections from the scraped data" },
-                      { emoji: "🔒", text: "Note: internalfb.com is only accessible via your personal Meta SSO session — browser takeover is required for all 4 data sources" },
-                      { emoji: "⏰", text: `Manus sets up a daily ${refreshLabel} scheduled task to keep all 4 data sources current automatically` },
+                      { emoji: "🔒", text: "Note: internalfb.com is only accessible via your personal Meta SSO session — browser takeover is required for all 5 data sources" },
+                      { emoji: "⏰", text: `Manus sets up a daily ${refreshLabel} scheduled task to keep all 5 data sources current automatically` },
                       { emoji: "🚀", text: "Manus tells you it's ready — you click Publish and your dashboard goes live at a permanent URL" },
                     ].map(({ emoji, text }, i) => (
                       <li key={i} className="flex gap-2.5 items-start">

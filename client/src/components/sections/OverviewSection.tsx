@@ -1,7 +1,8 @@
 // Overview Section — Portfolio summary, AR headroom, top priorities
 // Design: Warm Structured Intelligence
 
-import { clients, portfolioSummary, recommendedSolutions, formatCurrency, stageConfig } from "@/lib/dashboardData";
+import { clients, formatCurrency, stageConfig } from "@/lib/dashboardData";
+import { rsPipeline, clientARData, portfolioARSummary, rsStageConfig } from "@/lib/rsPipelineData";
 import { clientCIGoals, crmRecordsSummary } from "@/lib/crmRecordsData";
 import { weeklyMeetings, weekSummary, eventTypeConfig, calClientColors } from "@/lib/weeklyMeetingsData";
 import { aiUsageSummary, aiUsageWeeks } from "@/lib/aiUsageData";
@@ -18,7 +19,9 @@ interface OverviewSectionProps {
 const metricCards = [
   {
     label: "Total AR Headroom",
-    value: "$" + (portfolioSummary.totalARHeadroom / 1_000_000).toFixed(1) + "M",
+    value: portfolioARSummary.totalARHeadroom > 0
+      ? "$" + (portfolioARSummary.totalARHeadroom / 1_000_000).toFixed(1) + "M"
+      : "—",
     sub: `${dashboardConfig.unidash.quarter} · ${dashboardConfig.profile.territory}`,
     icon: TrendingUp,
     color: "#0066CC",
@@ -26,8 +29,12 @@ const metricCards = [
   },
   {
     label: "CS-Eligible AR",
-    value: "$" + (portfolioSummary.csEligibleAR / 1_000_000).toFixed(1) + "M",
-    sub: `${Math.round((portfolioSummary.csEligibleAR / portfolioSummary.totalARHeadroom) * 100)}% of total book`,
+    value: portfolioARSummary.csEligibleAR > 0
+      ? "$" + (portfolioARSummary.csEligibleAR / 1_000_000).toFixed(1) + "M"
+      : "—",
+    sub: portfolioARSummary.totalARHeadroom > 0
+      ? `${Math.round((portfolioARSummary.csEligibleAR / portfolioARSummary.totalARHeadroom) * 100)}% of total book`
+      : "Pending Scorecard scrape",
     icon: Target,
     color: "#10B981",
     bg: "#ECFDF5",
@@ -50,12 +57,19 @@ const metricCards = [
   },
 ];
 
-const arChartData = clients.map((c) => ({
-  name: c.shortName,
-  ar: Math.round(c.totalAR / 1000),
-  eligible: Math.round(c.csEligibleAR / 1000),
-  color: c.color,
-}));
+// AR chart: use clientARData from rsPipelineData (sourced from CRM Scorecard)
+// Falls back to clients list with zero values if not yet scraped
+const arChartData = clientARData.length > 0
+  ? clientARData.map((d) => {
+      const client = clients.find((c) => c.id === d.clientId);
+      return {
+        name: client?.shortName ?? d.clientName,
+        ar: Math.round(d.totalAR / 1000),
+        eligible: Math.round(d.csEligibleAR / 1000),
+        color: client?.color ?? "#6B7280",
+      };
+    })
+  : clients.map((c) => ({ name: c.shortName, ar: 0, eligible: 0, color: c.color }));
 
 function getBrazilGreeting(): string {
   // Brazil time = UTC-3
@@ -81,10 +95,10 @@ function getTodayDayLabel(): string {
 export default function OverviewSection({ onClientChange, onSectionChange }: OverviewSectionProps) {
   const greeting = getBrazilGreeting();
   const todayDayLabel = getTodayDayLabel();
-  // Top RS by AR
-  const topRS = [...recommendedSolutions]
-    .filter((rs) => rs.stage !== "CLOSED_WON" && rs.stage !== "CLOSED")
-    .sort((a, b) => b.arHeadroom - a.arHeadroom)
+  // Top RS by Eligible Target Revenue from rsPipelineData
+  const topRS = [...rsPipeline]
+    .filter((rs) => rs.stage !== "Closed - Lost" && rs.stage !== "Adopted")
+    .sort((a, b) => b.eligibleTargetRevenue - a.eligibleTargetRevenue)
     .slice(0, 6);
 
   return (
@@ -128,7 +142,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
             <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2">
               <p className="text-xs opacity-70">Top AR Opportunity</p>
               <p className="text-sm font-semibold" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                {portfolioSummary.topOpportunity}
+                {portfolioARSummary.topOpportunity}
               </p>
             </div>
           </div>
@@ -268,19 +282,19 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
             </thead>
             <tbody className="divide-y" style={{ borderColor: "oklch(0.96 0.003 75)" }}>
               {topRS.map((rs) => {
-                const client = clients.find((c) => c.id === rs.clientId);
-                const stage = stageConfig[rs.stage];
+                const client = clients.find((c) => c.id === rs.client);
+                const stage = rsStageConfig[rs.stage];
                 return (
                   <tr key={rs.id} className="hover:bg-muted/30 transition-colors">
                     <td className="py-2.5 pr-4">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: client?.color }} />
                         <span className="font-medium text-xs" style={{ color: client?.color }}>
-                          {client?.shortName}
+                          {client?.shortName ?? rs.advertiser}
                         </span>
                       </div>
                     </td>
-                    <td className="py-2.5 pr-4 text-xs text-foreground/80 max-w-[200px] truncate">{rs.rsName}</td>
+                    <td className="py-2.5 pr-4 text-xs text-foreground/80 max-w-[200px] truncate">{rs.name}</td>
                     <td className="py-2.5 pr-4">
                       <span
                         className="stage-badge"
@@ -291,7 +305,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                       </span>
                     </td>
                     <td className="py-2.5 text-right font-mono-data text-sm font-semibold" style={{ color: "oklch(0.28 0.07 250)" }}>
-                      {formatCurrency(rs.arHeadroom)}
+                      {formatCurrency(rs.eligibleTargetRevenue)}
                     </td>
                   </tr>
                 );
