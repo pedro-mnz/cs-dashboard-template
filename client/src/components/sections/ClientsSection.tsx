@@ -6,7 +6,7 @@ import { useState } from "react";
 import { clients, recommendedSolutions, formatCurrency, stageConfig } from "@/lib/dashboardData";
 import { dashboardConfig } from "@/lib/dashboard.config";
 import { workplacePosts, wpClientColors, workplaceSearchUrls } from "@/lib/workplaceData";
-import { Briefcase, Target, Globe, TrendingUp, ExternalLink, ThumbsUp, Eye, MessageSquare, Tag, FileText, Sheet, Presentation, FolderOpen, Link2, Plus } from "lucide-react";
+import { Briefcase, Target, Globe, TrendingUp, ExternalLink, ThumbsUp, Eye, MessageSquare, Tag, FileText, Sheet, Presentation, FolderOpen, Link2, Image, Video, FileArchive, Settings } from "lucide-react";
 
 interface ClientsSectionProps {
   activeClient: string | null;
@@ -214,13 +214,26 @@ export default function ClientsSection({ activeClient, onClientChange }: Clients
           if (type === "sheet") return <Sheet size={13} className="flex-shrink-0" />;
           if (type === "slides") return <Presentation size={13} className="flex-shrink-0" />;
           if (type === "folder") return <FolderOpen size={13} className="flex-shrink-0" />;
+          if (type === "pdf") return <FileArchive size={13} className="flex-shrink-0" />;
+          if (type === "image") return <Image size={13} className="flex-shrink-0" />;
+          if (type === "video") return <Video size={13} className="flex-shrink-0" />;
           return <Link2 size={13} className="flex-shrink-0" />;
+        };
+        const matTypeLabel = (type: string) => {
+          const labels: Record<string, string> = {
+            doc: "Google Doc", sheet: "Google Sheet", slides: "Google Slides",
+            folder: "Folder", pdf: "PDF", image: "Image", video: "Video", link: "Link",
+          };
+          return labels[type] ?? type;
         };
         const matColor = (type: string) => {
           if (type === "doc") return { bg: "#EBF4FF", color: "#1D4ED8" };
           if (type === "sheet") return { bg: "#ECFDF5", color: "#166534" };
           if (type === "slides") return { bg: "#FFF7ED", color: "#C2410C" };
           if (type === "folder") return { bg: "#F5F3FF", color: "#6D28D9" };
+          if (type === "pdf") return { bg: "#FEF2F2", color: "#B91C1C" };
+          if (type === "image") return { bg: "#F0FDF4", color: "#15803D" };
+          if (type === "video") return { bg: "#FFF1F2", color: "#BE123C" };
           return { bg: "#F9FAFB", color: "#374151" };
         };
         return (
@@ -230,25 +243,27 @@ export default function ClientsSection({ activeClient, onClientChange }: Clients
                 <FolderOpen size={14} style={{ color: client.color }} />
                 Client Materials
               </h3>
-              <a
-                href={`https://docs.google.com/`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(`      materials: [\n        { label: "My Doc", url: "https://docs.google.com/...", type: "doc" },\n      ],`);
+                  import("sonner").then(({ toast }) => toast.success("Snippet copied!", { description: "Paste into dashboard.config.ts under this client." }));
+                }}
                 className="flex items-center gap-1 text-xs font-medium hover:opacity-70 transition-opacity"
                 style={{ color: client.color }}
               >
-                <Plus size={11} />
-                Add in config
-              </a>
+                <Settings size={11} />
+                Edit in config
+              </button>
             </div>
             {materials.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-6 text-center">
                 <FolderOpen size={28} className="mb-2 opacity-20" style={{ color: client.color }} />
-                <p className="text-xs text-muted-foreground">No materials yet.</p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Add Google Docs, Sheets, Slides, or links in{" "}
+                <p className="text-xs text-muted-foreground font-medium">No materials yet.</p>
+                <p className="text-xs text-muted-foreground mt-1 max-w-xs">
+                  Attach anything — Docs, Sheets, Slides, PDFs, images, videos, external links, Figma files, Notion pages, you name it. Add them in{" "}
                   <code className="bg-gray-100 px-1 rounded text-xs">dashboard.config.ts</code>{" "}
-                  under this client's <code className="bg-gray-100 px-1 rounded text-xs">materials</code> array.
+                  under this client's <code className="bg-gray-100 px-1 rounded text-xs">materials</code> array, or click <strong>Edit in config</strong> above to copy a starter snippet.
                 </p>
               </div>
             ) : (
@@ -269,7 +284,7 @@ export default function ClientsSection({ activeClient, onClientChange }: Clients
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className="text-xs font-semibold text-foreground truncate" style={{ fontFamily: "'Montserrat', sans-serif" }}>{mat.label}</p>
-                        <p className="text-xs text-muted-foreground capitalize">{mat.type}</p>
+                        <p className="text-xs text-muted-foreground">{matTypeLabel(mat.type)}</p>
                       </div>
                       <ExternalLink size={11} className="flex-shrink-0 opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: client.color }} />
                     </a>

@@ -24,7 +24,7 @@ const STEPS = [
 ];
 
 type WorkplaceGroup = { name: string; url: string; description: string };
-type ClientMaterial = { label: string; url: string; type: "doc" | "sheet" | "slides" | "link" | "folder" };
+type ClientMaterial = { label: string; url: string; type: "doc" | "sheet" | "slides" | "link" | "folder" | "pdf" | "image" | "video" };
 type Client = { id: string; name: string; shortName: string; tier: string; color: string; summary: string; materials: ClientMaterial[] };
 
 interface WizardData {
@@ -490,7 +490,7 @@ function StepClients({ data, onChange }: { data: WizardData; onChange: (d: Parti
   const addClient = () => onChange({ clients: [...data.clients, { id: "", name: "", shortName: "", tier: "A", color: "#0064E0", summary: "", materials: [] }] });
   const addMaterial = (i: number) => {
     const clients = [...data.clients];
-    clients[i] = { ...clients[i], materials: [...(clients[i].materials || []), { label: "", url: "", type: "link" as const }] };
+    clients[i] = { ...clients[i], materials: [...(clients[i].materials || []), { label: "", url: "", type: "link" as const satisfies ClientMaterial["type"] }] };
     onChange({ clients });
   };
   const updateMaterial = (ci: number, mi: number, field: keyof ClientMaterial, value: string) => {
@@ -584,7 +584,7 @@ function StepClients({ data, onChange }: { data: WizardData; onChange: (d: Parti
                 + Add link
               </button>
             </div>
-            <p className="text-xs text-gray-400 mb-2">Add Google Docs, Sheets, Slides, or any URL relevant to this client (Account Brief, QBR Deck, AR Tracker, etc.)</p>
+            <p className="text-xs text-gray-400 mb-2">Attach anything relevant to this client — Docs, Sheets, Slides, PDFs, images, videos, Figma files, Notion pages, external links, you name it.</p>
             {(client.materials || []).length === 0 && (
               <p className="text-xs text-gray-400 italic">No materials yet — click "+ Add link" to attach your first document.</p>
             )}
@@ -598,6 +598,9 @@ function StepClients({ data, onChange }: { data: WizardData; onChange: (d: Parti
                   <option value="doc">Doc</option>
                   <option value="sheet">Sheet</option>
                   <option value="slides">Slides</option>
+                  <option value="pdf">PDF</option>
+                  <option value="image">Image</option>
+                  <option value="video">Video</option>
                   <option value="folder">Folder</option>
                   <option value="link">Link</option>
                 </select>
@@ -610,7 +613,7 @@ function StepClients({ data, onChange }: { data: WizardData; onChange: (d: Parti
                 <Input
                   value={mat.url}
                   onChange={(e) => updateMaterial(i, mi, "url", e.target.value)}
-                  placeholder="https://docs.google.com/..."
+                  placeholder="https://drive.google.com/... or any URL"
                   className="text-xs flex-1 min-w-0"
                 />
                 <button
