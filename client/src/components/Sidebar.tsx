@@ -28,8 +28,8 @@ interface SidebarProps {
 
 const navItems = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "meetings", label: "Next Meetings", icon: Calendar },
   { id: "clients", label: "Client Content", icon: Users },
+  { id: "meetings", label: "Next Meetings", icon: Calendar },
   { id: "solutions", label: "Rec. Solutions", icon: Target },
   { id: "crminteractions", label: "CI Dashboard", icon: MessageSquare },
   { id: "aiusage", label: "My AI Usage", icon: Cpu },

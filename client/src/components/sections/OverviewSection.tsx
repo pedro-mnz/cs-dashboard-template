@@ -328,6 +328,31 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                 {portfolioARSummary.topOpportunity}
               </p>
             </div>
+            {(() => {
+              // Top initiative by AR Headroom
+              const topInit = [...rsPipeline]
+                .reduce((acc, rs) => {
+                  const ex = acc.find((d) => d.name === rs.initiative);
+                  if (ex) { ex.headroom += rs.arHeadroom; ex.count += 1; }
+                  else acc.push({ name: rs.initiative, headroom: rs.arHeadroom, count: 1 });
+                  return acc;
+                }, [] as Array<{ name: string; headroom: number; count: number }>)
+                .sort((a, b) => b.headroom - a.headroom)[0];
+              if (!topInit) return null;
+              const shortName = topInit.name.length > 32 ? topInit.name.slice(0, 32) + "…" : topInit.name;
+              const headroomK = topInit.headroom >= 1_000_000
+                ? `$${(topInit.headroom / 1_000_000).toFixed(1)}M`
+                : `$${Math.round(topInit.headroom / 1_000)}K`;
+              return (
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2">
+                  <p className="text-xs opacity-70">Top Initiative · {topInit.count} RS</p>
+                  <p className="text-sm font-semibold" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                    {shortName}
+                  </p>
+                  <p className="text-xs opacity-60 mt-0.5">{headroomK} AR Headroom</p>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </div>
@@ -439,6 +464,24 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                       })}
                     </div>
                   )}
+                  {/* Close Quarter button */}
+                  <button
+                    onClick={() => {
+                      const confirmed = window.confirm(
+                        `Close Q1 2026?\n\nThis will save the current Accrued AR QTD ($${(portfolioARSummary.totalAccruedQTD / 1000).toFixed(0)}K) as the Q1 2026 final value, which will be used as the baseline for the QoQ badge next quarter.\n\nUpdate the accruedARLastQuarter field in rsPipelineData.ts to:\n  ${portfolioARSummary.totalAccruedQTD}\n\nand set lastQuarterLabel to: "Q1 2026"`
+                      );
+                      if (confirmed) {
+                        navigator.clipboard.writeText(
+                          `accruedARLastQuarter: ${portfolioARSummary.totalAccruedQTD},\nlastQuarterLabel: "Q1 2026",`
+                        ).then(() => alert("Copied to clipboard! Paste into rsPipelineData.ts \u2192 portfolioARSummary."));
+                      }
+                    }}
+                    className="mt-2 w-full flex items-center justify-center gap-1.5 text-xs font-semibold px-2 py-1.5 rounded-lg border transition-all hover:opacity-80"
+                    style={{ color: "#7C3AED", borderColor: "#DDD6FE", background: "#F5F3FF" }}
+                    title="Lock in current QTD as the quarter's final value for QoQ tracking"
+                  >
+                    <span>&#x1F512;</span> Close Quarter
+                  </button>
                 </div>
               )}
             </div>

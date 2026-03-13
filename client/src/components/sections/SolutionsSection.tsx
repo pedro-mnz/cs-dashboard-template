@@ -5,7 +5,7 @@
 import { useState, useMemo } from "react";
 import { rsPipeline, rsSummary, rsStageConfig, rsStatusConfig, rsClientColors, portfolioARSummary, RSStage } from "@/lib/rsPipelineData";
 import { clients } from "@/lib/dashboardData";
-import { ExternalLink, AlertTriangle, TrendingUp, Filter, RefreshCw } from "lucide-react";
+import { ExternalLink, AlertTriangle, TrendingUp, Filter, RefreshCw, ChevronDown, ChevronRight } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
@@ -29,6 +29,7 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
   const [filterInitiative, setFilterInitiative] = useState<string | null>(!isStageFilter ? (initialInitiative ?? null) : null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   const refreshRS = trpc.scraper.refreshRS.useMutation({
     onMutate: () => setIsRefreshing(true),
@@ -382,15 +383,21 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
                 const clientCfg = rsClientColors[rs.client];
                 const stageCfg = rsStageConfig[rs.stage];
                 const statusCfg = null; // Status field removed in new schema
+                const isExpanded = expandedRow === rs.id;
                 return (
+                  <>
                   <tr
                     key={rs.id}
-                    className="hover:bg-muted/30 transition-colors"
-                    style={{ borderBottom: "1px solid oklch(0.96 0.003 75)" }}
+                    className="hover:bg-muted/30 transition-colors cursor-pointer"
+                    style={{ borderBottom: isExpanded ? "none" : "1px solid oklch(0.96 0.003 75)" }}
+                    onClick={() => setExpandedRow(isExpanded ? null : rs.id)}
                   >
                     {/* Client */}
                     <td className="py-3 pr-3">
                       <div className="flex items-center gap-1.5">
+                        {rs.stageHistory && rs.stageHistory.length > 0 ? (
+                          isExpanded ? <ChevronDown size={10} className="text-muted-foreground flex-shrink-0" /> : <ChevronRight size={10} className="text-muted-foreground flex-shrink-0" />
+                        ) : <span className="w-2.5" />}
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: clientCfg.color }} />
                         <span className="text-xs font-semibold" style={{ color: clientCfg.color }}>{clientCfg.name}</span>
                       </div>
@@ -437,6 +444,36 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
                       <span className="text-xs font-mono-data font-semibold" style={{ color: clientCfg.color }}>{fmt(rs.oppSize)}</span>
                     </td>
                   </tr>
+                  {/* Stage-transition log expansion row */}
+                  {isExpanded && rs.stageHistory && rs.stageHistory.length > 0 && (
+                    <tr style={{ borderBottom: "1px solid oklch(0.96 0.003 75)" }}>
+                      <td colSpan={7} className="pb-3 pt-1 px-2">
+                        <div className="flex items-center gap-0 ml-6 flex-wrap">
+                          {rs.stageHistory.map((t, idx) => {
+                            const cfg = rsStageConfig[t.stage];
+                            const isLast = idx === rs.stageHistory!.length - 1;
+                            return (
+                              <div key={idx} className="flex items-center gap-0">
+                                <div
+                                  className="flex flex-col items-center px-2 py-1 rounded-lg"
+                                  style={{ background: cfg.bg }}
+                                  title={t.note ?? cfg.label}
+                                >
+                                  <span className="text-xs font-semibold" style={{ color: cfg.color, fontFamily: "'Montserrat', sans-serif" }}>{cfg.label}</span>
+                                  <span className="text-xs" style={{ color: "oklch(0.55 0.01 75)", fontSize: "9px", fontFamily: "'JetBrains Mono', monospace" }}>{t.date}</span>
+                                  {t.note && <span className="text-xs text-muted-foreground" style={{ fontSize: "9px", maxWidth: 80, textAlign: "center", lineHeight: 1.2 }}>{t.note}</span>}
+                                </div>
+                                {!isLast && (
+                                  <div className="w-4 h-px" style={{ background: "oklch(0.85 0.01 75)" }} />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  </>
                 );
               })}
             </tbody>
