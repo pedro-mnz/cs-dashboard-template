@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { clients, formatCurrency, stageConfig } from "@/lib/dashboardData";
-import { rsPipeline, clientARData, portfolioARSummary, rsStageConfig, initiativeARData, stageDistribution } from "@/lib/rsPipelineData";
+import { rsPipeline, clientARData, portfolioARSummary, rsStageConfig, rsClientColors, initiativeARData, stageDistribution } from "@/lib/rsPipelineData";
 import { clientCIGoals, crmRecordsSummary } from "@/lib/crmRecordsData";
 import { weeklyMeetings, weekSummary, eventTypeConfig, calClientColors } from "@/lib/weeklyMeetingsData";
 import { aiUsageSummary, aiUsageWeeks } from "@/lib/aiUsageData";
@@ -134,17 +134,29 @@ function InitiativeChart({ onSectionChange }: { onSectionChange: (section: strin
         existing.headroom += Math.round(rs.arHeadroom / 1000);
         existing.accrued += Math.round(rs.accruedARQTD / 1000);
         existing.count += 1;
+        // Track top client by headroom contribution
+        const clientCfg = rsClientColors[rs.client];
+        const clientName = clientCfg?.name ?? rs.client;
+        const existingClient = existing.clientBreakdown.find((c) => c.name === clientName);
+        if (existingClient) {
+          existingClient.headroom += Math.round(rs.arHeadroom / 1000);
+        } else {
+          existing.clientBreakdown.push({ name: clientName, headroom: Math.round(rs.arHeadroom / 1000), color: clientCfg?.color ?? "#6B7280" });
+        }
       } else {
+        const clientCfg = rsClientColors[rs.client];
+        const clientName = clientCfg?.name ?? rs.client;
         acc.push({
           name: rs.initiative.length > 28 ? rs.initiative.slice(0, 28) + "…" : rs.initiative,
           fullName: rs.initiative,
           headroom: Math.round(rs.arHeadroom / 1000),
           accrued: Math.round(rs.accruedARQTD / 1000),
           count: 1,
+          clientBreakdown: [{ name: clientName, headroom: Math.round(rs.arHeadroom / 1000), color: clientCfg?.color ?? "#6B7280" }],
         });
       }
       return acc;
-    }, [] as Array<{ name: string; fullName: string; headroom: number; accrued: number; count: number }>)
+    }, [] as Array<{ name: string; fullName: string; headroom: number; accrued: number; count: number; clientBreakdown: Array<{ name: string; headroom: number; color: string }> }>)
     .sort((a, b) => b.headroom - a.headroom);
 
   const clientTabs = [
@@ -159,6 +171,9 @@ function InitiativeChart({ onSectionChange }: { onSectionChange: (section: strin
           <h3 className="section-title">AR Headroom by Initiative</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
             Which Creative Shop initiatives have the most remaining revenue upside · Source: Unidash
+          </p>
+          <p className="text-xs mt-0.5" style={{ color: "oklch(0.55 0.12 155)" }}>
+            Last refreshed: {portfolioARSummary.dataAsOf} · Click a bar to drill down
           </p>
         </div>
         <button
@@ -227,8 +242,11 @@ function InitiativeChart({ onSectionChange }: { onSectionChange: (section: strin
                 name === "headroom" ? "AR Headroom" : "Accrued QTD",
               ]}
               labelFormatter={(label: unknown, payload: unknown[]) => {
-                const first = (payload as Array<{ payload: { fullName: string; count: number } }>)?.[0]?.payload;
-                return first?.fullName ? `${first.fullName} (${first.count} RS)` : String(label);
+                const first = (payload as Array<{ payload: { fullName: string; count: number; clientBreakdown: Array<{ name: string; headroom: number; color: string }> } }>)?.[0]?.payload;
+                if (!first?.fullName) return String(label);
+                const topClient = first.clientBreakdown?.sort((a, b) => b.headroom - a.headroom)[0];
+                const topClientStr = topClient ? ` · Top: ${topClient.name}` : "";
+                return `${first.fullName} (${first.count} RS${topClientStr})`;
               }}
               contentStyle={{
                 fontFamily: "'Montserrat', sans-serif",
@@ -322,6 +340,21 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
           const pctOfTarget = isARCard && portfolioARSummary.totalTargetEligibleRevenue > 0
             ? Math.round((portfolioARSummary.totalAccruedQTD / portfolioARSummary.totalTargetEligibleRevenue) * 100)
             : null;
+          // Per-client breakdown for the Accrued AR QTD progress bar
+          const clientBreakdown = isARCard ? clientARData
+            .filter((d) => d.accruedARQTD > 0)
+            .sort((a, b) => b.accruedARQTD - a.accruedARQTD)
+            .map((d) => {
+              const clientCfg = clients.find((c) => c.id === d.clientId);
+              return {
+                name: clientCfg?.shortName ?? d.clientName,
+                color: clientCfg?.color ?? "#6B7280",
+                pct: portfolioARSummary.totalAccruedQTD > 0
+                  ? Math.round((d.accruedARQTD / portfolioARSummary.totalAccruedQTD) * 100)
+                  : 0,
+                value: d.accruedARQTD,
+              };
+            }) : [];
           return (
             <div
               key={card.label}
@@ -349,12 +382,37 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                     <span className="text-xs text-muted-foreground">% of Target Eligible Rev.</span>
                     <span className="text-xs font-bold font-mono-data" style={{ color: card.color }}>{pctOfTarget}%</span>
                   </div>
-                  <div className="h-1.5 rounded-full overflow-hidden bg-gray-100">
-                    <div
-                      className="h-full rounded-full transition-all duration-700"
-                      style={{ width: `${Math.min(pctOfTarget, 100)}%`, background: card.color }}
-                    />
+                  {/* Segmented per-client progress bar */}
+                  <div className="h-2 rounded-full overflow-hidden flex gap-px bg-gray-100">
+                    {clientBreakdown.length > 0 ? clientBreakdown.map((seg) => (
+                      <div
+                        key={seg.name}
+                        className="h-full transition-all duration-700 first:rounded-l-full last:rounded-r-full"
+                        style={{
+                          width: `${Math.round(seg.pct * (pctOfTarget / 100))}%`,
+                          background: seg.color,
+                          minWidth: seg.pct > 0 ? 2 : 0,
+                        }}
+                        title={`${seg.name}: ${formatCurrency(seg.value)} (${seg.pct}% of total QTD)`}
+                      />
+                    )) : (
+                      <div
+                        className="h-full rounded-full transition-all duration-700"
+                        style={{ width: `${Math.min(pctOfTarget, 100)}%`, background: card.color }}
+                      />
+                    )}
                   </div>
+                  {/* Client legend */}
+                  {clientBreakdown.length > 0 && (
+                    <div className="flex gap-2 mt-1.5 flex-wrap">
+                      {clientBreakdown.map((seg) => (
+                        <div key={seg.name} className="flex items-center gap-1">
+                          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: seg.color }} />
+                          <span className="text-muted-foreground" style={{ fontSize: "10px" }}>{seg.name} {seg.pct}%</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
