@@ -8,7 +8,7 @@ import { ExternalLink, AlertTriangle, TrendingUp, Filter, RefreshCw } from "luci
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
-const ALL_STAGES: RSStage[] = ["Scoped", "Pitched", "Committed", "Actioned", "Partially adopted", "Adopted", "Closed - Lost"];
+const ALL_STAGES: RSStage[] = ["discovery", "pitching", "scoping", "committed", "actioned", "partial", "adopted", "closed"];
 const ALL_CLIENTS = ["magalu", "amazon", "samsung"];
 
 function fmt(n: number) {
@@ -52,22 +52,19 @@ export default function SolutionsSection() {
   const filtered = rsPipeline.filter((rs) => {
     const clientMatch = filterClient === "ALL" || rs.client === filterClient;
     const stageMatch = filterStage === "ALL" || rs.stage === filterStage;
-    const statusMatch =
-      filterStatus === "ALL" ||
-      (filterStatus === "At Risk" && rs.status === "At Risk") ||
-      (filterStatus === "Overdue" && rs.status === "Overdue") ||
-      (filterStatus === "Clean" && !rs.status);
+    // No status field in new schema — status filter shows all
+    const statusMatch = filterStatus === "ALL" || filterStatus === "Clean";
     return clientMatch && stageMatch && statusMatch;
   });
 
-  const totalOpportunity = filtered.reduce((s, r) => s + r.opportunitySize, 0);
-  const atRiskCount = filtered.filter((r) => r.status === "At Risk" || r.status === "Overdue").length;
+  const totalOpportunity = filtered.reduce((s, r) => s + r.oppSize, 0);
+  const atRiskCount = 0; // Status field removed in new schema
 
   // Stage breakdown for the funnel
   const stageCounts = ALL_STAGES.map((stage) => ({
     stage,
     count: rsPipeline.filter((r) => r.stage === stage).length,
-    opp: rsPipeline.filter((r) => r.stage === stage).reduce((s, r) => s + r.opportunitySize, 0),
+    opp: rsPipeline.filter((r) => r.stage === stage).reduce((s, r) => s + r.oppSize, 0),
   })).filter((s) => s.count > 0);
 
   return (
@@ -112,7 +109,7 @@ export default function SolutionsSection() {
           { label: "Total Initiatives", value: String(rsSummary.total), sub: "Active · Q1 2026", color: "#0066CC", bg: "#EBF4FF" },
           { label: "Opportunity Size", value: fmt(rsSummary.totalOpportunitySize), sub: `${rsSummary.attributedProgress}% attributed`, color: "#10B981", bg: "#ECFDF5" },
           { label: "Eligible Revenue", value: fmt(rsSummary.totalEligibleTargetRevenue), sub: `${rsSummary.eligibleProgress}% progress`, color: "#7C3AED", bg: "#F5F3FF" },
-          { label: "At Risk / Overdue", value: String(rsPipeline.filter(r => r.status === "At Risk" || r.status === "Overdue").length), sub: "Need attention", color: "#EF4444", bg: "#FEF2F2" },
+          { label: "Accrued AR QTD", value: fmt(rsPipeline.reduce((s, r) => s + r.accruedARQTD, 0)), sub: "Revenue attributed this quarter", color: "#059669", bg: "#ECFDF5" },
         ].map((card) => (
           <div key={card.label} className="metric-card">
             <p className="text-2xl font-bold mb-0.5" style={{ fontFamily: "'Montserrat', sans-serif", color: card.color }}>{card.value}</p>
@@ -219,7 +216,7 @@ export default function SolutionsSection() {
               {filtered.map((rs) => {
                 const clientCfg = rsClientColors[rs.client];
                 const stageCfg = rsStageConfig[rs.stage];
-                const statusCfg = rs.status ? rsStatusConfig[rs.status] : null;
+                const statusCfg = null; // Status field removed in new schema
                 return (
                   <tr
                     key={rs.id}
@@ -235,12 +232,12 @@ export default function SolutionsSection() {
                     </td>
                     {/* Solution name */}
                     <td className="py-3 pr-3 max-w-[200px]">
-                      <p className="text-xs font-medium text-foreground truncate" title={rs.name}>{rs.name}</p>
-                      <p className="text-xs text-muted-foreground truncate" title={rs.advertiser} style={{ fontSize: "10px" }}>{rs.advertiser.replace(" - Advertiser", "").replace(" LTDA.", "").replace(" S/A", "")}</p>
+                      <p className="text-xs font-medium text-foreground truncate" title={rs.initiative}>{rs.initiative}</p>
+                      <p className="text-xs text-muted-foreground truncate" title={rs.clientName} style={{ fontSize: "10px" }}>{rs.clientName.replace(" - Advertiser", "").replace(" LTDA.", "").replace(" S/A", "")}</p>
                     </td>
                     {/* Type */}
                     <td className="py-3 pr-3">
-                      <span className="text-xs text-muted-foreground">{rs.solutionType.split("/")[0].trim()}</span>
+                      <span className="text-xs text-muted-foreground">{rs.type}</span>
                     </td>
                     {/* Stage */}
                     <td className="py-3 pr-3">
@@ -248,42 +245,31 @@ export default function SolutionsSection() {
                         className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
                         style={{ background: stageCfg.bg, color: stageCfg.color }}
                       >
-                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: stageCfg.dot }} />
                         {stageCfg.label}
                       </span>
                     </td>
-                    {/* Status */}
+                    {/* Vertical */}
                     <td className="py-3 pr-3">
-                      {statusCfg ? (
-                        <span
-                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
-                          style={{ background: statusCfg.bg, color: statusCfg.color }}
-                        >
-                          <AlertTriangle size={10} />
-                          {statusCfg.label}
-                        </span>
-                      ) : (
-                        <span className="text-xs text-muted-foreground">—</span>
-                      )}
+                      <span className="text-xs text-muted-foreground">{rs.vertical}</span>
                     </td>
-                    {/* Eligible Progress */}
+                    {/* AR Headroom Progress */}
                     <td className="py-3 pr-3">
                       <div className="flex flex-col items-end gap-1">
-                        <span className="text-xs font-mono-data font-semibold text-foreground/80">{rs.eligibleProgress}%</span>
+                        <span className="text-xs font-mono-data font-semibold text-foreground/80">{fmt(rs.arHeadroom)}</span>
                         <div className="w-20 h-1.5 rounded-full overflow-hidden" style={{ background: "oklch(0.93 0.005 75)" }}>
                           <div
                             className="h-full rounded-full"
                             style={{
-                              width: `${Math.min(rs.eligibleProgress, 100)}%`,
-                              background: rs.eligibleProgress >= 80 ? "#10B981" : rs.eligibleProgress >= 40 ? "#F59E0B" : "#3B82F6",
+                              width: `${Math.min(Math.max(rs.oppSize > 0 ? Math.round((rs.arHeadroom / rs.oppSize) * 100) : 0, 0), 100)}%`,
+                              background: rs.arHeadroom <= 0 ? "#059669" : rs.arHeadroom < rs.oppSize * 0.3 ? "#10B981" : "#3B82F6",
                             }}
                           />
                         </div>
                       </div>
                     </td>
-                    {/* Opportunity size */}
+                    {/* Opp size */}
                     <td className="py-3 text-right">
-                      <span className="text-xs font-mono-data font-semibold" style={{ color: clientCfg.color }}>{fmt(rs.opportunitySize)}</span>
+                      <span className="text-xs font-mono-data font-semibold" style={{ color: clientCfg.color }}>{fmt(rs.oppSize)}</span>
                     </td>
                   </tr>
                 );
@@ -300,7 +286,7 @@ export default function SolutionsSection() {
 
         <div className="mt-4 pt-3 border-t flex items-center justify-between" style={{ borderColor: "oklch(0.92 0.004 75)" }}>
           <p className="text-xs text-muted-foreground">
-            Source: Meta CRM Pipeline Management · Last updated: {new Date(rsSummary.dataAsOf + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+            Source: Meta CRM Pipeline Management · Last updated: Mar 13, 2026
           </p>
           <a
             href={rsSummary.sourceUrl}

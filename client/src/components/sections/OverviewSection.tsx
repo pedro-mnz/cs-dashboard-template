@@ -2,14 +2,14 @@
 // Design: Warm Structured Intelligence
 
 import { clients, formatCurrency, stageConfig } from "@/lib/dashboardData";
-import { rsPipeline, clientARData, portfolioARSummary, rsStageConfig } from "@/lib/rsPipelineData";
+import { rsPipeline, clientARData, portfolioARSummary, rsStageConfig, initiativeARData, stageDistribution } from "@/lib/rsPipelineData";
 import { clientCIGoals, crmRecordsSummary } from "@/lib/crmRecordsData";
 import { weeklyMeetings, weekSummary, eventTypeConfig, calClientColors } from "@/lib/weeklyMeetingsData";
 import { aiUsageSummary, aiUsageWeeks } from "@/lib/aiUsageData";
 import { currentPeriod, weeklyBreakdown, statusPageUrl } from "@/lib/inPersonData";
 import { dashboardConfig } from "@/lib/dashboard.config";
-import { RadialBarChart, RadialBar, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
-import { TrendingUp, Target, Users, Calendar, ExternalLink, CheckCircle2, AlertCircle, Clock, Bot, Zap, MapPin, ArrowRight } from "lucide-react";
+import { RadialBarChart, RadialBar, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell } from "recharts";
+import { TrendingUp, Target, Users, Calendar, ExternalLink, CheckCircle2, AlertCircle, Clock, Bot, Zap, MapPin, ArrowRight, DollarSign, Activity } from "lucide-react";
 
 interface OverviewSectionProps {
   onClientChange: (id: string) => void;
@@ -18,34 +18,37 @@ interface OverviewSectionProps {
 
 const metricCards = [
   {
-    label: "Total AR Headroom",
+    label: "Accrued AR (QTD)",
+    value: portfolioARSummary.totalAccruedQTD > 0
+      ? "$" + (portfolioARSummary.totalAccruedQTD / 1_000_000).toFixed(2) + "M"
+      : "—",
+    sub: `${dashboardConfig.unidash.quarter} · Revenue attributed to CS-supported RS`,
+    icon: DollarSign,
+    color: "#059669",
+    bg: "#ECFDF5",
+    tooltip: "Primary KPI: Revenue attributed to solutions you help pitch and get adopted this quarter.",
+  },
+  {
+    label: "AR Headroom",
     value: portfolioARSummary.totalARHeadroom > 0
       ? "$" + (portfolioARSummary.totalARHeadroom / 1_000_000).toFixed(1) + "M"
       : "—",
-    sub: `${dashboardConfig.unidash.quarter} · ${dashboardConfig.profile.territory}`,
+    sub: `Remaining upside · ${portfolioARSummary.dataAsOf}`,
     icon: TrendingUp,
     color: "#0066CC",
     bg: "#EBF4FF",
+    tooltip: "Prioritization tool: Opp Size − Accrued AR Lifetime. Points you to the RS with the most remaining revenue potential.",
   },
   {
-    label: "CS-Eligible AR",
-    value: portfolioARSummary.csEligibleAR > 0
-      ? "$" + (portfolioARSummary.csEligibleAR / 1_000_000).toFixed(1) + "M"
+    label: "Target Eligible Rev.",
+    value: portfolioARSummary.totalTargetEligibleRevenue > 0
+      ? "$" + (portfolioARSummary.totalTargetEligibleRevenue / 1_000_000).toFixed(1) + "M"
       : "—",
-    sub: portfolioARSummary.totalARHeadroom > 0
-      ? `${Math.round((portfolioARSummary.csEligibleAR / portfolioARSummary.totalARHeadroom) * 100)}% of total book`
-      : "Pending Scorecard scrape",
+    sub: `Total addressable pool · ${rsPipeline.length} active RS`,
     icon: Target,
-    color: "#10B981",
-    bg: "#ECFDF5",
-  },
-  {
-    label: "Active Clients",
-    value: String(clients.length),
-    sub: "Dedicated portfolio",
-    icon: Users,
     color: "#8B5CF6",
     bg: "#F5F3FF",
+    tooltip: "Context metric: Total revenue addressable across all open Recommended Solutions in your portfolio.",
   },
   {
     label: "This Week's Meetings",
@@ -54,22 +57,48 @@ const metricCards = [
     icon: Calendar,
     color: "#7C3AED",
     bg: "#F5F3FF",
+    tooltip: "Meetings this week from your Meta Calendar.",
   },
 ];
 
-// AR chart: use clientARData from rsPipelineData (sourced from CRM Scorecard)
-// Falls back to clients list with zero values if not yet scraped
+// AR chart: AR Headroom vs Opp Size per client (from rsPipelineData)
 const arChartData = clientARData.length > 0
-  ? clientARData.map((d) => {
-      const client = clients.find((c) => c.id === d.clientId);
-      return {
-        name: client?.shortName ?? d.clientName,
-        ar: Math.round(d.totalAR / 1000),
-        eligible: Math.round(d.csEligibleAR / 1000),
-        color: client?.color ?? "#6B7280",
-      };
-    })
-  : clients.map((c) => ({ name: c.shortName, ar: 0, eligible: 0, color: c.color }));
+  ? [...clientARData]
+      .sort((a, b) => b.arHeadroom - a.arHeadroom)
+      .map((d) => {
+        const client = clients.find((c) => c.id === d.clientId);
+        return {
+          name: client?.shortName ?? d.clientName,
+          headroom: Math.round(d.arHeadroom / 1000),
+          opp: Math.round(d.oppSize / 1000),
+          accrued: Math.round(d.accruedARQTD / 1000),
+          color: client?.color ?? "#6B7280",
+        };
+      })
+  : clients.map((c) => ({ name: c.shortName, headroom: 0, opp: 0, accrued: 0, color: c.color }));
+
+// Initiative AR Headroom chart data (top 6 by headroom)
+const initiativeChartData = [...initiativeARData]
+  .sort((a, b) => b.arHeadroom - a.arHeadroom)
+  .slice(0, 6)
+  .map((d) => ({
+    name: d.name.length > 22 ? d.name.slice(0, 22) + "…" : d.name,
+    fullName: d.name,
+    headroom: Math.round(d.arHeadroom / 1000),
+    accrued: Math.round(d.accruedARQTD / 1000),
+    count: d.count,
+  }));
+
+// Stage progression data
+const stageProgressData = [
+  { stage: "Discovery", count: stageDistribution.discovery, color: "#6B7280" },
+  { stage: "Pitching", count: stageDistribution.pitching, color: "#F59E0B" },
+  { stage: "Scoping", count: stageDistribution.scoping, color: "#8B5CF6" },
+  { stage: "Committed", count: stageDistribution.committed, color: "#3B82F6" },
+  { stage: "Actioned", count: stageDistribution.actioned, color: "#0EA5E9" },
+  { stage: "Partial", count: stageDistribution.partial, color: "#10B981" },
+  { stage: "Adopted", count: stageDistribution.adopted, color: "#059669" },
+].filter((d) => d.count > 0);
 
 function getBrazilGreeting(): string {
   // Brazil time = UTC-3
@@ -97,8 +126,8 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
   const todayDayLabel = getTodayDayLabel();
   // Top RS by Eligible Target Revenue from rsPipelineData
   const topRS = [...rsPipeline]
-    .filter((rs) => rs.stage !== "Closed - Lost" && rs.stage !== "Adopted")
-    .sort((a, b) => b.eligibleTargetRevenue - a.eligibleTargetRevenue)
+    .filter((rs) => rs.stage !== "closed" && rs.stage !== "adopted")
+    .sort((a, b) => b.arHeadroom - a.arHeadroom)
     .slice(0, 6);
 
   return (
@@ -184,8 +213,11 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
         {/* AR Chart */}
         <div className="metric-card animate-fade-in-up delay-200">
           <div className="section-header">
-            <h3 className="section-title">AR Headroom by Client</h3>
-            <span className="text-xs text-muted-foreground" title="Source of truth: Unidash Individual Opportunities (fburl.com/datainsights/x5oismt6). AR Headroom = revenue gap between current spend and full potential.">Source: Unidash · {portfolioARSummary.dataAsOf}</span>
+            <div>
+              <h3 className="section-title">AR Headroom by Client</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Prioritization tool — where to focus to maximize AR · Source: Unidash</p>
+            </div>
+            <span className="text-xs text-muted-foreground">{portfolioARSummary.dataAsOf}</span>
           </div>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={arChartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
@@ -193,21 +225,29 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
               <XAxis dataKey="name" tick={{ fontSize: 12, fontFamily: "'Montserrat', sans-serif" }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}K`} />
               <Tooltip
-                formatter={(value: number, name: string) => [`$${value.toLocaleString()}K`, name === "ar" ? "Total AR" : "CS-Eligible"]}
+                formatter={(value: number, name: unknown) => [
+                  `$${(value as number).toLocaleString()}K`,
+                  name === "headroom" ? "AR Headroom" : name === "opp" ? "Opp Size" : "Accrued QTD"
+                ]}
                 contentStyle={{ fontFamily: "'Montserrat', sans-serif", fontSize: 12, borderRadius: 8, border: "1px solid oklch(0.90 0.008 75)" }}
               />
-              <Bar dataKey="ar" fill="oklch(0.75 0.08 250)" radius={[4, 4, 0, 0]} name="ar" />
-              <Bar dataKey="eligible" fill="oklch(0.55 0.18 250)" radius={[4, 4, 0, 0]} name="eligible" />
+              <Bar dataKey="opp" fill="oklch(0.88 0.04 250)" radius={[4, 4, 0, 0]} name="opp" />
+              <Bar dataKey="headroom" fill="oklch(0.55 0.18 250)" radius={[4, 4, 0, 0]} name="headroom" />
+              <Bar dataKey="accrued" fill="oklch(0.45 0.18 155)" radius={[4, 4, 0, 0]} name="accrued" />
             </BarChart>
           </ResponsiveContainer>
           <div className="flex gap-4 mt-2">
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded" style={{ background: "oklch(0.75 0.08 250)" }} />
-              <span className="text-xs text-muted-foreground">Total AR</span>
+              <div className="w-3 h-3 rounded" style={{ background: "oklch(0.88 0.04 250)" }} />
+              <span className="text-xs text-muted-foreground">Opp Size</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded" style={{ background: "oklch(0.55 0.18 250)" }} />
-              <span className="text-xs text-muted-foreground">CS-Eligible</span>
+              <span className="text-xs text-muted-foreground">AR Headroom</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded" style={{ background: "oklch(0.45 0.18 155)" }} />
+              <span className="text-xs text-muted-foreground">Accrued QTD</span>
             </div>
           </div>
         </div>
@@ -221,18 +261,18 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
           <div className="space-y-3">
             {[...clients]
               .sort((a, b) => {
-                const arA = clientARData.find((d) => d.clientId === a.id)?.totalAR ?? 0;
-                const arB = clientARData.find((d) => d.clientId === b.id)?.totalAR ?? 0;
+                const arA = clientARData.find((d) => d.clientId === a.id)?.arHeadroom ?? 0;
+                const arB = clientARData.find((d) => d.clientId === b.id)?.arHeadroom ?? 0;
                 return arB - arA;
               })
               .map((client) => {
               // Prefer live AR data from clientARData (CRM Scorecard), fall back to 0
               const arEntry = clientARData.find((d) => d.clientId === client.id);
-              const ar = arEntry?.totalAR ?? 0;
-              const targetRev = arEntry?.csEligibleAR ?? 0;
-              const accruedQTD = arEntry?.accruedQTD ?? 0;
+              const ar = arEntry?.arHeadroom ?? 0;
+              const targetRev = arEntry?.targetEligibleRevenue ?? 0;
+              const accruedQTD = arEntry?.accruedARQTD ?? 0;
               const pctOfTarget = targetRev > 0 ? Math.round((accruedQTD / targetRev) * 100) : 0;
-              const maxAR = Math.max(...clientARData.map((d) => d.totalAR), 1);
+              const maxAR = Math.max(...clientARData.map((d) => d.arHeadroom), 1);
               const pct = Math.round((ar / maxAR) * 100);
               return (
                 <button
@@ -283,7 +323,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
         <div className="section-header">
           <div>
             <h3 className="section-title">Top Open Recommended Solutions</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">Each RS is a lever to close the client's AR Headroom gap · Source: CRM Pipeline</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Sorted by AR Headroom — each RS is a lever to close the client's gap · Source: Unidash</p>
           </div>
           <button
             onClick={() => onSectionChange("solutions")}
@@ -300,7 +340,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                 <th className="text-left pb-2 text-xs font-semibold text-muted-foreground pr-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Client</th>
                 <th className="text-left pb-2 text-xs font-semibold text-muted-foreground pr-4">Initiative</th>
                 <th className="text-left pb-2 text-xs font-semibold text-muted-foreground pr-4">Stage</th>
-                <th className="text-right pb-2 text-xs font-semibold text-muted-foreground" title="Eligible Target Revenue: the potential revenue this RS can unlock toward closing the client's AR Headroom gap.">Eligible Rev.</th>
+                <th className="text-right pb-2 text-xs font-semibold text-muted-foreground" title="AR Headroom: remaining revenue upside for this RS (Opp Size − Accrued AR Lifetime).">AR Headroom</th>
               </tr>
             </thead>
             <tbody className="divide-y" style={{ borderColor: "oklch(0.96 0.003 75)" }}>
@@ -313,28 +353,95 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: client?.color }} />
                         <span className="font-medium text-xs" style={{ color: client?.color }}>
-                          {client?.shortName ?? rs.advertiser}
+                          {client?.shortName ?? rs.clientName}
                         </span>
                       </div>
                     </td>
-                    <td className="py-2.5 pr-4 text-xs text-foreground/80 max-w-[200px] truncate">{rs.name}</td>
+                    <td className="py-2.5 pr-4 text-xs text-foreground/80 max-w-[200px] truncate">{rs.initiative}</td>
                     <td className="py-2.5 pr-4">
                       <span
                         className="stage-badge"
                         style={{ background: stage?.bg, color: stage?.color }}
                       >
-                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: stage?.dot }} />
                         {stage?.label}
                       </span>
                     </td>
                     <td className="py-2.5 text-right font-mono-data text-sm font-semibold" style={{ color: "oklch(0.28 0.07 250)" }}>
-                      {formatCurrency(rs.eligibleTargetRevenue)}
+                      {formatCurrency(rs.arHeadroom)}
                     </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* RS Stage Progression + AR Headroom by Initiative */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Stage Progression */}
+        <div className="metric-card animate-fade-in-up delay-310">
+          <div className="section-header">
+            <div>
+              <h3 className="section-title">RS Stage Progression</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">{rsPipeline.length} active solutions · moving toward Adopted</p>
+            </div>
+            <span className="text-xs text-muted-foreground">{portfolioARSummary.dataAsOf}</span>
+          </div>
+          <div className="space-y-2.5 mt-2">
+            {stageProgressData.map((d) => (
+              <div key={d.stage}>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-semibold" style={{ color: d.color, fontFamily: "'Montserrat', sans-serif" }}>{d.stage}</span>
+                  <span className="text-xs font-bold font-mono-data" style={{ color: d.color }}>{d.count}</span>
+                </div>
+                <div className="h-2 rounded-full overflow-hidden bg-gray-100">
+                  <div
+                    className="h-full rounded-full transition-all duration-700"
+                    style={{ width: `${Math.round((d.count / rsPipeline.length) * 100)}%`, background: d.color }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-3 pt-3 border-t flex items-center gap-4" style={{ borderColor: "oklch(0.92 0.004 75)" }}>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full" style={{ background: "#059669" }} />
+              <span className="text-xs text-muted-foreground">{stageDistribution.adopted} Adopted</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full" style={{ background: "#10B981" }} />
+              <span className="text-xs text-muted-foreground">{stageDistribution.partial} Partially Adopted</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full" style={{ background: "#F59E0B" }} />
+              <span className="text-xs text-muted-foreground">{stageDistribution.pitching + stageDistribution.discovery + stageDistribution.scoping} In Progress</span>
+            </div>
+          </div>
+        </div>
+
+        {/* AR Headroom by Initiative */}
+        <div className="metric-card animate-fade-in-up delay-315">
+          <div className="section-header">
+            <div>
+              <h3 className="section-title">AR Headroom by Initiative</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Which macro-solutions have the most remaining upside</p>
+            </div>
+          </div>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={initiativeChartData} layout="vertical" margin={{ top: 4, right: 40, left: 4, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0.004 75)" horizontal={false} />
+              <XAxis type="number" tick={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace" }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}K`} />
+              <YAxis type="category" dataKey="name" tick={{ fontSize: 10, fontFamily: "'Montserrat', sans-serif" }} axisLine={false} tickLine={false} width={120} />
+              <Tooltip
+                formatter={(value: number, name: unknown) => [`$${(value as number).toLocaleString()}K`, name === "headroom" ? "AR Headroom" : "Accrued QTD"]}
+                labelFormatter={(label: unknown, payload: unknown[]) => (payload as Array<{payload: {fullName: string}}>)?.[0]?.payload?.fullName ?? label}
+                contentStyle={{ fontFamily: "'Montserrat', sans-serif", fontSize: 12, borderRadius: 8, border: "1px solid oklch(0.90 0.008 75)" }}
+              />
+              <Bar dataKey="headroom" fill="oklch(0.55 0.18 250)" radius={[0, 4, 4, 0]} name="headroom" />
+              <Bar dataKey="accrued" fill="oklch(0.45 0.18 155)" radius={[0, 4, 4, 0]} name="accrued" />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
