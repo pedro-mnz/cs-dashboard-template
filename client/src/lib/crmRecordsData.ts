@@ -17,13 +17,12 @@ export interface CRMRecord {
   owner: string;
 }
 
-// Populated by Manus during setup and daily refresh
 export const crmRecords: CRMRecord[] = [
   {
     id: "ci-612810056579956",
     clientId: "samsung-electronics-co-ltd---kr(usd)",
     clientName: "Samsung",
-    clientColor: "#0064E0",
+    clientColor: "#1428A0",
     type: "CI",
     date: "2026-03-10",
     title: "Samsung & Meta Creative Shop Support",
@@ -62,7 +61,7 @@ export const crmRecords: CRMRecord[] = [
     id: "ci-multi-jan21",
     clientId: "samsung-electronics-co-ltd---kr(usd)",
     clientName: "Samsung",
-    clientColor: "#0064E0",
+    clientColor: "#1428A0",
     type: "CI",
     date: "2026-01-21",
     title: "Apresentação Projeto Meta - Galaxy Reels Festival (Presencial na SUNO)",
@@ -101,7 +100,7 @@ export const crmRecords: CRMRecord[] = [
     id: "ci-557520800977956",
     clientId: "samsung-electronics-co-ltd---kr(usd)",
     clientName: "Samsung",
-    clientColor: "#0064E0",
+    clientColor: "#1428A0",
     type: "CI",
     date: "2026-01-07",
     title: "Briefing Criativo Samsung e Planejamento de marca 2026",
@@ -112,7 +111,7 @@ export const crmRecords: CRMRecord[] = [
   },
 ];
 
-// Dynamic summary — works with any client list from config
+// ── Dynamic summary ───────────────────────────────────────────────────────────
 const byClient: Record<string, number> = {};
 dashboardConfig.clients.forEach((c) => {
   byClient[c.id] = crmRecords.filter((r) => r.clientId === c.id).length;
@@ -134,7 +133,45 @@ export const crmRecordsSummary = {
   sourceUrl: dashboardConfig.crm?.ciUrl || dashboardConfig.unidash.ciUrl || "",
 };
 
-// Dynamic client color/label maps from config
+// ── clientCIGoals (used by CRMInteractionsSection and OverviewSection) ────────
+export interface ClientCIGoal {
+  clientId: string;
+  label: string;
+  color: string;
+  isBoB: boolean;
+  quarterlyGoal: number;
+  validatedCIs: number;
+  bobNote?: string;
+}
+
+export const clientCIGoals: ClientCIGoal[] = [
+  {
+    clientId: "magazine-luiza",
+    label: "Magalu",
+    color: "#0064E0",
+    isBoB: true,
+    quarterlyGoal: 3,
+    validatedCIs: crmRecords.filter(r => r.clientId === "magazine-luiza" && r.qualified).length,
+  },
+  {
+    clientId: "amazon.com",
+    label: "Amazon",
+    color: "#e05a00",
+    isBoB: true,
+    quarterlyGoal: 3,
+    validatedCIs: crmRecords.filter(r => r.clientId === "amazon.com" && r.qualified).length,
+  },
+  {
+    clientId: "samsung-electronics-co-ltd---kr(usd)",
+    label: "Samsung",
+    color: "#1428A0",
+    isBoB: true,
+    quarterlyGoal: 3,
+    validatedCIs: crmRecords.filter(r => r.clientId === "samsung-electronics-co-ltd---kr(usd)" && r.qualified).length,
+  },
+];
+
+// ── Dynamic client color/label maps from config ───────────────────────────────
 export const clientColors: Record<string, string> = Object.fromEntries(
   dashboardConfig.clients.map((c) => [c.id, c.color])
 );

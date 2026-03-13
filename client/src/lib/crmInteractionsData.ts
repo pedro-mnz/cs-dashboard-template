@@ -95,6 +95,7 @@ export const crmInteractions: CIRecord[] = [
   },
 ];
 
+// ── Summary ──────────────────────────────────────────────────────────────────
 export const ciSummary = {
   totalCIs: crmInteractions.length,
   qualifiedCIs: crmInteractions.filter(ci => ci.isQualified).length,
@@ -106,3 +107,68 @@ export const ciSummary = {
   dataAsOf: "2026-03-12",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
 };
+
+// ── crmSummary (used by CRMInteractionsSection) ───────────────────────────────
+export const crmSummary = {
+  totalQualifiedCIs: crmInteractions.filter(ci => ci.isQualified).length,
+  totalCIs: crmInteractions.length,
+  quarter: "Q1 2026",
+  dataAsOfDate: "2026-03-12",
+  sourceUrl: "https://www.internalfb.com/crm/client_interactions",
+};
+
+// ── crmCoverage (used by CRMInteractionsSection — Coverage Deep Dive table) ──
+export const crmCoverage = {
+  totalClients: 3,
+  totalLiveCIQTD: 5,
+  totalMessagingCIQTD: 2,
+  totalLiveAndMessagingCIQTD: 7,
+  futureCIScheduledByEOQ: 0,
+  outreachPct: 100,
+  pctClients1PlusCI: 100,
+  pctClients4PlusCI: 0,
+  pctClients8PlusCI: 0,
+  pctClients12PlusCI: 0,
+  inPersonMeetings: 1,
+  pctToInPersonGoal: 5,
+  pitchedCIsWithBDM: 2,
+  qualifyingInteractionPerClient: "2.3",
+};
+
+// ── topicWeeks (weekly CI breakdown by topic, used for bar chart) ─────────────
+export interface TopicWeek {
+  week: string;
+  "Creative Strategy": number;
+  "Product Education": number;
+  "Account Planning": number;
+  "Campaign Review": number;
+  "Other": number;
+}
+
+export const topicWeeks: TopicWeek[] = [
+  { week: "Jan W1", "Creative Strategy": 1, "Product Education": 0, "Account Planning": 1, "Campaign Review": 0, "Other": 0 },
+  { week: "Jan W2", "Creative Strategy": 0, "Product Education": 1, "Account Planning": 0, "Campaign Review": 1, "Other": 0 },
+  { week: "Jan W3", "Creative Strategy": 1, "Product Education": 0, "Account Planning": 0, "Campaign Review": 0, "Other": 1 },
+  { week: "Mar W1", "Creative Strategy": 1, "Product Education": 1, "Account Planning": 0, "Campaign Review": 0, "Other": 0 },
+  { week: "Mar W2", "Creative Strategy": 0, "Product Education": 0, "Account Planning": 0, "Campaign Review": 1, "Other": 0 },
+];
+
+// ── topicColors & topicLabels ─────────────────────────────────────────────────
+export const topicColors: Record<string, string> = {
+  "Creative Strategy": "#7C3AED",
+  "Product Education": "#0064E0",
+  "Account Planning":  "#059669",
+  "Campaign Review":   "#F59E0B",
+  "Other":             "#9CA3AF",
+};
+
+export const topicLabels: Record<string, string> = {
+  "Creative Strategy": "Creative Strategy",
+  "Product Education": "Product Education",
+  "Account Planning":  "Account Planning",
+  "Campaign Review":   "Campaign Review",
+  "Other":             "Other",
+};
+
+// ── avgLiveHoursPerClient ─────────────────────────────────────────────────────
+export const avgLiveHoursPerClient = 1.5;

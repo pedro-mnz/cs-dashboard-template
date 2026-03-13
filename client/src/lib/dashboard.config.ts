@@ -13,6 +13,7 @@ export const dashboardConfig = {
     territory: "Brazil (GBG-LATAM)",
     manager: "Gustavo Borrmann",
     initials: "PM",
+    level: "IC3",
     avatarColor: "#7C3AED",
     isInOffice: true,
   },
