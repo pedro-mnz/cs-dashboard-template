@@ -1,5 +1,5 @@
 // aiUsageData.ts
-// Populated by Manus on 2026-03-12 from Unidash My AI Usage dashboard
+// Populated by Manus on 2026-03-13 from Unidash My AI Usage dashboard
 // Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
 // User: @pedromenezes (userId: 1084877300)
 // DO NOT edit manually — changes will be overwritten on next refresh.
@@ -29,8 +29,8 @@ export interface AIUsageWeek {
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
     year: 2026, week: 11, weekStarts: "2026-03-09",
-    aiDaysThisWeek: 0, daysInWeek: 4, status: "awaiting",
-    dailyUsage: ["awaiting", "awaiting", "awaiting", "awaiting", "not_applicable", "not_applicable", "not_applicable"],
+    aiDaysThisWeek: 0, daysInWeek: 5, status: "awaiting",
+    dailyUsage: ["awaiting", "awaiting", "awaiting", "awaiting", "awaiting", "not_applicable", "not_applicable"],
   },
   {
     year: 2026, week: 10, weekStarts: "2026-03-02",
@@ -123,6 +123,6 @@ export const aiUsageSummary = {
   topPillar: "",
   quarter: "Q1 2026",
   salesRep: "Pedro Menezes",
-  lastUpdated: "2026-03-12",
+  lastUpdated: "2026-03-13",
   sourceUrl: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage",
 };

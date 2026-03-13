@@ -1,5 +1,5 @@
 // inPersonData.ts
-// Populated by Manus on 2026-03-12
+// Populated by Manus on 2026-03-13
 // Tracks in-office attendance days for Pedro Menezes.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
@@ -10,6 +10,7 @@ export interface InPersonDay {
 }
 
 export const inPersonDays: InPersonDay[] = [
+  { date: "2026-03-13", wasInOffice: true,  office: "SAO" },
   { date: "2026-03-10", wasInOffice: true,  office: "SAO" },
   { date: "2026-03-09", wasInOffice: true,  office: "SAO" },
   { date: "2026-03-04", wasInOffice: true,  office: "SAO" },
@@ -18,10 +19,10 @@ export const inPersonDays: InPersonDay[] = [
 ];
 
 export const inPersonSummary = {
-  currentWeekDays: 2,
-  currentMonthDays: 3,
+  currentWeekDays: 3,
+  currentMonthDays: 4,
   targetPerWeek: 3,
-  dataAsOf: "2026-03-12",
+  dataAsOf: "2026-03-13",
 };
 
 // ── currentPeriod (used by OverviewSection — In-Person Policy widget) ─────────
@@ -29,12 +30,12 @@ export const currentPeriod = {
   label: "Mar 1 – Apr 30",
   startDate: "2026-03-01",
   endDate: "2026-04-30",
-  daysInPerson: 3,
-  plannedDays: 2,
+  daysInPerson: 4,
+  plannedDays: 0,
   timeAwayDays: 0,
   targetDays: 12,
-  onTrack: false,
-  daysNeeded: 9,
+  onTrack: true,
+  daysNeeded: 8,
 };
 
 // ── weeklyBreakdown (used by OverviewSection — per-week day grid) ─────────────
@@ -64,7 +65,7 @@ export const weeklyBreakdown: InPersonWeekBreakdown[] = [
   },
   {
     weekLabel: "Mar 2",
-    total: 2,
+    total: 1,
     onTrack: false,
     days: [
       { day: "Mon", date: "Mar 2",  inPerson: false },
@@ -76,14 +77,14 @@ export const weeklyBreakdown: InPersonWeekBreakdown[] = [
   },
   {
     weekLabel: "Mar 9",
-    total: 2,
-    onTrack: false,
+    total: 3,
+    onTrack: true,
     days: [
       { day: "Mon", date: "Mar 9",  inPerson: true  },
       { day: "Tue", date: "Mar 10", inPerson: true  },
       { day: "Wed", date: "Mar 11", inPerson: false },
-      { day: "Thu", date: "Mar 12", inPerson: null  },
-      { day: "Fri", date: "Mar 13", inPerson: null  },
+      { day: "Thu", date: "Mar 12", inPerson: false },
+      { day: "Fri", date: "Mar 13", inPerson: true  },
     ],
   },
 ];

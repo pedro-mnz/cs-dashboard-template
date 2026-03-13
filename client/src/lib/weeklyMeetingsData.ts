@@ -1,6 +1,6 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-03-12 from Meta Calendar (internalfb.com/calendar)
+// Populated by Manus on 2026-03-13 from Meta Calendar (internalfb.com/calendar)
 // Week of March 9–13, 2026 | Timezone: GMT-3 (America/Sao_Paulo)
 // DO NOT edit manually — changes will be overwritten on next refresh.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -131,7 +131,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     client: null,
     isToday: false,
   },
-  // ── Thursday, March 12 (Today) ───────────────────────────────────────────
+  // ── Thursday, March 12 ───────────────────────────────────────────────────
   {
     id: "thu-1",
     date: "2026-03-12",
@@ -141,7 +141,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "ARENA MAGALU-3°-Fitness (9); https://meet.google.com/ckc-dbgr-ihh",
     type: "client",
     client: "magazine-luiza",
-    isToday: true,
+    isToday: false,
   },
   {
     id: "thu-2",
@@ -152,7 +152,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.09 Largo da Batata; SAO3732.10 Paulo Autran; BAI7208.24 Segurola y Habana",
     type: "internal",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
     id: "thu-3",
@@ -163,9 +163,9 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.08 Laerte Coutinho",
     type: "internal",
     client: null,
-    isToday: true,
+    isToday: false,
   },
-  // ── Friday, March 13 ─────────────────────────────────────────────────────
+  // ── Friday, March 13 (Today) ─────────────────────────────────────────────
   {
     id: "fri-1",
     date: "2026-03-13",
@@ -174,7 +174,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Strategic Weekly Meeting | Netshoes Full Journey at Meta | 2026",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "fri-2",
@@ -184,7 +184,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Focus Time",
     type: "focus",
     client: null,
-    isToday: false,
+    isToday: true,
   },
 ];
 
@@ -197,7 +197,7 @@ export const weekSummary = {
   internalMeetings: 12,
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
-  dataAsOf: "2026-03-12",
+  dataAsOf: "2026-03-13",
 };
 
 // Type styling
