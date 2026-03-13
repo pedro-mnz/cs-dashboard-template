@@ -27,6 +27,7 @@ export interface AIUsageWeek {
 // Weekly AI usage history for Pedro Menezes (last 13 weeks)
 // Last refreshed: 2026-03-13 (Friday of week 11)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
+// Week 11 (Mar 9–13): Today is Friday Mar 13 — data for Mon–Thu still awaiting confirmation from Unidash (2–3 day delay)
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
     year: 2026, week: 11, weekStarts: "2026-03-09",

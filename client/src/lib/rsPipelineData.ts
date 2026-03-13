@@ -1,5 +1,5 @@
 // rsPipelineData.ts
-// Populated by Manus on 2026-03-12 from Meta CRM Pipeline Management
+// Populated by Manus on 2026-03-13 from Meta CRM Pipeline Management
 // Source: https://www.internalfb.com/crm/pipeline_management
 // Filter: Creative Strategist role, Q1 2026 (Current)
 // DO NOT edit manually — changes will be overwritten on next refresh.
@@ -56,7 +56,7 @@ export const rsPipeline: PipelineItem[] = [
     attributedProgress: 16,
     priorityTag: "Recommended",
     owner: "Thelio Goncalves",
-    lastModified: "2026-03-12",
+    lastModified: "2026-03-13",
     revenueStartDate: "2026-01-09",
     revenueEndDate: "2026-04-08",
     lastClientInteraction: "2026-03-11",
@@ -79,7 +79,7 @@ export const rsPipeline: PipelineItem[] = [
     attributedProgress: 16,
     priorityTag: "Recommended",
     owner: "Douglas Mendes",
-    lastModified: "2026-03-10",
+    lastModified: "2026-03-13",
     revenueStartDate: "2026-02-02",
     revenueEndDate: "2026-05-02",
     lastClientInteraction: "2026-02-27",
@@ -102,7 +102,7 @@ export const rsPipeline: PipelineItem[] = [
     attributedProgress: 0,
     priorityTag: "Recommended",
     owner: "Douglas Mendes",
-    lastModified: "2026-03-12",
+    lastModified: "2026-03-13",
     revenueStartDate: "2025-10-28",
     revenueEndDate: "2026-01-25",
     lastClientInteraction: "2026-02-10",
@@ -125,7 +125,7 @@ export const rsPipeline: PipelineItem[] = [
     attributedProgress: 0,
     priorityTag: "Recommended",
     owner: "Bruno Boehringer Mastantuono",
-    lastModified: "2026-03-12",
+    lastModified: "2026-03-13",
     revenueStartDate: "2026-03-19",
     revenueEndDate: "2026-06-17",
     ciCount: 0,
@@ -147,7 +147,7 @@ export const rsPipeline: PipelineItem[] = [
     attributedProgress: 0,
     priorityTag: "Recommended",
     owner: "Bruno Boehringer Mastantuono",
-    lastModified: "2026-03-12",
+    lastModified: "2026-03-13",
     revenueStartDate: "2025-11-06",
     revenueEndDate: "2026-02-03",
     lastClientInteraction: "2026-03-11",
@@ -170,7 +170,7 @@ export const rsPipeline: PipelineItem[] = [
     attributedProgress: 0,
     priorityTag: "Recommended",
     owner: "Bruno Boehringer Mastantuono",
-    lastModified: "2026-03-12",
+    lastModified: "2026-03-13",
     revenueStartDate: "2025-10-17",
     revenueEndDate: "2026-01-14",
     lastClientInteraction: "2026-03-10",
@@ -197,7 +197,7 @@ export const rsSummary = {
     samsung: rsPipeline.filter(r => r.client === "samsung").length,
   },
   quarter: "Q1 2026",
-  dataAsOf: "2026-03-12",
+  dataAsOf: "2026-03-13",
   sourceUrl: "https://www.internalfb.com/crm/pipeline_management",
 };
 
