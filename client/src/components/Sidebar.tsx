@@ -14,7 +14,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Cpu,
-  CalendarDays,
   Wand2,
   Link2,
   Check,
@@ -33,7 +32,6 @@ const navItems = [
   { id: "clients", label: "Client Content", icon: Users },
   { id: "solutions", label: "Rec. Solutions", icon: Target },
   { id: "crminteractions", label: "CI Dashboard", icon: MessageSquare },
-  { id: "keydates", label: "Key Dates", icon: CalendarDays },
   { id: "aiusage", label: "My AI Usage", icon: Cpu },
 ];
 

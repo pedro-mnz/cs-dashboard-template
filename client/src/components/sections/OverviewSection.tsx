@@ -340,6 +340,10 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
           const pctOfTarget = isARCard && portfolioARSummary.totalTargetEligibleRevenue > 0
             ? Math.round((portfolioARSummary.totalAccruedQTD / portfolioARSummary.totalTargetEligibleRevenue) * 100)
             : null;
+          // QoQ delta vs last quarter
+          const qoqDelta = isARCard && portfolioARSummary.accruedARLastQuarter > 0
+            ? Math.round(((portfolioARSummary.totalAccruedQTD - portfolioARSummary.accruedARLastQuarter) / portfolioARSummary.accruedARLastQuarter) * 100)
+            : null;
           // Per-client breakdown for the Accrued AR QTD progress bar
           const clientBreakdown = isARCard ? clientARData
             .filter((d) => d.accruedARQTD > 0)
@@ -367,6 +371,19 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                 >
                   <Icon size={18} style={{ color: card.color }} />
                 </div>
+                {isARCard && qoqDelta !== null && (
+                  <div
+                    className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-xs font-bold"
+                    style={{
+                      background: qoqDelta >= 0 ? "#DCFCE7" : "#FEE2E2",
+                      color: qoqDelta >= 0 ? "#15803D" : "#DC2626",
+                      fontFamily: "'JetBrains Mono', monospace",
+                    }}
+                    title={`vs ${portfolioARSummary.lastQuarterLabel} final accrued AR`}
+                  >
+                    {qoqDelta >= 0 ? "↑" : "↓"}{Math.abs(qoqDelta)}% QoQ
+                  </div>
+                )}
               </div>
               <p
                 className="text-2xl font-bold mb-0.5"
@@ -402,15 +419,24 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                       />
                     )}
                   </div>
-                  {/* Client legend */}
+                  {/* Client legend — clickable to navigate to Client Content */}
                   {clientBreakdown.length > 0 && (
                     <div className="flex gap-2 mt-1.5 flex-wrap">
-                      {clientBreakdown.map((seg) => (
-                        <div key={seg.name} className="flex items-center gap-1">
-                          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: seg.color }} />
-                          <span className="text-muted-foreground" style={{ fontSize: "10px" }}>{seg.name} {seg.pct}%</span>
-                        </div>
-                      ))}
+                      {clientBreakdown.map((seg) => {
+                        const clientObj = clients.find((c) => (c.shortName ?? c.name) === seg.name);
+                        return (
+                          <button
+                            key={seg.name}
+                            onClick={() => { if (clientObj) { onClientChange(clientObj.id); onSectionChange("clients"); } }}
+                            className="flex items-center gap-1 transition-opacity hover:opacity-70 rounded"
+                            style={{ cursor: clientObj ? "pointer" : "default" }}
+                            title={clientObj ? `Go to ${seg.name} client page` : seg.name}
+                          >
+                            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: seg.color }} />
+                            <span className="text-muted-foreground" style={{ fontSize: "10px" }}>{seg.name} {seg.pct}%</span>
+                          </button>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -602,8 +628,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
         </div>
       </div>
 
-      {/* AR Headroom by Initiative — Full Width, Prominent */}
-      <InitiativeChart onSectionChange={onSectionChange} />
+
 
       {/* RS Stage Progression */}
       <div className="metric-card animate-fade-in-up delay-310">

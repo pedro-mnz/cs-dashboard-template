@@ -2,11 +2,13 @@
 // Design: Warm Structured Intelligence
 // Source: internalfb.com/crm/pipeline_management | Contributor: Pedro Menezes | Q1 2026
 
-import { useState } from "react";
-import { rsPipeline, rsSummary, rsStageConfig, rsStatusConfig, rsClientColors, RSStage } from "@/lib/rsPipelineData";
+import { useState, useMemo } from "react";
+import { rsPipeline, rsSummary, rsStageConfig, rsStatusConfig, rsClientColors, portfolioARSummary, RSStage } from "@/lib/rsPipelineData";
+import { clients } from "@/lib/dashboardData";
 import { ExternalLink, AlertTriangle, TrendingUp, Filter, RefreshCw } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
 const ALL_STAGES: RSStage[] = ["discovery", "pitching", "scoping", "committed", "actioned", "partial", "adopted", "closed"];
 const ALL_CLIENTS = ["magalu", "amazon", "samsung"];
@@ -66,6 +68,52 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
   const totalOpportunity = filtered.reduce((s, r) => s + r.oppSize, 0);
   const atRiskCount = 0; // Status field removed in new schema
 
+  // Compute next Monday 8 AM BRT countdown
+  const nextRefreshLabel = useMemo(() => {
+    const now = new Date();
+    const brt = new Date(now.getTime() - 3 * 60 * 60 * 1000);
+    const dayOfWeek = brt.getUTCDay(); // 0=Sun, 1=Mon
+    const daysUntilMonday = dayOfWeek === 0 ? 1 : dayOfWeek === 1 ? 7 : 8 - dayOfWeek;
+    const nextMonday = new Date(brt);
+    nextMonday.setUTCDate(brt.getUTCDate() + daysUntilMonday);
+    nextMonday.setUTCHours(8, 0, 0, 0);
+    const diffMs = nextMonday.getTime() - brt.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return "today at 8 AM";
+    if (diffDays === 1) return "tomorrow at 8 AM";
+    return `in ${diffDays} days (Mon)`;
+  }, []);
+
+  // Build initiative chart data
+  const initiativeChartData = useMemo(() => {
+    return [...rsPipeline]
+      .filter((rs) => filterClient === "ALL" || rs.client === filterClient)
+      .reduce((acc, rs) => {
+        const existing = acc.find((d) => d.fullName === rs.initiative);
+        const clientCfg = rsClientColors[rs.client];
+        const clientName = clientCfg?.name ?? rs.client;
+        if (existing) {
+          existing.headroom += Math.round(rs.arHeadroom / 1000);
+          existing.accrued += Math.round(rs.accruedARQTD / 1000);
+          existing.count += 1;
+          const ec = existing.clientBreakdown.find((c) => c.name === clientName);
+          if (ec) ec.headroom += Math.round(rs.arHeadroom / 1000);
+          else existing.clientBreakdown.push({ name: clientName, headroom: Math.round(rs.arHeadroom / 1000), color: clientCfg?.color ?? "#6B7280" });
+        } else {
+          acc.push({
+            name: rs.initiative.length > 30 ? rs.initiative.slice(0, 30) + "…" : rs.initiative,
+            fullName: rs.initiative,
+            headroom: Math.round(rs.arHeadroom / 1000),
+            accrued: Math.round(rs.accruedARQTD / 1000),
+            count: 1,
+            clientBreakdown: [{ name: clientName, headroom: Math.round(rs.arHeadroom / 1000), color: clientCfg?.color ?? "#6B7280" }],
+          });
+        }
+        return acc;
+      }, [] as Array<{ name: string; fullName: string; headroom: number; accrued: number; count: number; clientBreakdown: Array<{ name: string; headroom: number; color: string }> }>)
+      .sort((a, b) => b.headroom - a.headroom);
+  }, [filterClient]);
+
   // Stage breakdown for the funnel
   const stageCounts = ALL_STAGES.map((stage) => ({
     stage,
@@ -123,6 +171,104 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
             <p className="text-xs text-muted-foreground mt-0.5">{card.sub}</p>
           </div>
         ))}
+      </div>
+
+      {/* AR Headroom by Initiative Chart */}
+      <div className="metric-card animate-fade-in-up delay-75">
+        <div className="section-header">
+          <div>
+            <h3 className="section-title">AR Headroom by Initiative</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Which initiatives have the most remaining revenue upside · Source: Unidash
+            </p>
+            <p className="text-xs mt-0.5" style={{ color: "oklch(0.55 0.12 155)" }}>
+              Last refreshed: {portfolioARSummary.dataAsOf} · Next refresh {nextRefreshLabel} · Click a bar to filter
+            </p>
+          </div>
+          <div className="flex gap-2">
+            {[{ id: "ALL", label: "All" }, ...clients.map((c) => ({ id: c.id, label: c.shortName, color: c.color }))].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setFilterClient(tab.id)}
+                className="px-3 py-1 rounded-full text-xs font-semibold transition-all"
+                style={{
+                  background: filterClient === tab.id
+                    ? ((tab as { color?: string }).color ?? "oklch(0.55 0.18 250)")
+                    : "oklch(0.96 0.004 75)",
+                  color: filterClient === tab.id ? "white" : "oklch(0.45 0.02 75)",
+                  fontFamily: "'Montserrat', sans-serif",
+                }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        {initiativeChartData.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-8">No initiatives found for this client.</p>
+        ) : (
+          <ResponsiveContainer width="100%" height={Math.max(initiativeChartData.length * 44, 200)}>
+            <BarChart
+              data={initiativeChartData}
+              layout="vertical"
+              margin={{ top: 4, right: 60, left: 8, bottom: 0 }}
+              onClick={(data) => {
+                if (data?.activePayload?.[0]?.payload?.fullName) {
+                  setFilterInitiative(data.activePayload[0].payload.fullName);
+                }
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0.004 75)" horizontal={false} />
+              <XAxis
+                type="number"
+                tick={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace" }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v) => `$${v}K`}
+              />
+              <YAxis
+                type="category"
+                dataKey="name"
+                tick={{ fontSize: 11, fontFamily: "'Montserrat', sans-serif" }}
+                axisLine={false}
+                tickLine={false}
+                width={210}
+              />
+              <Tooltip
+                formatter={(value: number, name: unknown) => [
+                  `$${(value as number).toLocaleString()}K`,
+                  name === "headroom" ? "AR Headroom" : "Accrued QTD",
+                ]}
+                labelFormatter={(label: unknown, payload: unknown[]) => {
+                  const first = (payload as Array<{ payload: { fullName: string; count: number; clientBreakdown: Array<{ name: string; headroom: number }> } }>)?.[0]?.payload;
+                  if (!first?.fullName) return String(label);
+                  const topClient = first.clientBreakdown?.sort((a, b) => b.headroom - a.headroom)[0];
+                  const topClientStr = topClient ? ` · Top: ${topClient.name}` : "";
+                  return `${first.fullName} (${first.count} RS${topClientStr})`;
+                }}
+                contentStyle={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 12,
+                  borderRadius: 8,
+                  border: "1px solid oklch(0.90 0.008 75)",
+                }}
+              />
+              <Bar dataKey="headroom" fill="oklch(0.55 0.18 250)" radius={[0, 4, 4, 0]} name="headroom" cursor="pointer" />
+              <Bar dataKey="accrued" fill="oklch(0.45 0.18 155)" radius={[0, 4, 4, 0]} name="accrued" cursor="pointer" />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
+        <div className="flex gap-4 mt-3">
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded" style={{ background: "oklch(0.55 0.18 250)" }} />
+            <span className="text-xs text-muted-foreground">AR Headroom (remaining upside)</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded" style={{ background: "oklch(0.45 0.18 155)" }} />
+            <span className="text-xs text-muted-foreground">Accrued QTD</span>
+          </div>
+        </div>
       </div>
 
       {/* Active initiative filter banner */}

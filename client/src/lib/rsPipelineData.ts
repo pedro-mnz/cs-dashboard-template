@@ -141,6 +141,9 @@ export const portfolioARSummary = {
   totalAccruedQTD: 600749,
   totalAccruedLifetime: 600749,
   totalTargetEligibleRevenue: 27074587,
+  // Q4 2025 final accrued AR for QoQ delta badge — update after each quarter close
+  accruedARLastQuarter: 480000,
+  lastQuarterLabel: "Q4 2025",
   topOpportunity: "Magazine Luiza — $1.33M AR Headroom",
   dataAsOf: "2026-03-13",
 };
