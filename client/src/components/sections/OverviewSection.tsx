@@ -220,7 +220,11 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
           </div>
           <div className="space-y-3">
             {clients.map((client) => {
-              const pct = Math.round((client.totalAR / 3870296) * 100);
+              // Prefer live AR data from clientARData (CRM Scorecard), fall back to 0
+              const arEntry = clientARData.find((d) => d.clientId === client.id);
+              const ar = arEntry?.totalAR ?? 0;
+              const maxAR = Math.max(...clientARData.map((d) => d.totalAR), 1);
+              const pct = Math.round((ar / maxAR) * 100);
               return (
                 <button
                   key={client.id}
@@ -241,7 +245,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                       </span>
                     </div>
                     <span className="text-sm font-bold font-mono-data" style={{ color: client.color }}>
-                      {formatCurrency(client.totalAR)}
+                      {ar > 0 ? formatCurrency(ar) : "—"}
                     </span>
                   </div>
                   <div className="h-1.5 rounded-full overflow-hidden bg-gray-100">
