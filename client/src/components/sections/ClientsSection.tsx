@@ -6,7 +6,210 @@ import { useState } from "react";
 import { clients, recommendedSolutions, formatCurrency, stageConfig } from "@/lib/dashboardData";
 import { dashboardConfig } from "@/lib/dashboard.config";
 import { workplacePosts, wpClientColors, workplaceSearchUrls } from "@/lib/workplaceData";
-import { Briefcase, Target, Globe, TrendingUp, ExternalLink, ThumbsUp, Eye, MessageSquare, Tag, FileText, Sheet, Presentation, FolderOpen, Link2, Image, Video, FileArchive, Settings } from "lucide-react";
+import { Briefcase, Target, Globe, TrendingUp, ExternalLink, ThumbsUp, Eye, MessageSquare, Tag, FileText, Sheet, Presentation, FolderOpen, Link2, Image, Video, FileArchive, Plus, Trash2, Loader2 } from "lucide-react";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
+
+// ─── Helpers shared by the widget ────────────────────────────────────────────
+const MAT_TYPES = ["doc","sheet","slides","pdf","image","video","folder","link"] as const;
+type MatType = typeof MAT_TYPES[number];
+
+function matIcon(type: string) {
+  if (type === "doc") return <FileText size={13} className="flex-shrink-0" />;
+  if (type === "sheet") return <Sheet size={13} className="flex-shrink-0" />;
+  if (type === "slides") return <Presentation size={13} className="flex-shrink-0" />;
+  if (type === "folder") return <FolderOpen size={13} className="flex-shrink-0" />;
+  if (type === "pdf") return <FileArchive size={13} className="flex-shrink-0" />;
+  if (type === "image") return <Image size={13} className="flex-shrink-0" />;
+  if (type === "video") return <Video size={13} className="flex-shrink-0" />;
+  return <Link2 size={13} className="flex-shrink-0" />;
+}
+function matTypeLabel(type: string) {
+  const labels: Record<string, string> = {
+    doc: "Google Doc", sheet: "Google Sheet", slides: "Google Slides",
+    folder: "Folder", pdf: "PDF", image: "Image", video: "Video", link: "Link",
+  };
+  return labels[type] ?? type;
+}
+function matColor(type: string) {
+  if (type === "doc") return { bg: "#EBF4FF", color: "#1D4ED8" };
+  if (type === "sheet") return { bg: "#ECFDF5", color: "#166534" };
+  if (type === "slides") return { bg: "#FFF7ED", color: "#C2410C" };
+  if (type === "folder") return { bg: "#F5F3FF", color: "#6D28D9" };
+  if (type === "pdf") return { bg: "#FEF2F2", color: "#B91C1C" };
+  if (type === "image") return { bg: "#F0FDF4", color: "#15803D" };
+  if (type === "video") return { bg: "#FFF1F2", color: "#BE123C" };
+  return { bg: "#F9FAFB", color: "#374151" };
+}
+
+// ─── Live editable Client Materials widget ────────────────────────────────────
+function ClientMaterialsWidget({ clientId, clientColor }: { clientId: string; clientColor: string }) {
+  const utils = trpc.useUtils();
+  const { data: materials = [], isLoading } = trpc.clientMaterials.list.useQuery({ clientId });
+
+  // Add form state
+  const [showAdd, setShowAdd] = useState(false);
+  const [newLabel, setNewLabel] = useState("");
+  const [newUrl, setNewUrl] = useState("");
+  const [newType, setNewType] = useState<MatType>("link");
+
+  const addMut = trpc.clientMaterials.add.useMutation({
+    onMutate: async (input) => {
+      await utils.clientMaterials.list.cancel({ clientId });
+      const prev = utils.clientMaterials.list.getData({ clientId });
+      utils.clientMaterials.list.setData({ clientId }, (old) => [
+        ...(old ?? []),
+        { id: -1, clientId, userId: 0, label: input.label, url: input.url, type: input.type, sortOrder: 0, createdAt: new Date(), updatedAt: new Date() },
+      ]);
+      return { prev };
+    },
+    onError: (_e, _v, ctx) => {
+      utils.clientMaterials.list.setData({ clientId }, ctx?.prev);
+      toast.error("Failed to add material");
+    },
+    onSuccess: () => {
+      utils.clientMaterials.list.invalidate({ clientId });
+      setNewLabel(""); setNewUrl(""); setNewType("link"); setShowAdd(false);
+      toast.success("Material added!");
+    },
+  });
+
+  const removeMut = trpc.clientMaterials.remove.useMutation({
+    onMutate: async ({ id }) => {
+      await utils.clientMaterials.list.cancel({ clientId });
+      const prev = utils.clientMaterials.list.getData({ clientId });
+      utils.clientMaterials.list.setData({ clientId }, (old) => (old ?? []).filter((m) => m.id !== id));
+      return { prev };
+    },
+    onError: (_e, _v, ctx) => {
+      utils.clientMaterials.list.setData({ clientId }, ctx?.prev);
+      toast.error("Failed to remove material");
+    },
+    onSuccess: () => utils.clientMaterials.list.invalidate({ clientId }),
+  });
+
+  const handleAdd = () => {
+    if (!newLabel.trim() || !newUrl.trim()) { toast.error("Label and URL are required"); return; }
+    try { new URL(newUrl); } catch { toast.error("Please enter a valid URL"); return; }
+    addMut.mutate({ clientId, label: newLabel.trim(), url: newUrl.trim(), type: newType });
+  };
+
+  return (
+    <div className="metric-card animate-fade-in-up delay-325">
+      <div className="section-header">
+        <h3 className="section-title flex items-center gap-2">
+          <FolderOpen size={14} style={{ color: clientColor }} />
+          Client Materials
+        </h3>
+        <button
+          type="button"
+          onClick={() => setShowAdd((v) => !v)}
+          className="flex items-center gap-1 text-xs font-medium hover:opacity-70 transition-opacity"
+          style={{ color: clientColor }}
+        >
+          <Plus size={11} />
+          Add material
+        </button>
+      </div>
+
+      {/* Add form */}
+      {showAdd && (
+        <div className="mb-3 p-3 rounded-lg border bg-gray-50 flex flex-col gap-2" style={{ borderColor: `${clientColor}30` }}>
+          <div className="flex gap-2 flex-wrap">
+            <select
+              value={newType}
+              onChange={(e) => setNewType(e.target.value as MatType)}
+              className="border border-gray-300 rounded-md px-2 py-1.5 text-xs focus:outline-none focus:ring-2 w-28 flex-shrink-0 bg-white"
+            >
+              {MAT_TYPES.map((t) => (
+                <option key={t} value={t}>{matTypeLabel(t)}</option>
+              ))}
+            </select>
+            <input
+              value={newLabel}
+              onChange={(e) => setNewLabel(e.target.value)}
+              placeholder="Label (e.g. Account Brief)"
+              className="border border-gray-300 rounded-md px-2 py-1.5 text-xs flex-1 min-w-[120px] focus:outline-none focus:ring-2 bg-white"
+            />
+          </div>
+          <div className="flex gap-2">
+            <input
+              value={newUrl}
+              onChange={(e) => setNewUrl(e.target.value)}
+              placeholder="https://drive.google.com/... or any URL"
+              className="border border-gray-300 rounded-md px-2 py-1.5 text-xs flex-1 focus:outline-none focus:ring-2 bg-white"
+              onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+            />
+            <button
+              type="button"
+              onClick={handleAdd}
+              disabled={addMut.isPending}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium text-white transition-opacity hover:opacity-80 disabled:opacity-50 flex-shrink-0"
+              style={{ background: clientColor }}
+            >
+              {addMut.isPending ? <Loader2 size={11} className="animate-spin" /> : <Plus size={11} />}
+              Add
+            </button>
+            <button type="button" onClick={() => setShowAdd(false)} className="text-xs text-gray-400 hover:text-gray-600 px-1">Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {isLoading ? (
+        <div className="flex items-center justify-center py-6">
+          <Loader2 size={18} className="animate-spin opacity-40" style={{ color: clientColor }} />
+        </div>
+      ) : materials.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-6 text-center">
+          <FolderOpen size={28} className="mb-2 opacity-20" style={{ color: clientColor }} />
+          <p className="text-xs text-muted-foreground font-medium">No materials yet.</p>
+          <p className="text-xs text-muted-foreground mt-1 max-w-xs">
+            Attach anything — Docs, Sheets, Slides, PDFs, images, videos, Figma files, Notion pages, external links, you name it.
+            Click <strong>Add material</strong> above to get started.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
+          {materials.map((mat) => {
+            const { bg, color } = matColor(mat.type);
+            return (
+              <div
+                key={mat.id}
+                className="flex items-center gap-2.5 p-3 rounded-lg border transition-all hover:shadow-sm group"
+                style={{ borderColor: `${clientColor}20`, background: "white" }}
+              >
+                <a
+                  href={mat.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 flex-1 min-w-0"
+                >
+                  <span className="flex items-center justify-center w-7 h-7 rounded-md flex-shrink-0" style={{ background: bg, color }}>
+                    {matIcon(mat.type)}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-semibold text-foreground truncate" style={{ fontFamily: "'Montserrat', sans-serif" }}>{mat.label}</p>
+                    <p className="text-xs text-muted-foreground">{matTypeLabel(mat.type)}</p>
+                  </div>
+                  <ExternalLink size={11} className="flex-shrink-0 opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: clientColor }} />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => removeMut.mutate({ id: mat.id })}
+                  disabled={removeMut.isPending}
+                  className="flex-shrink-0 opacity-0 group-hover:opacity-60 hover:opacity-100 transition-opacity text-red-400 hover:text-red-600 ml-1"
+                  title="Remove"
+                >
+                  <Trash2 size={11} />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 interface ClientsSectionProps {
   activeClient: string | null;
@@ -205,96 +408,8 @@ export default function ClientsSection({ activeClient, onClientChange }: Clients
         </div>
       </div>
 
-      {/* Client Materials */}
-      {(() => {
-        const configClient = dashboardConfig.clients.find((c) => c.id === selectedId);
-        const materials = (configClient as any)?.materials ?? [];
-        const matIcon = (type: string) => {
-          if (type === "doc") return <FileText size={13} className="flex-shrink-0" />;
-          if (type === "sheet") return <Sheet size={13} className="flex-shrink-0" />;
-          if (type === "slides") return <Presentation size={13} className="flex-shrink-0" />;
-          if (type === "folder") return <FolderOpen size={13} className="flex-shrink-0" />;
-          if (type === "pdf") return <FileArchive size={13} className="flex-shrink-0" />;
-          if (type === "image") return <Image size={13} className="flex-shrink-0" />;
-          if (type === "video") return <Video size={13} className="flex-shrink-0" />;
-          return <Link2 size={13} className="flex-shrink-0" />;
-        };
-        const matTypeLabel = (type: string) => {
-          const labels: Record<string, string> = {
-            doc: "Google Doc", sheet: "Google Sheet", slides: "Google Slides",
-            folder: "Folder", pdf: "PDF", image: "Image", video: "Video", link: "Link",
-          };
-          return labels[type] ?? type;
-        };
-        const matColor = (type: string) => {
-          if (type === "doc") return { bg: "#EBF4FF", color: "#1D4ED8" };
-          if (type === "sheet") return { bg: "#ECFDF5", color: "#166534" };
-          if (type === "slides") return { bg: "#FFF7ED", color: "#C2410C" };
-          if (type === "folder") return { bg: "#F5F3FF", color: "#6D28D9" };
-          if (type === "pdf") return { bg: "#FEF2F2", color: "#B91C1C" };
-          if (type === "image") return { bg: "#F0FDF4", color: "#15803D" };
-          if (type === "video") return { bg: "#FFF1F2", color: "#BE123C" };
-          return { bg: "#F9FAFB", color: "#374151" };
-        };
-        return (
-          <div className="metric-card animate-fade-in-up delay-325">
-            <div className="section-header">
-              <h3 className="section-title flex items-center gap-2">
-                <FolderOpen size={14} style={{ color: client.color }} />
-                Client Materials
-              </h3>
-              <button
-                type="button"
-                onClick={() => {
-                  navigator.clipboard.writeText(`      materials: [\n        { label: "My Doc", url: "https://docs.google.com/...", type: "doc" },\n      ],`);
-                  import("sonner").then(({ toast }) => toast.success("Snippet copied!", { description: "Paste into dashboard.config.ts under this client." }));
-                }}
-                className="flex items-center gap-1 text-xs font-medium hover:opacity-70 transition-opacity"
-                style={{ color: client.color }}
-              >
-                <Settings size={11} />
-                Edit in config
-              </button>
-            </div>
-            {materials.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-6 text-center">
-                <FolderOpen size={28} className="mb-2 opacity-20" style={{ color: client.color }} />
-                <p className="text-xs text-muted-foreground font-medium">No materials yet.</p>
-                <p className="text-xs text-muted-foreground mt-1 max-w-xs">
-                  Attach anything — Docs, Sheets, Slides, PDFs, images, videos, external links, Figma files, Notion pages, you name it. Add them in{" "}
-                  <code className="bg-gray-100 px-1 rounded text-xs">dashboard.config.ts</code>{" "}
-                  under this client's <code className="bg-gray-100 px-1 rounded text-xs">materials</code> array, or click <strong>Edit in config</strong> above to copy a starter snippet.
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
-                {materials.map((mat: any, idx: number) => {
-                  const { bg, color } = matColor(mat.type);
-                  return (
-                    <a
-                      key={idx}
-                      href={mat.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2.5 p-3 rounded-lg border transition-all hover:shadow-sm hover:scale-[1.01] group"
-                      style={{ borderColor: `${client.color}20`, background: "white" }}
-                    >
-                      <span className="flex items-center justify-center w-7 h-7 rounded-md flex-shrink-0" style={{ background: bg, color }}>
-                        {matIcon(mat.type)}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-xs font-semibold text-foreground truncate" style={{ fontFamily: "'Montserrat', sans-serif" }}>{mat.label}</p>
-                        <p className="text-xs text-muted-foreground">{matTypeLabel(mat.type)}</p>
-                      </div>
-                      <ExternalLink size={11} className="flex-shrink-0 opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: client.color }} />
-                    </a>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        );
-      })()}
+      {/* Client Materials — live DB-backed */}
+      <ClientMaterialsWidget clientId={selectedId} clientColor={client.color} />
 
       {/* Workplace Posts */}
       <div className="metric-card animate-fade-in-up delay-350">

@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { scraperRouter } from "./scraperRouter";
 import { profileFetchRouter } from "./profileFetchRouter";
+import { clientMaterialsRouter } from "./clientMaterialsRouter";
 import { runDailyRefresh } from "./scheduler";
 
 export const appRouter = router({
@@ -22,6 +23,7 @@ export const appRouter = router({
 
   scraper: scraperRouter,
   profileFetch: profileFetchRouter,
+  clientMaterials: clientMaterialsRouter,
 
   scheduler: router({
     runNow: publicProcedure.mutation(async () => {

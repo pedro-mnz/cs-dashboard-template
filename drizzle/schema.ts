@@ -51,3 +51,25 @@ export const profileFetchRequests = mysqlTable("profileFetchRequests", {
 
 export type ProfileFetchRequest = typeof profileFetchRequests.$inferSelect;
 export type InsertProfileFetchRequest = typeof profileFetchRequests.$inferInsert;
+
+/**
+ * Per-client materials: docs, sheets, slides, PDFs, images, videos, links, etc.
+ * Owned by a user (each dashboard user has their own set of materials per client).
+ */
+export const clientMaterials = mysqlTable("clientMaterials", {
+  id: int("id").autoincrement().primaryKey(),
+  /** Client ID matching dashboard.config.ts clients[].id (e.g. "magalu", "amazon") */
+  clientId: varchar("clientId", { length: 64 }).notNull(),
+  /** Owner user ID — each user manages their own materials */
+  userId: int("userId").notNull(),
+  label: text("label").notNull(),
+  url: text("url").notNull(),
+  type: mysqlEnum("type", ["doc", "sheet", "slides", "pdf", "image", "video", "folder", "link"]).default("link").notNull(),
+  /** Optional sort order — lower numbers appear first */
+  sortOrder: int("sortOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ClientMaterial = typeof clientMaterials.$inferSelect;
+export type InsertClientMaterial = typeof clientMaterials.$inferInsert;
