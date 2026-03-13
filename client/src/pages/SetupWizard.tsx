@@ -24,7 +24,8 @@ const STEPS = [
 ];
 
 type WorkplaceGroup = { name: string; url: string; description: string };
-type Client = { id: string; name: string; shortName: string; tier: string; color: string; summary: string };
+type ClientMaterial = { label: string; url: string; type: "doc" | "sheet" | "slides" | "link" | "folder" };
+type Client = { id: string; name: string; shortName: string; tier: string; color: string; summary: string; materials: ClientMaterial[] };
 
 interface WizardData {
   // Step 1 — Identity
@@ -69,7 +70,7 @@ const DEFAULT_DATA: WizardData = {
   quarter: "Q1 2026",
   ciMinTarget: "3",
   crmCiUrl: "",
-  clients: [{ id: "", name: "", shortName: "", tier: "A", color: "#0064E0", summary: "" }],
+  clients: [{ id: "", name: "", shortName: "", tier: "A", color: "#0064E0", summary: "", materials: [] }],
   greeting: "Good morning",
   primaryColor: "#7C3AED",
   timezone: "America/Sao_Paulo",
@@ -80,8 +81,11 @@ const DEFAULT_DATA: WizardData = {
 function generateConfig(data: WizardData): string {
   const clients = data.clients
     .filter((c) => c.name.trim())
-    .map(
-      (c) => `    {
+    .map((c) => {
+      const materialsStr = c.materials && c.materials.length > 0
+        ? c.materials.map((m) => `        { label: "${m.label}", url: "${m.url}", type: "${m.type}" }`).join(",\n")
+        : "";
+      return `    {
       id: "${c.id || c.name.toLowerCase().replace(/\s+/g, "-")}",
       name: "${c.name}",
       shortName: "${c.shortName || c.name}",
@@ -90,8 +94,9 @@ function generateConfig(data: WizardData): string {
       lightColor: "#F5F5FF",
       logo: "🏢",
       summary: "${c.summary}",
-    }`
-    )
+      materials: [${materialsStr ? "\n" + materialsStr + "\n      " : ""}],
+    }`;
+    })
     .join(",\n");
 
   return `// ============================================================
@@ -482,7 +487,24 @@ function StepClients({ data, onChange }: { data: WizardData; onChange: (d: Parti
     clients[i] = { ...clients[i], [field]: value };
     onChange({ clients });
   };
-  const addClient = () => onChange({ clients: [...data.clients, { id: "", name: "", shortName: "", tier: "A", color: "#0064E0", summary: "" }] });
+  const addClient = () => onChange({ clients: [...data.clients, { id: "", name: "", shortName: "", tier: "A", color: "#0064E0", summary: "", materials: [] }] });
+  const addMaterial = (i: number) => {
+    const clients = [...data.clients];
+    clients[i] = { ...clients[i], materials: [...(clients[i].materials || []), { label: "", url: "", type: "link" as const }] };
+    onChange({ clients });
+  };
+  const updateMaterial = (ci: number, mi: number, field: keyof ClientMaterial, value: string) => {
+    const clients = [...data.clients];
+    const mats = [...(clients[ci].materials || [])];
+    mats[mi] = { ...mats[mi], [field]: value };
+    clients[ci] = { ...clients[ci], materials: mats };
+    onChange({ clients });
+  };
+  const removeMaterial = (ci: number, mi: number) => {
+    const clients = [...data.clients];
+    clients[ci] = { ...clients[ci], materials: clients[ci].materials.filter((_, idx) => idx !== mi) };
+    onChange({ clients });
+  };
   const removeClient = (i: number) => onChange({ clients: data.clients.filter((_, idx) => idx !== i) });
 
   return (
@@ -548,6 +570,58 @@ function StepClients({ data, onChange }: { data: WizardData; onChange: (d: Parti
           <div>
             <Label>One-line Summary</Label>
             <Input value={client.summary} onChange={(e) => updateClient(i, "summary", e.target.value)} placeholder="Focus areas and key projects for this client" className="mt-1" />
+          </div>
+
+          {/* ── Client Materials ──────────────────────────── */}
+          <div className="border-t border-gray-100 pt-3">
+            <div className="flex items-center justify-between mb-2">
+              <Label className="text-sm font-medium text-gray-700">Client Materials</Label>
+              <button
+                type="button"
+                onClick={() => addMaterial(i)}
+                className="text-xs text-purple-600 hover:text-purple-800 font-medium flex items-center gap-1"
+              >
+                + Add link
+              </button>
+            </div>
+            <p className="text-xs text-gray-400 mb-2">Add Google Docs, Sheets, Slides, or any URL relevant to this client (Account Brief, QBR Deck, AR Tracker, etc.)</p>
+            {(client.materials || []).length === 0 && (
+              <p className="text-xs text-gray-400 italic">No materials yet — click "+ Add link" to attach your first document.</p>
+            )}
+            {(client.materials || []).map((mat, mi) => (
+              <div key={mi} className="flex gap-2 items-center mb-2">
+                <select
+                  value={mat.type}
+                  onChange={(e) => updateMaterial(i, mi, "type", e.target.value)}
+                  className="border border-gray-300 rounded-md px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 w-24 flex-shrink-0"
+                >
+                  <option value="doc">Doc</option>
+                  <option value="sheet">Sheet</option>
+                  <option value="slides">Slides</option>
+                  <option value="folder">Folder</option>
+                  <option value="link">Link</option>
+                </select>
+                <Input
+                  value={mat.label}
+                  onChange={(e) => updateMaterial(i, mi, "label", e.target.value)}
+                  placeholder="Label (e.g. Account Brief)"
+                  className="text-xs flex-1 min-w-0"
+                />
+                <Input
+                  value={mat.url}
+                  onChange={(e) => updateMaterial(i, mi, "url", e.target.value)}
+                  placeholder="https://docs.google.com/..."
+                  className="text-xs flex-1 min-w-0"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeMaterial(i, mi)}
+                  className="text-gray-400 hover:text-red-500 text-xs flex-shrink-0 px-1"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       ))}

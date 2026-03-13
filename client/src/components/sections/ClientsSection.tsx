@@ -6,7 +6,7 @@ import { useState } from "react";
 import { clients, recommendedSolutions, formatCurrency, stageConfig } from "@/lib/dashboardData";
 import { dashboardConfig } from "@/lib/dashboard.config";
 import { workplacePosts, wpClientColors, workplaceSearchUrls } from "@/lib/workplaceData";
-import { Briefcase, Target, Globe, TrendingUp, ExternalLink, ThumbsUp, Eye, MessageSquare, Tag } from "lucide-react";
+import { Briefcase, Target, Globe, TrendingUp, ExternalLink, ThumbsUp, Eye, MessageSquare, Tag, FileText, Sheet, Presentation, FolderOpen, Link2, Plus } from "lucide-react";
 
 interface ClientsSectionProps {
   activeClient: string | null;
@@ -204,6 +204,82 @@ export default function ClientsSection({ activeClient, onClientChange }: Clients
           </div>
         </div>
       </div>
+
+      {/* Client Materials */}
+      {(() => {
+        const configClient = dashboardConfig.clients.find((c) => c.id === selectedId);
+        const materials = (configClient as any)?.materials ?? [];
+        const matIcon = (type: string) => {
+          if (type === "doc") return <FileText size={13} className="flex-shrink-0" />;
+          if (type === "sheet") return <Sheet size={13} className="flex-shrink-0" />;
+          if (type === "slides") return <Presentation size={13} className="flex-shrink-0" />;
+          if (type === "folder") return <FolderOpen size={13} className="flex-shrink-0" />;
+          return <Link2 size={13} className="flex-shrink-0" />;
+        };
+        const matColor = (type: string) => {
+          if (type === "doc") return { bg: "#EBF4FF", color: "#1D4ED8" };
+          if (type === "sheet") return { bg: "#ECFDF5", color: "#166534" };
+          if (type === "slides") return { bg: "#FFF7ED", color: "#C2410C" };
+          if (type === "folder") return { bg: "#F5F3FF", color: "#6D28D9" };
+          return { bg: "#F9FAFB", color: "#374151" };
+        };
+        return (
+          <div className="metric-card animate-fade-in-up delay-325">
+            <div className="section-header">
+              <h3 className="section-title flex items-center gap-2">
+                <FolderOpen size={14} style={{ color: client.color }} />
+                Client Materials
+              </h3>
+              <a
+                href={`https://docs.google.com/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-xs font-medium hover:opacity-70 transition-opacity"
+                style={{ color: client.color }}
+              >
+                <Plus size={11} />
+                Add in config
+              </a>
+            </div>
+            {materials.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-6 text-center">
+                <FolderOpen size={28} className="mb-2 opacity-20" style={{ color: client.color }} />
+                <p className="text-xs text-muted-foreground">No materials yet.</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Add Google Docs, Sheets, Slides, or links in{" "}
+                  <code className="bg-gray-100 px-1 rounded text-xs">dashboard.config.ts</code>{" "}
+                  under this client's <code className="bg-gray-100 px-1 rounded text-xs">materials</code> array.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
+                {materials.map((mat: any, idx: number) => {
+                  const { bg, color } = matColor(mat.type);
+                  return (
+                    <a
+                      key={idx}
+                      href={mat.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 p-3 rounded-lg border transition-all hover:shadow-sm hover:scale-[1.01] group"
+                      style={{ borderColor: `${client.color}20`, background: "white" }}
+                    >
+                      <span className="flex items-center justify-center w-7 h-7 rounded-md flex-shrink-0" style={{ background: bg, color }}>
+                        {matIcon(mat.type)}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-semibold text-foreground truncate" style={{ fontFamily: "'Montserrat', sans-serif" }}>{mat.label}</p>
+                        <p className="text-xs text-muted-foreground capitalize">{mat.type}</p>
+                      </div>
+                      <ExternalLink size={11} className="flex-shrink-0 opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: client.color }} />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Workplace Posts */}
       <div className="metric-card animate-fade-in-up delay-350">
