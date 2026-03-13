@@ -836,22 +836,26 @@ export const rsClientColors: Record<string, { color: string; light: string; name
 export interface ClientARData {
   clientId: string;       // matches dashboardConfig.clients[].id
   clientName: string;     // Ultimate Parent name from CRM Scorecard
-  totalAR: number;        // AR Headroom (total, in USD)
-  csEligibleAR: number;   // CS-Eligible AR (in USD)
+  totalAR: number;        // AR Headroom (Opp - AR), in USD
+  csEligibleAR: number;   // Target Eligible Revenue (proxy for CS-Eligible AR), in USD
+  accruedQTD: number;     // Accrued AR QTD (actual spend so far this quarter), in USD
 }
 
+// Source: Individual Opportunities Unidash (fburl.com/datainsights/x5oismt6)
+// Exported 2026-03-13 — AR Headroom = Opportunity Size (Opp) - Accrued AR (QTD)
+// Target Eligible Revenue used as csEligibleAR proxy
 export const clientARData: ClientARData[] = [
-  { clientId: "magalu",  clientName: "Magazine Luiza",  totalAR: 7200000, csEligibleAR: 3800000 },
-  { clientId: "amazon",  clientName: "Amazon",          totalAR: 5100000, csEligibleAR: 2700000 },
-  { clientId: "samsung", clientName: "Samsung",         totalAR: 3300000, csEligibleAR: 1600000 },
+  { clientId: "magalu",  clientName: "Magazine Luiza",  totalAR: 1328828, csEligibleAR: 6218950,  accruedQTD: 263907 },
+  { clientId: "samsung", clientName: "Samsung",         totalAR: 1271795, csEligibleAR: 10312147, accruedQTD: 8149 },
+  { clientId: "amazon",  clientName: "Amazon",          totalAR: 1193752, csEligibleAR: 10543489, accruedQTD: 328692 },
 ];
 
 export const portfolioARSummary = {
   totalARHeadroom: clientARData.reduce((s, c) => s + c.totalAR, 0),
   csEligibleAR: clientARData.reduce((s, c) => s + c.csEligibleAR, 0),
   topOpportunity: clientARData.length > 0
-    ? `${clientARData[0].clientName} — $${(clientARData[0].totalAR / 1_000_000).toFixed(1)}M AR`
+    ? `${clientARData[0].clientName} — $${(clientARData[0].totalAR / 1_000_000).toFixed(2)}M AR`
     : "—",
-  dataAsOf: "2026-03-06",
-  sourceUrl: "https://www.internalfb.com/crm/guidance_home?currentTab=SCORECARD&granularity=ORGANIZATION&guidanceType=PERFORMANCE_FIVE",
+  dataAsOf: "2026-03-13",
+  sourceUrl: "https://fburl.com/datainsights/x5oismt6",
 };

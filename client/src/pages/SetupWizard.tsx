@@ -755,20 +755,19 @@ IMPORTANT — ALL INTERNAL META SOURCES REQUIRE BROWSER TAKEOVER:
       - Filter by Sales Rep = "${data.salesRepName}" and current quarter
       - Read AI usage breakdown by pillar and write into aiUsageData.ts
 
-   d) RS PIPELINE (client/src/lib/rsPipelineData.ts — rsPipeline array)
-      - Navigate to: https://www.internalfb.com/crm/pipeline_management
+   d) RS PIPELINE + AR HEADROOM (client/src/lib/rsPipelineData.ts — rsPipeline array + clientARData + portfolioARSummary)
+      - Navigate to: https://fburl.com/datainsights/x5oismt6 (Individual Opportunities Unidash)
       - Ask me to take over the browser if the session has expired
-      - Set filters: Role = Creative Strategist, Period = Current Quarter, Tab = Your Solutions, Status = Active
-      - Read all active RS items and write them into the rsPipeline array in rsPipelineData.ts
-      - Also update rsSummary (total count, stageBreakdown, dataAsOf)
-
-   e) CRM SCORECARD — AR HEADROOM BY CLIENT (client/src/lib/rsPipelineData.ts — clientARData + portfolioARSummary)
-      - Navigate to: https://www.internalfb.com/crm/guidance_home?currentTab=SCORECARD&granularity=ORGANIZATION&guidanceType=PERFORMANCE_FIVE
-      - Ask me to take over the browser if the session has expired
-      - Read the AR Headroom and CS-Eligible AR for each of my dedicated clients (${data.clients.filter(c => c.name).map(c => c.name).join(', ')})
-      - Update the clientARData array in rsPipelineData.ts with { clientId, clientName, totalAR, csEligibleAR } for each client
-      - Update portfolioARSummary with the summed totals and topOpportunity (client with highest AR)
-      - This powers the AR Headroom by Client chart and the metric cards in the Overview
+      - In the "Specialist(s) Contributor(s)" filter, search for and select "${data.salesRepName}" to filter to my solutions only
+      - Wait for the table to load (it may take 30–60 seconds — "No Performance Guarantee" is expected)
+      - Use the download/export button to export the full table as a CSV file
+      - Parse the CSV to extract per-solution data (initiative_name, ultimate_parent_org_name, solution_stage, AR Headroom (Opp - AR), Target Eligible Revenue, Accrued AR (QTD), Revenue Start Date, Revenue End Date, org_name, initiative_owner_name)
+      - Write all solutions into the rsPipeline array in rsPipelineData.ts, mapping ultimate_parent_org_name to clientId (${data.clients.filter(c => c.name).map(c => c.name).join(', ')})
+      - Also update rsSummary (total count, stageBreakdown, dataAsOf = today)
+      - Then aggregate AR Headroom (Opp - AR) and Target Eligible Revenue per Ultimate Parent client
+      - Update clientARData with { clientId, clientName, totalAR: sum of AR Headroom, csEligibleAR: sum of Target Eligible Revenue } per client
+      - Update portfolioARSummary with summed totals, topOpportunity (client with highest totalAR), and dataAsOf = today
+      - Source URL: https://fburl.com/datainsights/x5oismt6
 
 4. SAVE A CHECKPOINT and let me know it is ready so I can click Publish.
 
