@@ -16,6 +16,7 @@ import InteractionsSection from "@/components/sections/InteractionsSection";
 import KeyDatesSection from "@/components/sections/KeyDatesSection";
 import AIUsageSection from "@/components/sections/AIUsageSection";
 import CRMInteractionsSection from "@/components/sections/CRMInteractionsSection";
+import CSMetrics101 from "@/pages/CSMetrics101";
 import { Bell, Search, RefreshCw } from "lucide-react";
 import { adaptMeetingsForSection } from "@/lib/weeklyMeetingsData";
 import { dashboardConfig } from "@/lib/dashboard.config";
@@ -31,6 +32,7 @@ const sectionTitles: Record<string, string> = {
   keydates: "Key Dates",
   aiusage: "My AI Usage",
   crminteractions: "CI Dashboard",
+  metrics101: "CS Metrics 101",
 };
 
 export default function Home() {
@@ -138,6 +140,8 @@ export default function Home() {
         return <AIUsageSection />;
       case "crminteractions":
         return <CRMInteractionsSection />;
+      case "metrics101":
+        return <CSMetrics101 />;
       default:
         return null;
     }

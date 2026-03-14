@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { clients, formatCurrency, stageConfig } from "@/lib/dashboardData";
-import { rsPipeline, clientARData, portfolioARSummary, rsStageConfig, rsClientColors, initiativeARData, stageDistribution } from "@/lib/rsPipelineData";
+import { rsPipeline, clientARData, portfolioARSummary, rsStageConfig, rsClientColors, initiativeARData, stageDistribution, RSStage } from "@/lib/rsPipelineData";
 import { clientCIGoals, crmRecordsSummary } from "@/lib/crmRecordsData";
 import { weeklyMeetings, weekSummary, eventTypeConfig, calClientColors } from "@/lib/weeklyMeetingsData";
 import { aiUsageSummary, aiUsageWeeks } from "@/lib/aiUsageData";
@@ -531,7 +531,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                 View all <ArrowRight size={10} />
               </button>
             </div>
-            <div className="flex items-end gap-6">
+            <div className="flex items-end gap-6 mb-4">
               <div>
                 <p className="text-3xl font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: avgDays !== null && avgDays > 21 ? "#D97706" : "#7C3AED" }}>
                   {avgDays !== null ? `${avgDays}d` : "—"}
@@ -553,6 +553,50 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                 <p className="text-xs text-muted-foreground mt-0.5">total transitions logged</p>
               </div>
             </div>
+            {/* Stage funnel drop-off mini chart */}
+            {(() => {
+              const stageOrder: Array<{ key: keyof typeof stageDistribution; label: string }> = [
+                { key: "discovery", label: "Discovery" },
+                { key: "pitching", label: "Pitching" },
+                { key: "scoping", label: "Scoping" },
+                { key: "committed", label: "Committed" },
+                { key: "actioned", label: "Actioned" },
+                { key: "partial", label: "Partial" },
+                { key: "adopted", label: "Adopted" },
+              ];
+              const maxCount = Math.max(...stageOrder.map((s) => stageDistribution[s.key]));
+              return (
+                <div>
+                  <p className="text-xs text-muted-foreground mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>Pipeline funnel · drop-off by stage</p>
+                  <div className="flex items-end gap-1">
+                    {stageOrder.map((s, idx) => {
+                      const count = stageDistribution[s.key];
+                      const prev = idx > 0 ? stageDistribution[stageOrder[idx - 1].key] : null;
+                      const isDropOff = prev !== null && count < prev;
+                      const barH = maxCount > 0 ? Math.max(Math.round((count / maxCount) * 48), 4) : 4;
+                      const cfg = rsStageConfig[s.key as RSStage];
+                      return (
+                        <div key={s.key} className="flex flex-col items-center gap-0.5 flex-1">
+                          <span style={{ fontSize: "9px", fontFamily: "'JetBrains Mono', monospace", color: isDropOff ? "#DC2626" : "oklch(0.55 0.01 75)", fontWeight: isDropOff ? 700 : 400 }}>
+                            {count}{isDropOff && " ↓"}
+                          </span>
+                          <div
+                            className="w-full rounded-t"
+                            style={{
+                              height: barH,
+                              background: isDropOff ? "#FCA5A5" : cfg.bg,
+                              border: `1px solid ${isDropOff ? "#EF4444" : cfg.color}`,
+                              opacity: 0.85,
+                            }}
+                          />
+                          <span style={{ fontSize: "8px", color: "oklch(0.55 0.01 75)", textAlign: "center", lineHeight: 1.1 }}>{s.label.slice(0, 4)}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         );
       })()}

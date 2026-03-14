@@ -474,6 +474,15 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
                     <td className="py-3 pr-3 max-w-[200px]">
                       <p className="text-xs font-medium text-foreground truncate" title={rs.initiative}>{rs.initiative}</p>
                       <p className="text-xs text-muted-foreground truncate" title={rs.clientName} style={{ fontSize: "10px" }}>{rs.clientName.replace(" - Advertiser", "").replace(" LTDA.", "").replace(" S/A", "")}</p>
+                      {rs.lastTouched && (() => {
+                        const days = Math.floor((Date.now() - new Date(rs.lastTouched!).getTime()) / 86400000);
+                        const color = days > 14 ? "#DC2626" : days > 7 ? "#D97706" : "#059669";
+                        return (
+                          <span style={{ fontSize: "9px", fontFamily: "'JetBrains Mono', monospace", color, fontWeight: 600 }}>
+                            touched {days}d ago
+                          </span>
+                        );
+                      })()}
                     </td>
                     {/* Type */}
                     <td className="py-3 pr-3">
@@ -580,16 +589,29 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
           <p className="text-xs text-muted-foreground">
             Source: Meta CRM Pipeline Management · Last updated: Mar 13, 2026
           </p>
-          <a
-            href={rsSummary.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-xs font-medium hover:opacity-70"
-            style={{ color: "#0066CC" }}
-          >
-            <ExternalLink size={10} />
-            View all in CRM
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href="https://fburl.com/datainsights/x5oismt6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-xs font-medium hover:opacity-70"
+              style={{ color: "#7C3AED" }}
+              title="Open Unidash — source of truth for AR data"
+            >
+              <ExternalLink size={10} />
+              Unidash (AR source)
+            </a>
+            <a
+              href={rsSummary.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-xs font-medium hover:opacity-70"
+              style={{ color: "#0066CC" }}
+            >
+              <ExternalLink size={10} />
+              View all in CRM
+            </a>
+          </div>
         </div>
       </div>
       {/* Stage History Edit Modal */}

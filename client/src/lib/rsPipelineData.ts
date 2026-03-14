@@ -19,6 +19,7 @@ export interface RSEntry {
   stage: RSStage;
   type: "RS" | "SCS";
   stageHistory?: StageTransition[]; // Ordered list of stage transitions (oldest first)
+  lastTouched?: string;             // ISO date of last CRM interaction / touch (YYYY-MM-DD)
   arHeadroom: number;          // Opp Size − Accrued AR Lifetime (remaining upside), USD
   oppSize: number;             // Estimated total revenue potential, USD
   accruedARLifetime: number;   // Revenue attributed all-time, USD
@@ -47,7 +48,7 @@ export const rsPipeline: RSEntry[] = [
     { stage: "committed", date: "2026-01-08", note: "Client committed" },
     { stage: "actioned", date: "2026-02-01", note: "First creatives live" },
     { stage: "partial", date: "2026-02-20", note: "Partial adoption confirmed" },
-  ], arHeadroom: 1279528, oppSize: 1530153, accruedARLifetime: 250625, accruedARQTD: 250625, targetEligibleRevenue: 5100512, vertical: "Retail", owner: "Thelio Goncalves" },
+  ], lastTouched: "2026-03-10", arHeadroom: 1279528, oppSize: 1530153, accruedARLifetime: 250625, accruedARQTD: 250625, targetEligibleRevenue: 5100512, vertical: "Retail", owner: "Thelio Goncalves" },
   { id: "25589294394025504", client: "amazon", clientName: "Amazon.Com", initiative: "Catalog Product Level Video: Creative", initiativeShort: "Catalog Product Level Video", initiativeUrl: "https://www.internalfb.com/crm/pipeline_management/25589294394025504/overview", stage: "partial", type: "RS", stageHistory: [
     { stage: "discovery", date: "2025-10-15", note: "Identified alongside Magalu entry" },
     { stage: "pitching", date: "2025-11-20", note: "Pitched to Douglas" },
@@ -55,23 +56,23 @@ export const rsPipeline: RSEntry[] = [
     { stage: "committed", date: "2026-01-10", note: "Amazon committed" },
     { stage: "actioned", date: "2026-02-05", note: "Creatives activated" },
     { stage: "partial", date: "2026-02-22", note: "Partial adoption" },
-  ], arHeadroom: 845000, oppSize: 1006877, accruedARLifetime: 161877, accruedARQTD: 161877, targetEligibleRevenue: 3356258, vertical: "Ecommerce", owner: "Douglas Mendes" },
+  ], lastTouched: "2026-03-07", arHeadroom: 845000, oppSize: 1006877, accruedARLifetime: 161877, accruedARQTD: 161877, targetEligibleRevenue: 3356258, vertical: "Ecommerce", owner: "Douglas Mendes" },
   { id: "3397688507051624", client: "samsung", clientName: "Samsung Electronics Co Ltd - KR(USD)", initiative: "Adopt CTX", initiativeShort: "Adopt CTX", initiativeUrl: "https://www.internalfb.com/crm/pipeline_management/3397688507051624/overview", stage: "discovery", type: "RS", stageHistory: [
     { stage: "discovery", date: "2026-01-15", note: "Identified via CS review" },
-  ], arHeadroom: 579234, oppSize: 579234, accruedARLifetime: 0, accruedARQTD: 0, targetEligibleRevenue: 1930779, vertical: "Technology", owner: "Bruno Boehringer Mastantuono" },
+  ], lastTouched: "2026-01-15", arHeadroom: 579234, oppSize: 579234, accruedARLifetime: 0, accruedARQTD: 0, targetEligibleRevenue: 1930779, vertical: "Technology", owner: "Bruno Boehringer Mastantuono" },
   { id: "3411435762343565", client: "samsung", clientName: "Samsung Electronics Co Ltd - KR(USD)", initiative: "Creative: Increase Creative Diversification", initiativeShort: "Creative: Increase Creative Diversification", initiativeUrl: "https://www.internalfb.com/crm/pipeline_management/3411435762343565/overview", stage: "actioned", type: "RS", stageHistory: [
     { stage: "discovery", date: "2025-11-01", note: "Creative diversification gap identified" },
     { stage: "pitching", date: "2025-12-01", note: "Pitched to Bruno" },
     { stage: "scoping", date: "2026-01-05", note: "Scope finalized" },
     { stage: "committed", date: "2026-01-20", note: "Samsung committed" },
     { stage: "actioned", date: "2026-02-10", note: "Diversified creatives live" },
-  ], arHeadroom: 470621, oppSize: 478529, accruedARLifetime: 7908, accruedARQTD: 7908, targetEligibleRevenue: 3560533, vertical: "Technology", owner: "Bruno Boehringer Mastantuono" },
+  ], lastTouched: "2026-03-05", arHeadroom: 470621, oppSize: 478529, accruedARLifetime: 7908, accruedARQTD: 7908, targetEligibleRevenue: 3560533, vertical: "Technology", owner: "Bruno Boehringer Mastantuono" },
   { id: "889383203505096", client: "amazon", clientName: "Amazon.Com", initiative: "Catalog Product Level Video: Creative", initiativeShort: "Catalog Product Level Video", initiativeUrl: "https://www.internalfb.com/crm/pipeline_management/889383203505096/overview", stage: "actioned", type: "RS", stageHistory: [
     { stage: "discovery", date: "2025-11-05", note: "E&M vertical opportunity" },
     { stage: "pitching", date: "2025-12-08", note: "Pitched" },
     { stage: "committed", date: "2026-01-15", note: "Committed" },
     { stage: "actioned", date: "2026-02-12", note: "Live" },
-  ], arHeadroom: 180364, oppSize: 194460, accruedARLifetime: 14096, accruedARQTD: 14096, targetEligibleRevenue: 648203, vertical: "Entertainment and Media", owner: "Douglas Mendes" },
+  ], lastTouched: "2026-03-12", arHeadroom: 180364, oppSize: 194460, accruedARLifetime: 14096, accruedARQTD: 14096, targetEligibleRevenue: 648203, vertical: "Entertainment and Media", owner: "Douglas Mendes" },
   { id: "3411424922344649", client: "samsung", clientName: "Samsung Electronics Co Ltd - KR(USD)", initiative: "Opt into Reels placements using 9:16 video with audio", initiativeShort: "Opt into Reels placements using 9:16 video with audio", initiativeUrl: "https://www.internalfb.com/crm/pipeline_management/3411424922344649/overview", stage: "pitching", type: "RS", stageHistory: [
     { stage: "discovery", date: "2026-01-10", note: "Reels 9:16 gap identified" },
     { stage: "pitching", date: "2026-02-14", note: "Pitch deck sent to Bruno" },

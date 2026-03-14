@@ -17,6 +17,7 @@ import {
   Wand2,
   Link2,
   Check,
+  BookOpen,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -33,6 +34,7 @@ const navItems = [
   { id: "solutions", label: "Rec. Solutions", icon: Target },
   { id: "crminteractions", label: "CI Dashboard", icon: MessageSquare },
   { id: "aiusage", label: "My AI Usage", icon: Cpu },
+  { id: "metrics101", label: "CS Metrics 101", icon: BookOpen },
 ];
 
 // Meta Blue #0064E0 as the primary accent
