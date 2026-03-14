@@ -5,7 +5,7 @@
 import { useState, useMemo } from "react";
 import { rsPipeline, rsSummary, rsStageConfig, rsStatusConfig, rsClientColors, portfolioARSummary, RSStage } from "@/lib/rsPipelineData";
 import { clients } from "@/lib/dashboardData";
-import { ExternalLink, AlertTriangle, TrendingUp, Filter, RefreshCw, ChevronDown, ChevronRight } from "lucide-react";
+import { ExternalLink, AlertTriangle, TrendingUp, Filter, RefreshCw, ChevronDown, ChevronRight, Pencil, Copy, Check } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
@@ -30,6 +30,8 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
   const [filterInitiative, setFilterInitiative] = useState<string | null>(!isStageFilter ? (initialInitiative ?? null) : null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [stalledDismissed, setStalledDismissed] = useState(false);
+  const [editModalRS, setEditModalRS] = useState<string | null>(null); // RS id being edited
 
   const refreshRS = trpc.scraper.refreshRS.useMutation({
     onMutate: () => setIsRefreshing(true),
@@ -87,6 +89,24 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
 
   // Build initiative chart data
   const initiativeChartData = useMemo(() => {
+    // Pre-compute per-initiative avg stage velocity
+    const velocityMap: Record<string, number | null> = {};
+    rsPipeline.forEach((rs) => {
+      if (!rs.stageHistory || rs.stageHistory.length < 2) return;
+      const transitions: number[] = [];
+      for (let i = 1; i < rs.stageHistory.length; i++) {
+        const prev = new Date(rs.stageHistory[i - 1].date).getTime();
+        const curr = new Date(rs.stageHistory[i].date).getTime();
+        const days = Math.round((curr - prev) / 86400000);
+        if (days >= 0) transitions.push(days);
+      }
+      if (transitions.length > 0) {
+        const avg = Math.round(transitions.reduce((s, d) => s + d, 0) / transitions.length);
+        if (velocityMap[rs.initiative] === undefined) velocityMap[rs.initiative] = avg;
+        else velocityMap[rs.initiative] = Math.round(((velocityMap[rs.initiative] ?? 0) + avg) / 2);
+      }
+    });
+
     return [...rsPipeline]
       .filter((rs) => filterClient === "ALL" || rs.client === filterClient)
       .reduce((acc, rs) => {
@@ -108,10 +128,11 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
             accrued: Math.round(rs.accruedARQTD / 1000),
             count: 1,
             clientBreakdown: [{ name: clientName, headroom: Math.round(rs.arHeadroom / 1000), color: clientCfg?.color ?? "#6B7280" }],
+            avgDays: velocityMap[rs.initiative] ?? null,
           });
         }
         return acc;
-      }, [] as Array<{ name: string; fullName: string; headroom: number; accrued: number; count: number; clientBreakdown: Array<{ name: string; headroom: number; color: string }> }>)
+      }, [] as Array<{ name: string; fullName: string; headroom: number; accrued: number; count: number; clientBreakdown: Array<{ name: string; headroom: number; color: string }>; avgDays: number | null }>)
       .sort((a, b) => b.headroom - a.headroom);
   }, [filterClient]);
 
@@ -242,11 +263,12 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
                   name === "headroom" ? "AR Headroom" : "Accrued QTD",
                 ]}
                 labelFormatter={(label: unknown, payload: unknown[]) => {
-                  const first = (payload as Array<{ payload: { fullName: string; count: number; clientBreakdown: Array<{ name: string; headroom: number }> } }>)?.[0]?.payload;
+                  const first = (payload as Array<{ payload: { fullName: string; count: number; clientBreakdown: Array<{ name: string; headroom: number }>; avgDays: number | null } }>)?.[0]?.payload;
                   if (!first?.fullName) return String(label);
                   const topClient = first.clientBreakdown?.sort((a, b) => b.headroom - a.headroom)[0];
                   const topClientStr = topClient ? ` · Top: ${topClient.name}` : "";
-                  return `${first.fullName} (${first.count} RS${topClientStr})`;
+                  const velocityStr = first.avgDays !== null ? ` · ~${first.avgDays}d/stage` : "";
+                  return `${first.fullName} (${first.count} RS${topClientStr}${velocityStr})`;
                 }}
                 contentStyle={{
                   fontFamily: "'Montserrat', sans-serif",
@@ -271,6 +293,52 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
           </div>
         </div>
       </div>
+
+      {/* Stalled Initiatives Alert Banner */}
+      {(() => {
+        const today = Date.now();
+        const stalledRS = rsPipeline.filter((rs) => {
+          if (!rs.stageHistory || rs.stageHistory.length === 0) return false;
+          const lastDate = new Date(rs.stageHistory[rs.stageHistory.length - 1].date).getTime();
+          return Math.floor((today - lastDate) / 86400000) > 30;
+        });
+        if (stalledRS.length === 0 || stalledDismissed) return null;
+        return (
+          <div className="flex items-start gap-3 px-4 py-3 rounded-xl animate-fade-in-up" style={{ background: "#FFFBEB", border: "1px solid #FCD34D" }}>
+            <span className="text-lg flex-shrink-0" style={{ lineHeight: 1.2 }}>⚠️</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold" style={{ color: "#92400E", fontFamily: "'Montserrat', sans-serif" }}>
+                {stalledRS.length} initiative{stalledRS.length > 1 ? "s" : ""} stalled for 30+ days
+              </p>
+              <div className="flex flex-wrap gap-2 mt-1.5">
+                {stalledRS.map((rs) => {
+                  const lastDate = new Date(rs.stageHistory![rs.stageHistory!.length - 1].date).getTime();
+                  const days = Math.floor((today - lastDate) / 86400000);
+                  const clientCfg = rsClientColors[rs.client];
+                  return (
+                    <button
+                      key={rs.id}
+                      onClick={() => setFilterInitiative(rs.initiative)}
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium hover:opacity-80 transition-opacity"
+                      style={{ background: "#FEF3C7", color: "#92400E", border: "1px solid #FCD34D" }}
+                      title={`${rs.initiative} · ${days}d in ${rs.stage}`}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: clientCfg.color }} />
+                      <span className="truncate max-w-[160px]">{rs.initiative.length > 28 ? rs.initiative.slice(0, 28) + "…" : rs.initiative}</span>
+                      <span style={{ color: "#D97706", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700 }}>{days}d</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <button
+              onClick={() => setStalledDismissed(true)}
+              className="flex-shrink-0 text-xs hover:opacity-70 font-bold mt-0.5"
+              style={{ color: "#92400E" }}
+            >✕</button>
+          </div>
+        );
+      })()}
 
       {/* Active initiative filter banner */}
       {filterInitiative && (
@@ -451,9 +519,19 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
                         </div>
                       </div>
                     </td>
-                    {/* Opp size */}
+                    {/* Opp size + edit */}
                     <td className="py-3 text-right">
-                      <span className="text-xs font-mono-data font-semibold" style={{ color: clientCfg.color }}>{fmt(rs.oppSize)}</span>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-xs font-mono-data font-semibold" style={{ color: clientCfg.color }}>{fmt(rs.oppSize)}</span>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setEditModalRS(rs.id); }}
+                          className="flex items-center gap-0.5 text-xs hover:opacity-70 transition-opacity"
+                          style={{ color: "oklch(0.55 0.01 75)", fontSize: "9px" }}
+                          title="Add stage history entry"
+                        >
+                          <Pencil size={9} /> log stage
+                        </button>
+                      </div>
                     </td>
                   </tr>
                   {/* Stage-transition log expansion row */}
@@ -514,6 +592,93 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
           </a>
         </div>
       </div>
+      {/* Stage History Edit Modal */}
+      {editModalRS && (() => {
+        const rs = rsPipeline.find((r) => r.id === editModalRS);
+        if (!rs) return null;
+        const clientCfg = rsClientColors[rs.client];
+        const today = new Date().toISOString().slice(0, 10);
+        const snippet = `{ stage: "${rs.stage}", date: "${today}", note: "" }`;
+        const fullSnippet = `// In rsPipelineData.ts, find id: "${rs.id}"\n// Add to stageHistory array:\n${snippet}`;
+        return (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            style={{ background: "rgba(0,0,0,0.45)" }}
+            onClick={() => setEditModalRS(null)}
+          >
+            <div
+              className="relative rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4"
+              style={{ background: "white", border: "1px solid oklch(0.90 0.008 75)" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ background: clientCfg.color }} />
+                    <span className="text-xs font-bold" style={{ color: clientCfg.color, fontFamily: "'Montserrat', sans-serif" }}>{clientCfg.name}</span>
+                  </div>
+                  <h3 className="text-sm font-bold text-foreground" style={{ fontFamily: "'Montserrat', sans-serif" }}>Log Stage Transition</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5 truncate max-w-[300px]" title={rs.initiative}>{rs.initiative}</p>
+                </div>
+                <button onClick={() => setEditModalRS(null)} className="text-muted-foreground hover:opacity-70 text-lg font-bold leading-none">✕</button>
+              </div>
+
+              <div className="mb-4">
+                <p className="text-xs text-muted-foreground mb-2">Copy this snippet and paste it into <code className="text-xs px-1 py-0.5 rounded" style={{ background: "oklch(0.95 0.005 75)", fontFamily: "'JetBrains Mono', monospace" }}>rsPipelineData.ts</code> in the <strong>stageHistory</strong> array for this RS:</p>
+                <div className="relative">
+                  <pre
+                    className="text-xs p-3 rounded-lg overflow-x-auto"
+                    style={{ background: "oklch(0.97 0.003 75)", fontFamily: "'JetBrains Mono', monospace", color: "oklch(0.25 0.01 75)", lineHeight: 1.6 }}
+                  >{fullSnippet}</pre>
+                  <CopyButton text={fullSnippet} />
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <p className="text-xs font-semibold text-foreground mb-2">Current stage history ({rs.stageHistory?.length ?? 0} entries):</p>
+                {rs.stageHistory && rs.stageHistory.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5">
+                    {rs.stageHistory.map((t, idx) => {
+                      const cfg = rsStageConfig[t.stage];
+                      return (
+                        <div key={idx} className="flex flex-col items-center px-2 py-1 rounded-lg" style={{ background: cfg.bg }}>
+                          <span className="text-xs font-semibold" style={{ color: cfg.color }}>{cfg.label}</span>
+                          <span style={{ fontSize: "9px", color: "oklch(0.55 0.01 75)", fontFamily: "'JetBrains Mono', monospace" }}>{t.date}</span>
+                          {t.note && <span style={{ fontSize: "9px", color: "oklch(0.55 0.01 75)", maxWidth: 80, textAlign: "center" }}>{t.note}</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground italic">No history yet — this will be the first entry.</p>
+                )}
+              </div>
+
+              <button
+                onClick={() => setEditModalRS(null)}
+                className="w-full py-2 rounded-lg text-xs font-semibold transition-all hover:opacity-80"
+                style={{ background: clientCfg.color, color: "white", fontFamily: "'Montserrat', sans-serif" }}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        );
+      })()}
     </div>
+  );
+}
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+      className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-all"
+      style={{ background: copied ? "#ECFDF5" : "oklch(0.92 0.004 75)", color: copied ? "#059669" : "oklch(0.45 0.02 75)" }}
+    >
+      {copied ? <Check size={10} /> : <Copy size={10} />}
+      {copied ? "Copied!" : "Copy"}
+    </button>
   );
 }
