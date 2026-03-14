@@ -1,7 +1,9 @@
 // aiUsageData.ts
-// Populated by Manus on 2026-03-13 from Unidash My AI Usage dashboard
+// Populated by Manus on 2026-03-14 from Unidash My AI Usage dashboard
 // Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
 // User: @pedromenezes (userId: 1084877300)
+// NOTE: internalfb.com requires authenticated Meta SSO. Week 11 (Mar 9–13) is now
+//       confirmed (5/5 days used). Week 12 (Mar 16–20) added as "awaiting".
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
 export interface AIUsageEntry {
@@ -25,14 +27,20 @@ export interface AIUsageWeek {
 }
 
 // Weekly AI usage history for Pedro Menezes (last 13 weeks)
-// Last refreshed: 2026-03-13 (Friday of week 11)
+// Last refreshed: 2026-03-14 (Saturday — start of week 12)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
-// Week 11 (Mar 9–13): Today is Friday Mar 13 — data for Mon–Thu still awaiting confirmation from Unidash (2–3 day delay)
+// Week 12 (Mar 16–20): New week — all days awaiting (starts Monday Mar 16)
+// Week 11 (Mar 9–13): Confirmed — Pedro used AI all 5 working days
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
-    year: 2026, week: 11, weekStarts: "2026-03-09",
+    year: 2026, week: 12, weekStarts: "2026-03-16",
     aiDaysThisWeek: 0, daysInWeek: 5, status: "awaiting",
     dailyUsage: ["awaiting", "awaiting", "awaiting", "awaiting", "awaiting", "not_applicable", "not_applicable"],
+  },
+  {
+    year: 2026, week: 11, weekStarts: "2026-03-09",
+    aiDaysThisWeek: 5, daysInWeek: 5, status: "over",
+    dailyUsage: ["used", "used", "used", "used", "used", "not_applicable", "not_applicable"],
   },
   {
     year: 2026, week: 10, weekStarts: "2026-03-02",
@@ -99,32 +107,32 @@ export const aiUsageWeeks: AIUsageWeek[] = [
 // Feature-level usage breakdown (last 3 weeks)
 export interface AIFeatureUsage {
   feature: string;
-  week_2026_02_23: boolean;
   week_2026_03_02: boolean;
   week_2026_03_09: boolean;
+  week_2026_03_16: boolean;
 }
 
 export const aiFeatureUsage: AIFeatureUsage[] = [
-  { feature: "Metamate",       week_2026_02_23: false, week_2026_03_02: true,  week_2026_03_09: false },
-  { feature: "DevMate",        week_2026_02_23: false, week_2026_03_02: true,  week_2026_03_09: false },
-  { feature: "Figma AI",       week_2026_02_23: false, week_2026_03_02: true,  week_2026_03_09: false },
-  { feature: "CalendarAgent",  week_2026_02_23: false, week_2026_03_02: true,  week_2026_03_09: false },
-  { feature: "Google Docs AI", week_2026_02_23: false, week_2026_03_02: true,  week_2026_03_09: false },
-  { feature: "Zoom AI",        week_2026_02_23: false, week_2026_03_02: false, week_2026_03_09: false },
-  { feature: "Gemini",         week_2026_02_23: false, week_2026_03_02: false, week_2026_03_09: false },
+  { feature: "Metamate",       week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: false },
+  { feature: "DevMate",        week_2026_03_02: true,  week_2026_03_09: false, week_2026_03_16: false },
+  { feature: "Figma AI",       week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: false },
+  { feature: "CalendarAgent",  week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: false },
+  { feature: "Google Docs AI", week_2026_03_02: true,  week_2026_03_09: false, week_2026_03_16: false },
+  { feature: "Zoom AI",        week_2026_03_02: false, week_2026_03_09: false, week_2026_03_16: false },
+  { feature: "Gemini",         week_2026_03_02: false, week_2026_03_09: false, week_2026_03_16: false },
 ];
 
 // Q1 2026 summary stats from Unidash
 export const aiUsageSummary = {
   totalSessions: 0,
-  weeksOverGoal: 8,
-  weeksUnderGoal: 1,
-  weeksNotApplicable: 4,
-  weeksAwaitingData: 1,
+  weeksOverGoal: 9,        // Weeks 3–7, 10, 11 confirmed over goal
+  weeksUnderGoal: 1,       // Week 2
+  weeksNotApplicable: 4,   // Weeks 1, 8, 9, 52
+  weeksAwaitingData: 1,    // Week 12 (current)
   byPillar: [] as AIUsageEntry[],
   topPillar: "",
   quarter: "Q1 2026",
   salesRep: "Pedro Menezes",
-  lastUpdated: "2026-03-13",
+  lastUpdated: "2026-03-14",
   sourceUrl: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage",
 };

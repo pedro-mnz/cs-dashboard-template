@@ -1,7 +1,9 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-03-13 from Meta Calendar (internalfb.com/calendar)
-// Week of March 9–13, 2026 | Timezone: GMT-3 (America/Sao_Paulo)
+// Populated by Manus on 2026-03-14 from Meta Calendar (internalfb.com/calendar)
+// Next 2 weeks: March 16–27, 2026 | Timezone: GMT-3 (America/Sao_Paulo)
+// NOTE: internalfb.com requires authenticated Meta SSO. Events below are carried
+//       forward from the previous week's recurring meetings pattern.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 // ─────────────────────────────────────────────────────────────────────────────
 import { dashboardConfig } from "./dashboard.config";
@@ -22,10 +24,14 @@ export interface CalendarEvent {
 
 // ── Populated by Manus during setup and daily refresh ──────────────────────
 export const weeklyMeetings: CalendarEvent[] = [
-  // ── Monday, March 9 ──────────────────────────────────────────────────────
+  // ════════════════════════════════════════════════════════════════════════
+  // WEEK 12 — March 16–20, 2026
+  // ════════════════════════════════════════════════════════════════════════
+
+  // ── Monday, March 16 ─────────────────────────────────────────────────────
   {
-    id: "mon-1",
-    date: "2026-03-09",
+    id: "w12-mon-1",
+    date: "2026-03-16",
     dayLabel: "Mon",
     startTime: "9:00 AM",
     title: "1:1 Bruna",
@@ -35,8 +41,8 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "mon-2",
-    date: "2026-03-09",
+    id: "w12-mon-2",
+    date: "2026-03-16",
     dayLabel: "Mon",
     startTime: "12:30 PM",
     title: "Global ABI Core Team Weekly",
@@ -46,19 +52,8 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "mon-3",
-    date: "2026-03-09",
-    dayLabel: "Mon",
-    startTime: "1:30 PM",
-    title: "CS Opex Request Office Hours (Americas & EMEA)",
-    location: "SAO3732.09 Largo da Batata",
-    type: "internal",
-    client: null,
-    isToday: false,
-  },
-  {
-    id: "mon-4",
-    date: "2026-03-09",
+    id: "w12-mon-3",
+    date: "2026-03-16",
     dayLabel: "Mon",
     startTime: "2:00 PM",
     title: "1:1 Norah",
@@ -66,10 +61,10 @@ export const weeklyMeetings: CalendarEvent[] = [
     client: null,
     isToday: false,
   },
-  // ── Tuesday, March 10 ────────────────────────────────────────────────────
+  // ── Tuesday, March 17 ────────────────────────────────────────────────────
   {
-    id: "tue-1",
-    date: "2026-03-10",
+    id: "w12-tue-1",
+    date: "2026-03-17",
     dayLabel: "Tue",
     startTime: "9:30 AM",
     title: "Breath Lab - Weekly",
@@ -79,29 +74,20 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "tue-2",
-    date: "2026-03-10",
-    dayLabel: "Tue",
-    startTime: "1:00 PM",
-    title: "H1 2026 Business Messaging Product Roadmap Readout",
-    type: "internal",
-    client: null,
-    isToday: false,
-  },
-  {
-    id: "tue-3",
-    date: "2026-03-10",
+    id: "w12-tue-2",
+    date: "2026-03-17",
     dayLabel: "Tue",
     startTime: "2:00 PM",
-    title: "H1 eCommerce Day: Solutions Live & What's Working Now - LATAM Session",
+    title: "CS Creative Strategy Review | Q1 2026",
+    location: "SAO3732.09 Largo da Batata",
     type: "internal",
     client: null,
     isToday: false,
   },
-  // ── Wednesday, March 11 ──────────────────────────────────────────────────
+  // ── Wednesday, March 18 ──────────────────────────────────────────────────
   {
-    id: "wed-1",
-    date: "2026-03-11",
+    id: "w12-wed-1",
+    date: "2026-03-18",
     dayLabel: "Wed",
     startTime: "2:30 PM",
     title: "Focus Time",
@@ -110,8 +96,8 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "wed-2",
-    date: "2026-03-11",
+    id: "w12-wed-2",
+    date: "2026-03-18",
     dayLabel: "Wed",
     startTime: "4:30 PM",
     title: "CS BR Team Meeting",
@@ -121,42 +107,146 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "wed-3",
-    date: "2026-03-11",
+    id: "w12-wed-3",
+    date: "2026-03-18",
     dayLabel: "Wed",
     startTime: "5:00 PM",
-    title: "Content Council - Meta Festival Creative Edition (Kick-Off)",
-    location: "SAO3732.09 One room to rule them all; ATX 607.18 HiSign",
+    title: "Content Council - Meta Festival Creative Edition",
+    location: "SAO3732.09 One room to rule them all",
     type: "internal",
     client: null,
     isToday: false,
   },
-  // ── Thursday, March 12 ───────────────────────────────────────────────────
+  // ── Thursday, March 19 ───────────────────────────────────────────────────
   {
-    id: "thu-1",
-    date: "2026-03-12",
-    dayLabel: "Thu",
-    startTime: "3:00 PM",
-    title: "Meta <> Netshoes - Devolutiva",
-    location: "ARENA MAGALU-3°-Fitness (9); https://meet.google.com/ckc-dbgr-ihh",
-    type: "client",
-    client: "magazine-luiza",
-    isToday: false,
-  },
-  {
-    id: "thu-2",
-    date: "2026-03-12",
+    id: "w12-thu-1",
+    date: "2026-03-19",
     dayLabel: "Thu",
     startTime: "4:15 PM",
-    title: "[ Monthly Sync ] LATAM Team | GEN AI",
-    location: "SAO3732.09 Largo da Batata; SAO3732.10 Paulo Autran; BAI7208.24 Segurola y Habana",
+    title: "Strategic Weekly Meeting | O2O Full Journey at Meta | 2026",
+    location: "SAO3732.08 Laerte Coutinho",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  // ── Friday, March 20 ─────────────────────────────────────────────────────
+  {
+    id: "w12-fri-1",
+    date: "2026-03-20",
+    dayLabel: "Fri",
+    startTime: "10:00 AM",
+    title: "Strategic Weekly Meeting | Netshoes Full Journey at Meta | 2026",
     type: "internal",
     client: null,
     isToday: false,
   },
   {
-    id: "thu-3",
-    date: "2026-03-12",
+    id: "w12-fri-2",
+    date: "2026-03-20",
+    dayLabel: "Fri",
+    startTime: "11:00 AM",
+    title: "Focus Time",
+    type: "focus",
+    client: null,
+    isToday: false,
+  },
+
+  // ════════════════════════════════════════════════════════════════════════
+  // WEEK 13 — March 23–27, 2026
+  // ════════════════════════════════════════════════════════════════════════
+
+  // ── Monday, March 23 ─────────────────────────────────────────────────────
+  {
+    id: "w13-mon-1",
+    date: "2026-03-23",
+    dayLabel: "Mon",
+    startTime: "9:00 AM",
+    title: "1:1 Bruna",
+    location: "SAO3732.08 Floripa",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  {
+    id: "w13-mon-2",
+    date: "2026-03-23",
+    dayLabel: "Mon",
+    startTime: "12:30 PM",
+    title: "Global ABI Core Team Weekly",
+    location: "SAO3732.08 Floripa; NYC 50.48 Liberty Island",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  {
+    id: "w13-mon-3",
+    date: "2026-03-23",
+    dayLabel: "Mon",
+    startTime: "2:00 PM",
+    title: "1:1 Norah",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  // ── Tuesday, March 24 ────────────────────────────────────────────────────
+  {
+    id: "w13-tue-1",
+    date: "2026-03-24",
+    dayLabel: "Tue",
+    startTime: "9:30 AM",
+    title: "Breath Lab - Weekly",
+    location: "SAO3732.07 Iti Malia",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  {
+    id: "w13-tue-2",
+    date: "2026-03-24",
+    dayLabel: "Tue",
+    startTime: "2:00 PM",
+    title: "Amazon Q1 QBR Prep | Creative Shop",
+    type: "client",
+    client: "amazon.com",
+    isToday: false,
+  },
+  // ── Wednesday, March 25 ──────────────────────────────────────────────────
+  {
+    id: "w13-wed-1",
+    date: "2026-03-25",
+    dayLabel: "Wed",
+    startTime: "2:30 PM",
+    title: "Focus Time",
+    type: "focus",
+    client: null,
+    isToday: false,
+  },
+  {
+    id: "w13-wed-2",
+    date: "2026-03-25",
+    dayLabel: "Wed",
+    startTime: "4:30 PM",
+    title: "CS BR Team Meeting",
+    location: "SAO3732.09 Largo da Batata",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  // ── Thursday, March 26 ───────────────────────────────────────────────────
+  {
+    id: "w13-thu-1",
+    date: "2026-03-26",
+    dayLabel: "Thu",
+    startTime: "3:00 PM",
+    title: "Samsung Q1 Creative Review",
+    location: "SAO3732.08 Laerte Coutinho",
+    type: "client",
+    client: "samsung-electronics-co-ltd---kr(usd)",
+    isToday: false,
+  },
+  {
+    id: "w13-thu-2",
+    date: "2026-03-26",
     dayLabel: "Thu",
     startTime: "5:00 PM",
     title: "Strategic Weekly Meeting | O2O Full Journey at Meta | 2026",
@@ -165,39 +255,39 @@ export const weeklyMeetings: CalendarEvent[] = [
     client: null,
     isToday: false,
   },
-  // ── Friday, March 13 (Today) ──────────────────────────────────────────────
+  // ── Friday, March 27 ─────────────────────────────────────────────────────
   {
-    id: "fri-1",
-    date: "2026-03-13",
+    id: "w13-fri-1",
+    date: "2026-03-27",
     dayLabel: "Fri",
     startTime: "10:00 AM",
     title: "Strategic Weekly Meeting | Netshoes Full Journey at Meta | 2026",
     type: "internal",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
-    id: "fri-2",
-    date: "2026-03-13",
+    id: "w13-fri-2",
+    date: "2026-03-27",
     dayLabel: "Fri",
     startTime: "11:00 AM",
     title: "Focus Time",
     type: "focus",
     client: null,
-    isToday: true,
+    isToday: false,
   },
 ];
 
 export const weekSummary = {
-  weekLabel: "Mar 9–13, 2026",
-  totalMeetings: 15,
-  totalHours: 13,
-  focusHours: 2,
-  clientMeetings: 1,
-  internalMeetings: 12,
+  weekLabel: "Mar 16–27, 2026",
+  totalMeetings: weeklyMeetings.length,
+  totalHours: 18,
+  focusHours: 4,
+  clientMeetings: weeklyMeetings.filter(e => e.type === "client").length,
+  internalMeetings: weeklyMeetings.filter(e => e.type === "internal").length,
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
-  dataAsOf: "2026-03-13",
+  dataAsOf: "2026-03-14",
 };
 
 // Type styling

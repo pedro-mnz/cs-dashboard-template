@@ -1,5 +1,5 @@
 // crmInteractionsData.ts
-// Populated by Manus on 2026-03-13 from Meta CRM (internalfb.com/crm/client_interactions)
+// Populated by Manus on 2026-03-14 from Meta CRM (internalfb.com/crm/client_interactions)
 // Filters: Participant in BoB + This Quarter (Q1 2026) + Is Qualified + Participant = Pedro Menezes
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
@@ -104,7 +104,7 @@ export const ciSummary = {
     "amazon.com": crmInteractions.filter(ci => ci.clientId === "amazon.com").length,
     "samsung-electronics-co-ltd---kr(usd)": crmInteractions.filter(ci => ci.clientId === "samsung-electronics-co-ltd---kr(usd)").length,
   },
-  dataAsOf: "2026-03-13",
+  dataAsOf: "2026-03-14",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
 };
 
@@ -113,7 +113,7 @@ export const crmSummary = {
   totalQualifiedCIs: crmInteractions.filter(ci => ci.isQualified).length,
   totalCIs: crmInteractions.length,
   quarter: "Q1 2026",
-  dataAsOfDate: "2026-03-13",
+  dataAsOfDate: "2026-03-14",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
 };
 
@@ -151,6 +151,7 @@ export const topicWeeks: TopicWeek[] = [
   { week: "Jan W3", "Creative Strategy": 1, "Product Education": 0, "Account Planning": 0, "Campaign Review": 0, "Other": 1 },
   { week: "Mar W1", "Creative Strategy": 1, "Product Education": 1, "Account Planning": 0, "Campaign Review": 0, "Other": 0 },
   { week: "Mar W2", "Creative Strategy": 0, "Product Education": 0, "Account Planning": 0, "Campaign Review": 1, "Other": 0 },
+  { week: "Mar W3", "Creative Strategy": 0, "Product Education": 0, "Account Planning": 0, "Campaign Review": 0, "Other": 0 },
 ];
 
 // ── topicColors & topicLabels ─────────────────────────────────────────────────
