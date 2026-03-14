@@ -413,12 +413,24 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
                     </td>
                     {/* Stage */}
                     <td className="py-3 pr-3">
-                      <span
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
-                        style={{ background: stageCfg.bg, color: stageCfg.color }}
-                      >
-                        {stageCfg.label}
-                      </span>
+                      <div className="flex flex-col gap-0.5">
+                        <span
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                          style={{ background: stageCfg.bg, color: stageCfg.color }}
+                        >
+                          {stageCfg.label}
+                        </span>
+                        {rs.stageHistory && rs.stageHistory.length > 0 && (() => {
+                          const lastEntry = rs.stageHistory[rs.stageHistory.length - 1];
+                          const daysSince = Math.floor((Date.now() - new Date(lastEntry.date).getTime()) / 86400000);
+                          const urgencyColor = daysSince > 30 ? "#DC2626" : daysSince > 14 ? "#D97706" : "oklch(0.55 0.01 75)";
+                          return (
+                            <span style={{ color: urgencyColor, fontSize: "9px", fontFamily: "'JetBrains Mono', monospace", fontWeight: 600, paddingLeft: "2px" }}>
+                              {daysSince}d in stage
+                            </span>
+                          );
+                        })()}
+                      </div>
                     </td>
                     {/* Vertical */}
                     <td className="py-3 pr-3">

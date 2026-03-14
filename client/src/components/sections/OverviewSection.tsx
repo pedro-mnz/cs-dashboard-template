@@ -489,6 +489,74 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
         })}
       </div>
 
+      {/* Stage Velocity Card */}
+      {(() => {
+        // Compute avg days between stage transitions across all RS entries with stageHistory
+        const allTransitions: number[] = [];
+        rsPipeline.forEach((rs) => {
+          if (!rs.stageHistory || rs.stageHistory.length < 2) return;
+          for (let i = 1; i < rs.stageHistory.length; i++) {
+            const prev = new Date(rs.stageHistory[i - 1].date).getTime();
+            const curr = new Date(rs.stageHistory[i].date).getTime();
+            const days = Math.round((curr - prev) / 86400000);
+            if (days >= 0) allTransitions.push(days);
+          }
+        });
+        const avgDays = allTransitions.length > 0
+          ? Math.round(allTransitions.reduce((s, d) => s + d, 0) / allTransitions.length)
+          : null;
+        // Count stalled RS (>30d in current stage)
+        const today = Date.now();
+        const stalledCount = rsPipeline.filter((rs) => {
+          if (!rs.stageHistory || rs.stageHistory.length === 0) return false;
+          const lastDate = new Date(rs.stageHistory[rs.stageHistory.length - 1].date).getTime();
+          return Math.floor((today - lastDate) / 86400000) > 30;
+        }).length;
+        const withHistory = rsPipeline.filter((rs) => rs.stageHistory && rs.stageHistory.length > 0).length;
+        return (
+          <div className="metric-card animate-fade-in-up delay-125">
+            <div className="flex items-start justify-between mb-3">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <Activity size={15} style={{ color: "#7C3AED" }} />
+                  <h3 className="text-sm font-bold text-foreground" style={{ fontFamily: "'Montserrat', sans-serif" }}>Stage Velocity</h3>
+                </div>
+                <p className="text-xs text-muted-foreground">Avg time between stage transitions · {withHistory} RS with history tracked</p>
+              </div>
+              <button
+                onClick={() => onSectionChange("solutions")}
+                className="text-xs font-medium hover:opacity-70 transition-opacity flex items-center gap-1"
+                style={{ color: "#7C3AED" }}
+              >
+                View all <ArrowRight size={10} />
+              </button>
+            </div>
+            <div className="flex items-end gap-6">
+              <div>
+                <p className="text-3xl font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: avgDays !== null && avgDays > 21 ? "#D97706" : "#7C3AED" }}>
+                  {avgDays !== null ? `${avgDays}d` : "—"}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">avg per transition</p>
+              </div>
+              <div className="h-10 w-px" style={{ background: "oklch(0.92 0.004 75)" }} />
+              <div>
+                <p className="text-2xl font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: stalledCount > 3 ? "#DC2626" : stalledCount > 0 ? "#D97706" : "#059669" }}>
+                  {stalledCount}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">stalled &gt;30d</p>
+              </div>
+              <div className="h-10 w-px" style={{ background: "oklch(0.92 0.004 75)" }} />
+              <div>
+                <p className="text-2xl font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: "#059669" }}>
+                  {allTransitions.length}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">total transitions logged</p>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* AR Headroom Chart + Client Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* AR Headroom by Client */}
