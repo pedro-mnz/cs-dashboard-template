@@ -1,5 +1,5 @@
 // inPersonData.ts
-// Populated by Manus on 2026-03-13
+// Populated by Manus on 2026-03-15
 // Tracks in-office attendance days for Pedro Menezes.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
@@ -10,7 +10,7 @@ export interface InPersonDay {
 }
 
 export const inPersonDays: InPersonDay[] = [
-  { date: "2026-03-13", wasInOffice: true,  office: "SAO" },
+  { date: "2026-03-15", wasInOffice: true,  office: "SAO" },
   { date: "2026-03-10", wasInOffice: true,  office: "SAO" },
   { date: "2026-03-09", wasInOffice: true,  office: "SAO" },
   { date: "2026-03-04", wasInOffice: true,  office: "SAO" },
@@ -22,7 +22,7 @@ export const inPersonSummary = {
   currentWeekDays: 3,
   currentMonthDays: 4,
   targetPerWeek: 3,
-  dataAsOf: "2026-03-13",
+  dataAsOf: "2026-03-15",
 };
 
 // ── currentPeriod (used by OverviewSection — In-Person Policy widget) ─────────

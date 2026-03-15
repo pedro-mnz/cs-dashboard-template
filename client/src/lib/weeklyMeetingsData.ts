@@ -1,6 +1,6 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-03-14 from Meta Calendar (internalfb.com/calendar)
+// Populated by Manus on 2026-03-15 from Meta Calendar (internalfb.com/calendar)
 // Next 2 weeks: March 16–27, 2026 | Timezone: GMT-3 (America/Sao_Paulo)
 // NOTE: internalfb.com requires authenticated Meta SSO. Events below are carried
 //       forward from the previous week's recurring meetings pattern.
@@ -287,7 +287,7 @@ export const weekSummary = {
   internalMeetings: weeklyMeetings.filter(e => e.type === "internal").length,
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
-  dataAsOf: "2026-03-14",
+  dataAsOf: "2026-03-15",
 };
 
 // Type styling
