@@ -1,0 +1,29 @@
+AI Usage Data — Pedro Menezes (@pedromenezes, userId: 1084877300)
+Scraped from: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
+Date: 2026-03-16
+
+SUMMARY:
+- Awaiting Data: 2 weeks
+- Weeks Over L4+/7: 7 weeks
+- Weeks Not Applicable: 4 weeks
+- Weeks Under L4+/7: 1 week
+
+WEEKLY BREAKDOWN (last 13 weeks):
+Week 12 (2026-03-16): 0 AI days, 1 day in week — Awaiting Data
+Week 11 (2026-03-09): 1 AI day, 7 days in week — Awaiting Data
+Week 10 (2026-03-02): 6 AI days, 7 days in week — ✅ Weeks Over L4+/7
+Week 9 (2026-02-23): 1 AI day, 7 days in week — ➖ Weeks Not Applicable
+Week 8 (2026-02-16): 0 AI days, 7 days in week — ➖ Weeks Not Applicable
+Week 7 (2026-02-09): 5 AI days, 7 days in week — ✅ Weeks Over L4+/7
+Week 6 (2026-02-02): 4 AI days, 7 days in week — ✅ Weeks Over L4+/7
+Week 5 (2026-01-26): 5 AI days, 7 days in week — ✅ Weeks Over L4+/7
+Week 4 (2026-01-19): 5 AI days, 7 days in week — ✅ Weeks Over L4+/7
+Week 3 (2026-01-12): 5 AI days, 7 days in week — ✅ Weeks Over L4+/7
+Week 2 (2026-01-05): 2 AI days, 7 days in week — ❌ Weeks Under L4+/7
+Week 1 (2025-12-29): 1 AI day, 7 days in week — ➖ Weeks Not Applicable
+Week 52/2025 (2025-12-22): 2 AI days, 7 days in week — ➖ Weeks Not Applicable
+Week 51/2025 (2025-12-15): 5 AI days, 7 days in week — ✅ Weeks Over L4+/7
+
+NOTE: The AI4P By Pillar breakdown (Coding, Writing, Analysis, Research, Communication) 
+is currently delayed due to S632317. The "My AI Usage" page only shows weekly day counts,
+not pillar breakdowns. The pillar breakdown requires the AI4P By Pillar tab which is also delayed.
