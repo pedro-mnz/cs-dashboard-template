@@ -5,7 +5,7 @@
 import React, { useState, useMemo } from "react";
 import { rsPipeline, rsSummary, rsStageConfig, rsStatusConfig, rsClientColors, portfolioARSummary, RSStage } from "@/lib/rsPipelineData";
 import { clients } from "@/lib/dashboardData";
-import { ExternalLink, AlertTriangle, TrendingUp, Filter, RefreshCw, ChevronDown, ChevronRight, Pencil, Copy, Check } from "lucide-react";
+import { ExternalLink, AlertTriangle, TrendingUp, Filter, RefreshCw, ChevronDown, ChevronRight, Pencil, Copy, Check, Pin, PinOff } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
@@ -32,6 +32,15 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [stalledDismissed, setStalledDismissed] = useState(false);
   const [editModalRS, setEditModalRS] = useState<string | null>(null); // RS id being edited
+  const [pinnedIds, setPinnedIds] = useState<Set<string>>(new Set());
+
+  const togglePin = (id: string) => {
+    setPinnedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
 
   const refreshRS = trpc.scraper.refreshRS.useMutation({
     onMutate: () => setIsRefreshing(true),
@@ -59,14 +68,19 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
     },
   });
 
-  const filtered = rsPipeline.filter((rs) => {
-    const clientMatch = filterClient === "ALL" || rs.client === filterClient;
-    const stageMatch = filterStage === "ALL" || rs.stage === filterStage;
-    // No status field in new schema — status filter shows all
-    const statusMatch = filterStatus === "ALL" || filterStatus === "Clean";
-    const initiativeMatch = !filterInitiative || rs.initiative === filterInitiative;
-    return clientMatch && stageMatch && statusMatch && initiativeMatch;
-  });
+  const filtered = rsPipeline
+    .filter((rs) => {
+      const clientMatch = filterClient === "ALL" || rs.client === filterClient;
+      const stageMatch = filterStage === "ALL" || rs.stage === filterStage;
+      const statusMatch = filterStatus === "ALL" || filterStatus === "Clean";
+      const initiativeMatch = !filterInitiative || rs.initiative === filterInitiative;
+      return clientMatch && stageMatch && statusMatch && initiativeMatch;
+    })
+    .sort((a, b) => {
+      const aPinned = pinnedIds.has(a.id) ? 0 : 1;
+      const bPinned = pinnedIds.has(b.id) ? 0 : 1;
+      return aPinned - bPinned;
+    });
 
   const totalOpportunity = filtered.reduce((s, r) => s + r.oppSize, 0);
   const atRiskCount = 0; // Status field removed in new schema
@@ -428,6 +442,7 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
         <span className="text-xs text-muted-foreground ml-auto">
           Showing {filtered.length} of {rsPipeline.length} · {fmt(totalOpportunity)} opp. size
           {atRiskCount > 0 && <span className="ml-2 text-amber-600 font-semibold">⚠ {atRiskCount} need attention</span>}
+          {pinnedIds.size > 0 && <span className="ml-2 font-semibold" style={{ color: "#7C3AED" }}>📌 {pinnedIds.size} pinned</span>}
         </span>
       </div>
 
@@ -527,10 +542,23 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
                         </div>
                       </div>
                     </td>
-                    {/* Opp size + edit */}
+                    {/* Opp size + edit + pin */}
                     <td className="py-3 text-right">
                       <div className="flex flex-col items-end gap-1">
-                        <span className="text-xs font-mono-data font-semibold" style={{ color: clientCfg.color }}>{fmt(rs.oppSize)}</span>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); togglePin(rs.id); }}
+                            className="flex items-center justify-center w-5 h-5 rounded transition-all hover:opacity-80"
+                            style={{
+                              background: pinnedIds.has(rs.id) ? "#7C3AED18" : "transparent",
+                              color: pinnedIds.has(rs.id) ? "#7C3AED" : "oklch(0.7 0.01 75)",
+                            }}
+                            title={pinnedIds.has(rs.id) ? "Unpin from top" : "Pin to top"}
+                          >
+                            {pinnedIds.has(rs.id) ? <PinOff size={10} /> : <Pin size={10} />}
+                          </button>
+                          <span className="text-xs font-mono-data font-semibold" style={{ color: clientCfg.color }}>{fmt(rs.oppSize)}</span>
+                        </div>
                         <button
                           onClick={(e) => { e.stopPropagation(); setEditModalRS(rs.id); }}
                           className="flex items-center gap-0.5 text-xs hover:opacity-70 transition-opacity"
