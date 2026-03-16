@@ -1,5 +1,5 @@
 // RS Pipeline Data — sourced from Unidash Individual Opportunities CSV export
-// Source: fburl.com/datainsights/x5oismt6 | Filtered: cs_ics = Pedro Menezes | Date: 2026-03-15
+// Source: fburl.com/datainsights/x5oismt6 | Filtered: cs_ics = Pedro Menezes | Date: 2026-03-16
 
 export type RSStage = "discovery" | "pitching" | "scoping" | "committed" | "actioned" | "partial" | "adopted" | "closed";
 
@@ -274,5 +274,5 @@ export const portfolioARSummary = {
   accruedARLastQuarter: 480000,
   lastQuarterLabel: "Q4 2025",
   topOpportunity: "Magazine Luiza — $1.33M AR Headroom",
-  dataAsOf: "2026-03-15",
+  dataAsOf: "2026-03-16",
 };

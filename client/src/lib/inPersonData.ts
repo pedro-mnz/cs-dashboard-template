@@ -1,5 +1,5 @@
 // inPersonData.ts
-// Populated by Manus on 2026-03-15
+// Populated by Manus on 2026-03-16
 // Tracks in-office attendance days for Pedro Menezes.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
@@ -10,6 +10,7 @@ export interface InPersonDay {
 }
 
 export const inPersonDays: InPersonDay[] = [
+  { date: "2026-03-16", wasInOffice: true,  office: "SAO" },
   { date: "2026-03-15", wasInOffice: true,  office: "SAO" },
   { date: "2026-03-10", wasInOffice: true,  office: "SAO" },
   { date: "2026-03-09", wasInOffice: true,  office: "SAO" },
@@ -19,10 +20,10 @@ export const inPersonDays: InPersonDay[] = [
 ];
 
 export const inPersonSummary = {
-  currentWeekDays: 3,
-  currentMonthDays: 4,
+  currentWeekDays: 1,
+  currentMonthDays: 5,
   targetPerWeek: 3,
-  dataAsOf: "2026-03-15",
+  dataAsOf: "2026-03-16",
 };
 
 // ── currentPeriod (used by OverviewSection — In-Person Policy widget) ─────────
@@ -30,12 +31,12 @@ export const currentPeriod = {
   label: "Mar 1 – Apr 30",
   startDate: "2026-03-01",
   endDate: "2026-04-30",
-  daysInPerson: 4,
+  daysInPerson: 5,
   plannedDays: 0,
   timeAwayDays: 0,
   targetDays: 12,
   onTrack: true,
-  daysNeeded: 8,
+  daysNeeded: 7,
 };
 
 // ── weeklyBreakdown (used by OverviewSection — per-week day grid) ─────────────
@@ -85,6 +86,18 @@ export const weeklyBreakdown: InPersonWeekBreakdown[] = [
       { day: "Wed", date: "Mar 11", inPerson: false },
       { day: "Thu", date: "Mar 12", inPerson: false },
       { day: "Fri", date: "Mar 13", inPerson: true  },
+    ],
+  },
+  {
+    weekLabel: "Mar 16",
+    total: 1,
+    onTrack: false,
+    days: [
+      { day: "Mon", date: "Mar 16", inPerson: true  },
+      { day: "Tue", date: "Mar 17", inPerson: null  },
+      { day: "Wed", date: "Mar 18", inPerson: null  },
+      { day: "Thu", date: "Mar 19", inPerson: null  },
+      { day: "Fri", date: "Mar 20", inPerson: null  },
     ],
   },
 ];

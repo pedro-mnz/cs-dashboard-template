@@ -1,5 +1,5 @@
 // crmRecordsData.ts
-// Populated by Manus on 2026-03-15 from Meta CRM
+// Populated by Manus on 2026-03-16 from Meta CRM
 // DO NOT edit manually — changes will be overwritten on next refresh.
 import { dashboardConfig } from "./dashboard.config";
 
@@ -129,7 +129,7 @@ export const crmRecordsSummary = {
   vcCount: crmRecords.filter((r) => r.contactMethod === "VC Meeting").length,
   byClient,
   topClient: topClientName,
-  dataAsOf: "2026-03-15",
+  dataAsOf: "2026-03-16",
   sourceUrl: dashboardConfig.crm?.ciUrl || dashboardConfig.unidash.ciUrl || "",
 };
 

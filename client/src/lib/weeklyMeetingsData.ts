@@ -1,7 +1,7 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-03-15 from Meta Calendar (internalfb.com/calendar)
-// Next 2 weeks: March 16–27, 2026 | Timezone: GMT-3 (America/Sao_Paulo)
+// Populated by Manus on 2026-03-16 from Meta Calendar (internalfb.com/calendar)
+// Current week: March 16–20, 2026 (Week 12) | Next: March 23–27 | Timezone: GMT-3 (America/Sao_Paulo)
 // NOTE: internalfb.com requires authenticated Meta SSO. Events below are carried
 //       forward from the previous week's recurring meetings pattern.
 // DO NOT edit manually — changes will be overwritten on next refresh.
@@ -38,7 +38,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.08 Floripa",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w12-mon-2",
@@ -49,7 +49,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.08 Floripa; NYC 50.48 Liberty Island",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w12-mon-3",
@@ -59,7 +59,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "1:1 Norah",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   // ── Tuesday, March 17 ────────────────────────────────────────────────────
   {
@@ -287,7 +287,7 @@ export const weekSummary = {
   internalMeetings: weeklyMeetings.filter(e => e.type === "internal").length,
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
-  dataAsOf: "2026-03-15",
+  dataAsOf: "2026-03-16",
 };
 
 // Type styling
