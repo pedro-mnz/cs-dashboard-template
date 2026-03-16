@@ -799,6 +799,9 @@ ${configText}`;
   const [showWhatNext, setShowWhatNext] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [verifiedLinks, setVerifiedLinks] = useState<Set<string>>(new Set());
+  const [shareName, setShareName] = useState("");
+  const [shareCopied, setShareCopied] = useState(false);
+  const [showDiff, setShowDiff] = useState(false);
 
   const markVerified = (key: string) => setVerifiedLinks((prev) => new Set(Array.from(prev).concat(key)));
 
@@ -1095,6 +1098,113 @@ ${configText}`;
               </div>
             );
           })()}
+
+          {/* ── Share a personalized link ──────────────────── */}
+          {(() => {
+            const shareUrl = shareName.trim()
+              ? `${window.location.origin}/setup?from=${encodeURIComponent(shareName.trim())}`
+              : `${window.location.origin}/setup`;
+            const copyShare = async () => {
+              await navigator.clipboard.writeText(shareUrl);
+              setShareCopied(true);
+              setTimeout(() => setShareCopied(false), 2500);
+            };
+            return (
+              <div className="rounded-xl p-4" style={{ background: "#F5F3FF", border: "1px solid #DDD6FE" }}>
+                <p className="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-2">Share a personalized setup link</p>
+                <p className="text-xs text-purple-600 mb-3">Type a peer's first name to generate a link that greets them by name when they open the wizard.</p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={shareName}
+                    onChange={(e) => setShareName(e.target.value)}
+                    placeholder="Peer's first name (e.g. Juliana)"
+                    className="flex-1 text-xs px-3 py-2 rounded-lg border border-purple-200 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  />
+                  <button
+                    onClick={copyShare}
+                    className="flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg transition-all"
+                    style={{
+                      background: shareCopied ? "#dcfce7" : "#7C3AED",
+                      color: shareCopied ? "#166534" : "white",
+                      border: shareCopied ? "1px solid #86efac" : "none",
+                    }}
+                  >
+                    {shareCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    {shareCopied ? "Copied!" : "Copy link"}
+                  </button>
+                </div>
+                {shareName.trim() && (
+                  <p className="mt-2 text-xs text-purple-500 font-mono break-all">{shareUrl}</p>
+                )}
+              </div>
+            );
+          })()}
+
+          {/* ── Config diff view ───────────────────────── */}
+          <div
+            className="rounded-xl overflow-hidden"
+            style={{ border: "1px solid oklch(0.92 0.004 75)" }}
+          >
+            <button
+              onClick={() => setShowDiff((v) => !v)}
+              className="w-full flex items-center justify-between px-4 py-3 text-left transition-colors hover:bg-gray-50"
+            >
+              <div>
+                <p className="text-xs font-semibold text-gray-700">Config diff — what changed from the template</p>
+                <p className="text-xs text-gray-400">See exactly which fields you customized vs. the default</p>
+              </div>
+              <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${showDiff ? "rotate-180" : ""}`} />
+            </button>
+            {showDiff && (() => {
+              type DiffRow = { field: string; default: string; yours: string; changed: boolean };
+              const rows: DiffRow[] = [
+                { field: "Name", default: "(empty)", yours: data.name || "(empty)", changed: !!data.name },
+                { field: "Role", default: DEFAULT_DATA.role, yours: data.role, changed: data.role !== DEFAULT_DATA.role },
+                { field: "Team", default: DEFAULT_DATA.team, yours: data.team, changed: data.team !== DEFAULT_DATA.team },
+                { field: "Territory", default: DEFAULT_DATA.territory, yours: data.territory, changed: data.territory !== DEFAULT_DATA.territory },
+                { field: "Manager", default: "(empty)", yours: data.manager || "(empty)", changed: !!data.manager },
+                { field: "Avatar color", default: DEFAULT_DATA.avatarColor, yours: data.avatarColor, changed: data.avatarColor !== DEFAULT_DATA.avatarColor },
+                { field: "Sales Rep Name", default: "(your name)", yours: data.salesRepName || "(your name)", changed: !!data.salesRepName && data.salesRepName !== data.name },
+                { field: "Quarter", default: DEFAULT_DATA.quarter, yours: data.quarter, changed: data.quarter !== DEFAULT_DATA.quarter },
+                { field: "CI Min Target", default: DEFAULT_DATA.ciMinTarget, yours: data.ciMinTarget, changed: data.ciMinTarget !== DEFAULT_DATA.ciMinTarget },
+                { field: "FBID", default: "(empty)", yours: data.fbid || "(empty)", changed: !!data.fbid },
+                { field: "Clients", default: "1 placeholder", yours: `${data.clients.filter(c => c.name.trim()).length} configured`, changed: data.clients.filter(c => c.name.trim()).length > 0 },
+                { field: "Greeting", default: DEFAULT_DATA.greeting, yours: data.greeting, changed: data.greeting !== DEFAULT_DATA.greeting },
+                { field: "Primary color", default: DEFAULT_DATA.primaryColor, yours: data.primaryColor, changed: data.primaryColor !== DEFAULT_DATA.primaryColor },
+                { field: "Timezone", default: DEFAULT_DATA.timezone, yours: data.timezone, changed: data.timezone !== DEFAULT_DATA.timezone },
+                { field: "Daily refresh", default: DEFAULT_DATA.dailyRefreshTime, yours: data.dailyRefreshTime, changed: data.dailyRefreshTime !== DEFAULT_DATA.dailyRefreshTime },
+              ];
+              const changed = rows.filter(r => r.changed);
+              const unchanged = rows.filter(r => !r.changed);
+              return (
+                <div className="px-4 pb-4">
+                  <div className="text-xs text-gray-500 mb-2">
+                    <span className="font-semibold text-green-700">{changed.length} fields customized</span>
+                    {" · "}
+                    <span>{unchanged.length} using defaults</span>
+                  </div>
+                  <div className="space-y-1">
+                    {rows.map((row) => (
+                      <div
+                        key={row.field}
+                        className="grid text-xs rounded-md px-2 py-1.5"
+                        style={{
+                          gridTemplateColumns: "120px 1fr 1fr",
+                          background: row.changed ? "#f0fdf4" : "#f9fafb",
+                          border: row.changed ? "1px solid #bbf7d0" : "1px solid transparent",
+                        }}
+                      >
+                        <span className="text-gray-500 font-medium truncate">{row.field}</span>
+                        <span className="text-gray-400 truncate px-2 line-through">{row.default}</span>
+                        <span className={`truncate px-2 font-medium ${row.changed ? "text-green-700" : "text-gray-500"}`}>{row.yours}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
 
           {/* Divider + advanced */}
           <div className="border-t pt-5">

@@ -2,7 +2,7 @@
 // Built from internal context documents shared by Pedro Menezes
 
 import { useState, useMemo } from "react";
-import { BookOpen, ChevronDown, ChevronRight, ExternalLink, Info, Target, TrendingUp, Zap, Search, X, Link2 } from "lucide-react";
+import { BookOpen, ChevronDown, ChevronRight, ExternalLink, Info, Target, TrendingUp, Zap, Search, X, Link2, Copy, Check, Users } from "lucide-react";
 
 interface Section {
   id: string;
@@ -15,6 +15,7 @@ interface Section {
 export default function CSMetrics101() {
   const [expanded, setExpanded] = useState<string[]>(["metrics"]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [copiedName, setCopiedName] = useState<string | null>(null);
 
   const toggle = (id: string) => {
     setExpanded((prev) =>
@@ -547,6 +548,89 @@ export default function CSMetrics101() {
           ))}
         </div>
       </div>
+
+      {/* Team Roster Quick-Share */}
+      {(() => {
+        const teammates = [
+          { name: "Juliana", role: "CS Specialist", workplace: "https://www.workplace.com/messaging/t/juliana" },
+          { name: "Bruna", role: "CS Manager", workplace: "https://www.workplace.com/messaging/t/bruna" },
+          { name: "Douglas", role: "CS Specialist", workplace: "https://www.workplace.com/messaging/t/douglas" },
+          { name: "Norah", role: "CS Lead", workplace: "https://www.workplace.com/messaging/t/norah" },
+        ];
+        const copyLink = async (name: string) => {
+          const url = `${window.location.origin}/setup?from=${encodeURIComponent(name)}`;
+          await navigator.clipboard.writeText(url);
+          setCopiedName(name);
+          setTimeout(() => setCopiedName(null), 2500);
+        };
+        return (
+          <div
+            className="rounded-xl p-5 mt-2"
+            style={{ background: "oklch(0.97 0.004 75)", border: "1px solid oklch(0.92 0.004 75)" }}
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <div
+                className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
+                style={{ background: "#7C3AED18", color: "#7C3AED" }}
+              >
+                <Users size={14} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Montserrat', sans-serif" }}>Team Roster — Quick Share</p>
+                <p className="text-xs text-muted-foreground">Copy a personalized setup link for each teammate</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {teammates.map((tm) => (
+                <div
+                  key={tm.name}
+                  className="flex items-center justify-between gap-3 p-3 rounded-lg bg-white"
+                  style={{ border: "1px solid oklch(0.92 0.004 75)" }}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                      style={{ background: "#7C3AED" }}
+                    >
+                      {tm.name[0]}
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">{tm.name}</p>
+                      <p className="text-xs text-muted-foreground">{tm.role}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-1.5">
+                    <a
+                      href={tm.workplace}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-xs px-2 py-1.5 rounded-md transition-colors"
+                      style={{ background: "#EFF6FF", color: "#1D4ED8" }}
+                      title="Open Workplace chat"
+                    >
+                      <ExternalLink size={10} />
+                    </a>
+                    <button
+                      onClick={() => copyLink(tm.name)}
+                      className="flex items-center gap-1 text-xs px-2 py-1.5 rounded-md transition-all"
+                      style={{
+                        background: copiedName === tm.name ? "#dcfce7" : "#F5F3FF",
+                        color: copiedName === tm.name ? "#166534" : "#7C3AED",
+                        border: copiedName === tm.name ? "1px solid #86efac" : "1px solid #DDD6FE",
+                      }}
+                      title="Copy personalized setup link"
+                    >
+                      {copiedName === tm.name ? <Check size={10} /> : <Copy size={10} />}
+                      <span>{copiedName === tm.name ? "Copied!" : "Setup link"}</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">Links open the Setup Wizard pre-filled with the teammate's name. Edit the <code className="text-xs bg-muted px-1 py-0.5 rounded">teammates</code> array in <code className="text-xs bg-muted px-1 py-0.5 rounded">CSMetrics101.tsx</code> to add or update entries.</p>
+          </div>
+        );
+      })()}
     </div>
   );
 }

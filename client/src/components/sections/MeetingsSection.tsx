@@ -2,15 +2,26 @@
 // Design: Warm Structured Intelligence
 // Data source: weeklyMeetingsData.ts (single source of truth for all calendar data)
 
-import { adaptMeetingsForSection, type MeetingRecord } from "@/lib/weeklyMeetingsData";
+import { adaptMeetingsForSection, weekSummary, type MeetingRecord } from "@/lib/weeklyMeetingsData";
 import { clients, formatDate, getDaysUntil } from "@/lib/dashboardData";
-import { Calendar, Clock, Users, Video } from "lucide-react";
+import { Calendar, Clock, Users, Video, AlertTriangle, RefreshCw } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function MeetingsSection() {
   const meetings = adaptMeetingsForSection();
   const sorted = [...meetings].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   const upcoming = sorted.filter((m) => getDaysUntil(m.date) >= 0);
   const past = sorted.filter((m) => getDaysUntil(m.date) < 0);
+  const isStale = upcoming.length === 0 && past.length > 0;
+  const [staleDismissed, setStaleDismissed] = useState(false);
+
+  const handleRequestRefresh = () => {
+    const msg = `Please refresh my calendar data in weeklyMeetingsData.ts:\n1. Navigate to https://www.internalfb.com/calendar\n2. Ask me to take over the browser and log in with Meta SSO\n3. Read all events for the current week (Mon–Fri)\n4. Write them into client/src/lib/weeklyMeetingsData.ts following the existing file structure`;
+    navigator.clipboard.writeText(msg).then(() => {
+      toast.success("Refresh request copied!", { description: "Paste it into your Manus chat to trigger a calendar refresh." });
+    });
+  };
 
   const getClient = (clientId: string | null) => clients.find((c) => c.id === clientId) || null;
 
@@ -121,6 +132,39 @@ export default function MeetingsSection() {
         </p>
       </div>
 
+      {/* Stale data banner */}
+      {isStale && !staleDismissed && (
+        <div
+          className="flex items-start gap-3 rounded-xl px-4 py-3 animate-fade-in-up"
+          style={{ background: "#FFFBEB", border: "1px solid #FDE68A" }}
+        >
+          <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: "#D97706" }} />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold" style={{ color: "#92400E" }}>
+              Calendar data is from week of {weekSummary.weekLabel}
+            </p>
+            <p className="text-xs mt-0.5" style={{ color: "#B45309" }}>
+              The current week hasn't been scraped yet. Showing last week's meetings below.
+            </p>
+            <button
+              onClick={handleRequestRefresh}
+              className="mt-2 flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
+              style={{ background: "#FEF3C7", color: "#92400E", border: "1px solid #FCD34D" }}
+            >
+              <RefreshCw className="w-3 h-3" />
+              Copy refresh request for Manus
+            </button>
+          </div>
+          <button
+            onClick={() => setStaleDismissed(true)}
+            className="text-xs shrink-0 mt-0.5"
+            style={{ color: "#B45309" }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Week Summary */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-fade-in-up delay-50">
         {[
@@ -146,12 +190,14 @@ export default function MeetingsSection() {
         </div>
       </div>
 
-      {/* Past Meetings */}
+      {/* Past Meetings — shown prominently when no upcoming meetings (stale data) */}
       {past.length > 0 && (
         <div>
-          <h3 className="section-title mb-4 text-muted-foreground animate-fade-in-up">Recent (Past)</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 opacity-60">
-            {past.slice(0, 4).map((meeting, i) => (
+          <h3 className="section-title mb-4 animate-fade-in-up" style={{ color: isStale ? "inherit" : undefined }}>
+            {isStale ? `Last Week's Meetings (${weekSummary.weekLabel})` : "Recent (Past)"}
+          </h3>
+          <div className={`grid grid-cols-1 lg:grid-cols-2 gap-4 ${isStale ? "" : "opacity-60"}`}>
+            {(isStale ? past : past.slice(0, 4)).map((meeting, i) => (
               <MeetingCard key={meeting.id} meeting={meeting} index={i} />
             ))}
           </div>
