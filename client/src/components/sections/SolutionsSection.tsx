@@ -2,7 +2,7 @@
 // Design: Warm Structured Intelligence
 // Source: internalfb.com/crm/pipeline_management | Contributor: Pedro Menezes | Q1 2026
 
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { rsPipeline, rsSummary, rsStageConfig, rsStatusConfig, rsClientColors, portfolioARSummary, RSStage } from "@/lib/rsPipelineData";
 import { clients } from "@/lib/dashboardData";
 import { ExternalLink, AlertTriangle, TrendingUp, Filter, RefreshCw, ChevronDown, ChevronRight, Pencil, Copy, Check } from "lucide-react";
@@ -453,9 +453,8 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
                 const statusCfg = null; // Status field removed in new schema
                 const isExpanded = expandedRow === rs.id;
                 return (
-                  <>
+                  <React.Fragment key={rs.id}>
                   <tr
-                    key={rs.id}
                     className="hover:bg-muted/30 transition-colors cursor-pointer"
                     style={{ borderBottom: isExpanded ? "none" : "1px solid oklch(0.96 0.003 75)" }}
                     onClick={() => setExpandedRow(isExpanded ? null : rs.id)}
@@ -572,7 +571,7 @@ export default function SolutionsSection({ initialInitiative }: { initialInitiat
                       </td>
                     </tr>
                   )}
-                  </>
+                  </React.Fragment>
                 );
               })}
             </tbody>

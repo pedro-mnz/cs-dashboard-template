@@ -1,8 +1,8 @@
 // CS Metrics 101 — Reference guide for Creative Shop KPIs and pipeline terminology
 // Built from internal context documents shared by Pedro Menezes
 
-import { useState } from "react";
-import { BookOpen, ChevronDown, ChevronRight, ExternalLink, Info, Target, TrendingUp, Zap } from "lucide-react";
+import { useState, useMemo } from "react";
+import { BookOpen, ChevronDown, ChevronRight, ExternalLink, Info, Target, TrendingUp, Zap, Search, X, Link2 } from "lucide-react";
 
 interface Section {
   id: string;
@@ -14,11 +14,29 @@ interface Section {
 
 export default function CSMetrics101() {
   const [expanded, setExpanded] = useState<string[]>(["metrics"]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const toggle = (id: string) => {
     setExpanded((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
+  };
+
+  const handleSearch = (q: string) => {
+    setSearchQuery(q);
+    if (q.trim()) {
+      // Auto-expand all sections when searching
+      setExpanded(["metrics", "kpis", "terminology", "datasource", "quickref"]);
+    }
+  };
+
+  const highlight = (text: string) => {
+    if (!searchQuery.trim()) return text;
+    const regex = new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+    const parts = text.split(regex);
+    return parts.map((part, i) =>
+      regex.test(part) ? `<mark style="background:#FEF08A;border-radius:2px;padding:0 1px">${part}</mark>` : part
+    ).join("");
   };
 
   const sections: Section[] = [
@@ -379,6 +397,15 @@ export default function CSMetrics101() {
     },
   ];
 
+  const workplaceLinks = [
+    { label: "CRM FYI", url: "https://www.internalfb.com/groups/crmfyi", desc: "CRM updates, pipeline changes, and best practices", color: "#0064E0" },
+    { label: "DCMP FYI", url: "https://www.internalfb.com/groups/dcmpfyi", desc: "DCMP dashboard updates and methodology changes", color: "#7C3AED" },
+    { label: "xRS Wiki", url: "https://www.internalfb.com/intern/wiki/xrs", desc: "Full xRS methodology, definitions, and FAQ", color: "#059669" },
+    { label: "CRM Pipeline Management", url: "https://www.internalfb.com/crm/pipeline_management", desc: "Source of truth for all solutions and stages", color: "#D97706" },
+    { label: "Unidash (AR data)", url: "https://fburl.com/datainsights/x5oismt6", desc: "Individual Opportunities CSV — AR headroom source", color: "#DC2626" },
+    { label: "BAS KPI Framework", url: "https://www.internalfb.com/intern/wiki/bas_kpi", desc: "2025 BAS KPI definitions and targets", color: "#6B7280" },
+  ];
+
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-4">
       {/* Header */}
@@ -411,6 +438,27 @@ export default function CSMetrics101() {
           and the{" "}
           <a href="https://www.internalfb.com/groups/dcmpfyi" target="_blank" rel="noopener noreferrer" className="font-medium hover:opacity-70" style={{ color: "#0064E0" }}>DCMP FYI group</a>.
         </div>
+      </div>
+
+      {/* Search bar */}
+      <div className="relative">
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => handleSearch(e.target.value)}
+          placeholder="Search metrics, terms, KPIs…"
+          className="w-full pl-9 pr-9 py-2.5 text-sm rounded-xl border bg-white focus:outline-none focus:ring-2"
+          style={{ borderColor: "oklch(0.88 0.008 75)", fontFamily: "inherit" }}
+        />
+        {searchQuery && (
+          <button
+            onClick={() => handleSearch("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
+            <X size={13} />
+          </button>
+        )}
       </div>
 
       {/* Accordion sections */}
@@ -458,6 +506,47 @@ export default function CSMetrics101() {
           </div>
         );
       })}
+      {/* Workplace Digest quick-links */}
+      <div
+        className="rounded-xl p-5 mt-2"
+        style={{ background: "oklch(0.97 0.004 75)", border: "1px solid oklch(0.92 0.004 75)" }}
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <div
+            className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
+            style={{ background: "#0064E018", color: "#0064E0" }}
+          >
+            <Link2 size={14} />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "'Montserrat', sans-serif" }}>Internal Resources</p>
+            <p className="text-xs text-muted-foreground">Quick access to Workplace groups, wikis, and data tools</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {workplaceLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-start gap-2.5 p-3 rounded-lg bg-white hover:opacity-80 transition-opacity"
+              style={{ border: `1px solid ${link.color}22` }}
+            >
+              <div
+                className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5"
+                style={{ background: `${link.color}15`, color: link.color }}
+              >
+                <ExternalLink size={10} />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-foreground" style={{ fontFamily: "'Montserrat', sans-serif", color: link.color }}>{link.label}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{link.desc}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
