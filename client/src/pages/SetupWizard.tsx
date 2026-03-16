@@ -677,7 +677,14 @@ function StepAppearance({ data, onChange }: { data: WizardData; onChange: (d: Pa
 // ── Main wizard component ─────────────────────────────────────
 export default function SetupWizard() {
   const [step, setStep] = useState(1);
-  const [data, setData] = useState<WizardData>(DEFAULT_DATA);
+
+  // Pre-fill name from ?from= query param (set by the personalized share link)
+  const [data, setData] = useState<WizardData>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const fromName = params.get("from") || "";
+    return { ...DEFAULT_DATA, name: fromName, firstName: fromName };
+  });
+
   const [copied, setCopied] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -790,6 +797,10 @@ ${configText}`;
 
   const [showMessagePreview, setShowMessagePreview] = useState(false);
   const [showWhatNext, setShowWhatNext] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [verifiedLinks, setVerifiedLinks] = useState<Set<string>>(new Set());
+
+  const markVerified = (key: string) => setVerifiedLinks((prev) => new Set(Array.from(prev).concat(key)));
 
   if (done) {
     return (
@@ -900,6 +911,79 @@ ${configText}`;
             </div>
           </div>
 
+          {/* ── Dry-run preview button ───────────────────── */}
+          <div className="border-t pt-5 mb-5">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Preview your dashboard</p>
+              <button
+                onClick={() => setShowPreview((v) => !v)}
+                className="flex items-center gap-1.5 text-xs text-purple-600 hover:text-purple-800 transition-colors"
+              >
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showPreview ? "rotate-180" : ""}`} />
+                {showPreview ? "Hide preview" : "See how your dashboard will look"}
+              </button>
+            </div>
+            {showPreview && (
+              <div className="rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                {/* Mini sidebar */}
+                <div className="flex h-48">
+                  <div className="w-44 flex-shrink-0 flex flex-col" style={{ backgroundColor: "#1a1f36" }}>
+                    <div className="p-3 flex items-center gap-2 border-b border-white/10">
+                      <div
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                        style={{ backgroundColor: data.avatarColor || "#7C3AED" }}
+                      >
+                        {data.initials || (data.name ? data.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase() : "PM")}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-white text-xs font-semibold truncate">{data.name || "Your Name"}</p>
+                        <p className="text-white/50 text-xs truncate">{data.role || "Creative Strategist"}</p>
+                      </div>
+                    </div>
+                    <div className="p-2 space-y-0.5 flex-1">
+                      {["Overview", "Client Content", "Next Meetings", "Rec. Solutions", "CI Dashboard", "My AI Usage", "CS Metrics 101"].map((item, i) => (
+                        <div
+                          key={item}
+                          className={`px-2 py-1 rounded text-xs flex items-center gap-1.5 ${
+                            i === 0 ? "text-white font-medium" : "text-white/50"
+                          }`}
+                          style={i === 0 ? { backgroundColor: data.primaryColor || "#7C3AED", opacity: 0.9 } : {}}
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-60 flex-shrink-0" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="p-2 border-t border-white/10">
+                      <p className="text-white/40 text-xs px-2">Q1 2026 · {data.territory || "Brazil L8"}</p>
+                    </div>
+                  </div>
+                  {/* Mini main area */}
+                  <div className="flex-1 bg-white p-3 overflow-hidden">
+                    <div className="mb-2">
+                      <p className="text-gray-400 text-xs">{new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}</p>
+                      <p className="text-gray-900 text-sm font-bold">{data.greeting || "Good morning"}, {data.firstName || data.name.split(" ")[0] || "Pedro"} 👋</p>
+                      <p className="text-gray-400 text-xs">{data.role || "Creative Strategist"} · {data.team || "Meta Creative Shop"}</p>
+                    </div>
+                    <div className="grid grid-cols-3 gap-1.5 mb-2">
+                      {data.clients.filter((c) => c.name).slice(0, 3).map((c) => (
+                        <div key={c.id || c.name} className="rounded border p-1.5" style={{ borderColor: c.color || "#e5e7eb" }}>
+                          <div className="w-2 h-2 rounded-full mb-1" style={{ backgroundColor: c.color || "#6b7280" }} />
+                          <p className="text-xs font-medium text-gray-700 truncate">{c.shortName || c.name}</p>
+                          <p className="text-xs text-gray-400">{c.tier || "A"}</p>
+                        </div>
+                      ))}
+                      {data.clients.filter((c) => c.name).length === 0 && (
+                        <div className="col-span-3 text-xs text-gray-400 italic">Add clients in Step 3 to see them here</div>
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-300 italic">Live data (CRM, AI Usage, RS Pipeline) will be populated by Manus during setup.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* ── Internal Resources ─────────────────────────── */}
           <div className="border-t pt-5 mb-5">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Internal Resources</p>
@@ -930,53 +1014,87 @@ ${configText}`;
           </div>
 
           {/* ── Verify your links ─────────────────────────── */}
-          {(data.crmCiUrl || data.fbid || data.salesRepName) && (
-            <div className="border border-amber-200 bg-amber-50 rounded-xl p-4 mb-5">
-              <p className="text-xs font-semibold text-amber-800 uppercase tracking-wide mb-2">✓ Verify your links before sending</p>
-              <div className="space-y-2">
-                {data.fbid && (
-                  <a
-                    href={`https://www.internalfb.com/crm/client_interactions?view=list&filters=[{%22field%22:%22participant%22,%22operator%22:%22fbid_set_participant_in_book_of_business%22,%22value%22:{%22type%22:%22empty%22}},{%22field%22:%22interaction_time%22,%22operator%22:%22timestamp_in_range_within_this_quarter%22,%22value%22:{%22type%22:%22empty%22}},{%22field%22:%22is_qualified%22,%22operator%22:%22bool_is_true%22,%22value%22:{%22type%22:%22empty%22}},{%22field%22:%22participant%22,%22operator%22:%22fbid_set_contains_any_of%22,%22value%22:{%22type%22:%22fbid_list%22,%22fbid_list%22:[%22${data.fbid}%22]}}]&direction=descending&sortKey=INTERACTION_TIME`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-xs text-amber-800 hover:text-amber-900 underline"
-                  >
-                    <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                    CRM CI filter (auto-generated from FBID {data.fbid}) — click to verify it shows your CIs
-                  </a>
-                )}
-                {data.crmCiUrl && !data.fbid && (
-                  <a
-                    href={data.crmCiUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-xs text-amber-800 hover:text-amber-900 underline"
-                  >
-                    <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                    Your CRM CI filter URL — click to verify it shows your CIs
-                  </a>
-                )}
-                <a
-                  href={`https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-xs text-amber-800 hover:text-amber-900 underline"
-                >
-                  <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                  Unidash AI Usage — verify "Sales Rep" filter shows "{data.salesRepName || 'your name'}"
-                </a>
-                <a
-                  href="https://fburl.com/datainsights/x5oismt6"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-xs text-amber-800 hover:text-amber-900 underline"
-                >
-                  <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                  Unidash RS Pipeline — verify "Specialist(s) Contributor(s)" filter shows "{data.salesRepName || 'your name'}"
-                </a>
+          {(data.crmCiUrl || data.fbid || data.salesRepName) && (() => {
+            const verifyItems = [
+              ...(data.fbid ? [{
+                key: "crm",
+                label: `CRM CI filter (FBID ${data.fbid}) — verify it shows your CIs`,
+                url: `https://www.internalfb.com/crm/client_interactions?view=list&filters=[{%22field%22:%22participant%22,%22operator%22:%22fbid_set_participant_in_book_of_business%22,%22value%22:{%22type%22:%22empty%22}},{%22field%22:%22interaction_time%22,%22operator%22:%22timestamp_in_range_within_this_quarter%22,%22value%22:{%22type%22:%22empty%22}},{%22field%22:%22is_qualified%22,%22operator%22:%22bool_is_true%22,%22value%22:{%22type%22:%22empty%22}},{%22field%22:%22participant%22,%22operator%22:%22fbid_set_contains_any_of%22,%22value%22:{%22type%22:%22fbid_list%22,%22fbid_list%22:[%22${data.fbid}%22]}}]&direction=descending&sortKey=INTERACTION_TIME`,
+              }] : data.crmCiUrl ? [{
+                key: "crm",
+                label: "Your CRM CI filter URL — verify it shows your CIs",
+                url: data.crmCiUrl,
+              }] : []),
+              {
+                key: "aiusage",
+                label: `Unidash AI Usage — verify "Sales Rep" filter shows "${data.salesRepName || 'your name'}"`,
+                url: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage",
+              },
+              {
+                key: "rspipeline",
+                label: `Unidash RS Pipeline — verify "Specialist(s)" filter shows "${data.salesRepName || 'your name'}"`,
+                url: "https://fburl.com/datainsights/x5oismt6",
+              },
+            ];
+            const verifiedCount = verifyItems.filter((item) => verifiedLinks.has(item.key)).length;
+            const allVerified = verifiedCount === verifyItems.length;
+            return (
+              <div className={`border rounded-xl p-4 mb-5 ${
+                allVerified ? "border-green-200 bg-green-50" : "border-amber-200 bg-amber-50"
+              }`}>
+                <div className="flex items-center justify-between mb-2">
+                  <p className={`text-xs font-semibold uppercase tracking-wide ${
+                    allVerified ? "text-green-700" : "text-amber-800"
+                  }`}>
+                    {allVerified ? "✓ All links verified" : `✓ Verify your links before sending (${verifiedCount}/${verifyItems.length} checked)`}
+                  </p>
+                  {/* Progress dots */}
+                  <div className="flex gap-1">
+                    {verifyItems.map((item) => (
+                      <div
+                        key={item.key}
+                        className={`w-2 h-2 rounded-full transition-colors ${
+                          verifiedLinks.has(item.key) ? "bg-green-500" : "bg-amber-300"
+                        }`}
+                        title={item.label}
+                      />
+                    ))}
+                  </div>
+                </div>
+                {/* Progress bar */}
+                <div className="w-full bg-amber-200 rounded-full h-1 mb-3 overflow-hidden">
+                  <div
+                    className="h-1 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${(verifiedCount / verifyItems.length) * 100}%`,
+                      backgroundColor: allVerified ? "#16a34a" : "#d97706",
+                    }}
+                  />
+                </div>
+                <div className="space-y-2">
+                  {verifyItems.map((item) => (
+                    <a
+                      key={item.key}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => markVerified(item.key)}
+                      className={`flex items-center gap-2 text-xs transition-colors ${
+                        verifiedLinks.has(item.key)
+                          ? "text-green-700 line-through opacity-60"
+                          : "text-amber-800 hover:text-amber-900 underline"
+                      }`}
+                    >
+                      {verifiedLinks.has(item.key)
+                        ? <Check className="w-3 h-3 flex-shrink-0 text-green-600" />
+                        : <ExternalLink className="w-3 h-3 flex-shrink-0" />}
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* Divider + advanced */}
           <div className="border-t pt-5">
@@ -1020,7 +1138,13 @@ ${configText}`;
             <span className="text-sm font-medium text-purple-300">Creative Shop Dashboard</span>
           </div>
           <h1 className="text-xl font-bold">Setup Wizard</h1>
-          <p className="text-sm text-gray-400 mt-1">Configure your personal dashboard in 4 steps</p>
+          {data.firstName ? (
+            <p className="text-sm text-purple-200 mt-1">
+              👋 Hey <strong>{data.firstName}</strong>! Pedro shared this with you. Fill in your details below to get your own CS Dashboard.
+            </p>
+          ) : (
+            <p className="text-sm text-gray-400 mt-1">Configure your personal dashboard in 4 steps</p>
+          )}
         </div>
 
         {/* Step progress */}

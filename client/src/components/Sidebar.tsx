@@ -52,7 +52,11 @@ export default function Sidebar({ activeSection, onSectionChange, activeClient, 
   const [copiedLink, setCopiedLink] = useState(false);
 
   const copySetupLink = async () => {
-    const url = `${window.location.origin}/setup`;
+    // Build a personalized URL: include the peer's first name as a query param
+    // so the wizard can greet them by name when they open it
+    const peerName = dashboardConfig.profile.firstName || dashboardConfig.profile.name.split(" ")[0] || "";
+    const params = peerName ? `?from=${encodeURIComponent(peerName)}` : "";
+    const url = `${window.location.origin}/setup${params}`;
     await navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);
