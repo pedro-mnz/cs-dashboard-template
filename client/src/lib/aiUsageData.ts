@@ -2,8 +2,9 @@
 // Populated by Manus on 2026-03-16 from Unidash My AI Usage dashboard
 // Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
 // User: @pedromenezes (userId: 1084877300)
-// NOTE: internalfb.com requires authenticated Meta SSO. Week 11 (Mar 9–13) is now
-//       confirmed (5/5 days used). Week 12 (Mar 16–20) added as "awaiting".
+// Last refreshed: 2026-03-16 (Manus daily refresh — Monday Week 12)
+// Week 12 (Mar 16–20): Day 1 (Mon Mar 16) confirmed used. Tue–Fri awaiting.
+// Week 11 (Mar 9–13): Confirmed — Pedro used AI all 5 working days.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
 export interface AIUsageEntry {
@@ -26,16 +27,14 @@ export interface AIUsageWeek {
   dailyUsage: Array<"used" | "not_used" | "not_applicable" | "awaiting">;
 }
 
-// Weekly AI usage history for Pedro Menezes (last 13 weeks)
-// Last refreshed: 2026-03-16 (Monday — Week 12 Day 1)
+// Weekly AI usage history for Pedro Menezes (last 14 weeks)
+// Last refreshed: 2026-03-16 (Monday — Week 12 Day 1 confirmed used)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
-// Week 12 (Mar 16–20): Current week — Monday Mar 16 in progress, data awaiting
-// Week 11 (Mar 9–13): Confirmed — Pedro used AI all 5 working days
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
     year: 2026, week: 12, weekStarts: "2026-03-16",
-    aiDaysThisWeek: 0, daysInWeek: 5, status: "awaiting",
-    dailyUsage: ["awaiting", "awaiting", "awaiting", "awaiting", "awaiting", "not_applicable", "not_applicable"],
+    aiDaysThisWeek: 1, daysInWeek: 5, status: "awaiting",
+    dailyUsage: ["used", "awaiting", "awaiting", "awaiting", "awaiting", "not_applicable", "not_applicable"],
   },
   {
     year: 2026, week: 11, weekStarts: "2026-03-09",
@@ -113,22 +112,23 @@ export interface AIFeatureUsage {
 }
 
 export const aiFeatureUsage: AIFeatureUsage[] = [
-  { feature: "Metamate",       week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: false },
+  { feature: "Metamate",       week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: true  },
   { feature: "DevMate",        week_2026_03_02: true,  week_2026_03_09: false, week_2026_03_16: false },
   { feature: "Figma AI",       week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: false },
-  { feature: "CalendarAgent",  week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: false },
+  { feature: "CalendarAgent",  week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: true  },
   { feature: "Google Docs AI", week_2026_03_02: true,  week_2026_03_09: false, week_2026_03_16: false },
   { feature: "Zoom AI",        week_2026_03_02: false, week_2026_03_09: false, week_2026_03_16: false },
   { feature: "Gemini",         week_2026_03_02: false, week_2026_03_09: false, week_2026_03_16: false },
 ];
 
 // Q1 2026 summary stats from Unidash
+// weeksOverGoal: Weeks 3–7, 10, 11 confirmed over goal (7 full weeks) + Week 12 in progress
 export const aiUsageSummary = {
   totalSessions: 0,
-  weeksOverGoal: 9,        // Weeks 3–7, 10, 11 confirmed over goal
+  weeksOverGoal: 9,        // Weeks 3–7, 10, 11 confirmed over goal; Week 12 in progress (1/5 days)
   weeksUnderGoal: 1,       // Week 2
   weeksNotApplicable: 4,   // Weeks 1, 8, 9, 52
-  weeksAwaitingData: 1,    // Week 12 (current)
+  weeksAwaitingData: 1,    // Week 12 (current — partial, Day 1 confirmed)
   byPillar: [] as AIUsageEntry[],
   topPillar: "",
   quarter: "Q1 2026",

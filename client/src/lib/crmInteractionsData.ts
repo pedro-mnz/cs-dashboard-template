@@ -1,6 +1,7 @@
 // crmInteractionsData.ts
 // Populated by Manus on 2026-03-16 from Meta CRM (internalfb.com/crm/client_interactions)
 // Filters: Participant in BoB + This Quarter (Q1 2026) + Is Qualified + Participant = Pedro Menezes
+// Last refreshed: 2026-03-16 (Manus daily refresh)
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
 export interface CIRecord {
