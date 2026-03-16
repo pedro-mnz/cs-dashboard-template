@@ -750,17 +750,17 @@ IMPORTANT — ALL INTERNAL META SOURCES REQUIRE BROWSER TAKEOVER:
       - Read all CI records and write them into crmInteractionsData.ts and crmRecordsData.ts
 
    c) UNIDASH AI USAGE (client/src/lib/aiUsageData.ts)
-      - Navigate to: https://www.internalfb.com/unidash/dashboard/engagement_management_process_dashboard/dcmp_client_interaction_insights/
+      - Navigate to: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
       - Ask me to take over the browser if the session has expired
       - Filter by Sales Rep = "${data.salesRepName}" and current quarter
-      - Read AI usage breakdown by pillar and write into aiUsageData.ts
+      - Read AI usage breakdown by pillar (Coding, Writing, Analysis, Research, Communication) and write into aiUsageData.ts
 
    d) RS PIPELINE + AR HEADROOM (client/src/lib/rsPipelineData.ts — rsPipeline array + clientARData + portfolioARSummary)
       - Navigate to: https://fburl.com/datainsights/x5oismt6 (Individual Opportunities Unidash)
       - Ask me to take over the browser if the session has expired
       - In the "Specialist(s) Contributor(s)" filter, search for and select "${data.salesRepName}" to filter to my solutions only
       - Wait for the table to load (it may take 30–60 seconds — "No Performance Guarantee" is expected)
-      - Use the download/export button to export the full table as a CSV file
+      - Look for the CSV export icon in the top-right corner of the table (a downward arrow icon, usually labeled "Export" or showing a spreadsheet icon) — click it to download the full table as a CSV file. If you don't see it, try right-clicking the table header row.
       - Parse the CSV to extract per-solution data (initiative_name, ultimate_parent_org_name, solution_stage, AR Headroom (Opp - AR), Target Eligible Revenue, Accrued AR (QTD), Revenue Start Date, Revenue End Date, org_name, initiative_owner_name)
       - Write all solutions into the rsPipeline array in rsPipelineData.ts, mapping ultimate_parent_org_name to clientId (${data.clients.filter(c => c.name).map(c => c.name).join(', ')})
       - Also update rsSummary (total count, stageBreakdown, dataAsOf = today)
@@ -837,7 +837,7 @@ ${configText}`;
             <span className="text-amber-500 text-lg flex-shrink-0">⚠️</span>
             <div className="text-sm text-amber-800">
               <p className="font-semibold mb-1">Stay at your computer during setup</p>
-              <p>Manus will need you to <strong>take over the browser</strong> to log in with your Meta SSO when it reaches the data scraping steps. This is required for all 4 internal Meta sources (internalfb.com). Don't start the process if you're about to step away — the setup will pause and wait for you.</p>
+              <p>Manus will need you to <strong>take over the browser</strong> to log in with your Meta SSO when it reaches the data scraping steps. This is required for all 4 internal Meta sources (Calendar, CRM, AI Usage, RS Pipeline on internalfb.com). Don't start the process if you're about to step away — the setup will pause and wait for you.</p>
             </div>
           </div>
 
@@ -864,8 +864,8 @@ ${configText}`;
                       { emoji: "⚙️", text: `Manus pastes your config into dashboard.config.ts — your name, team, clients, and colors are applied instantly` },
                       { emoji: "📅", text: "Manus asks you to take over the browser so you can log in with Meta SSO — then reads your calendar, CRM, AI Usage, and RS Pipeline data" },
                       { emoji: "🎯", text: "Manus populates your CI Dashboard, Recommended Solutions, and AI Usage sections from the scraped data" },
-                      { emoji: "🔒", text: "Note: internalfb.com is only accessible via your personal Meta SSO session — browser takeover is required for all 5 data sources" },
-                      { emoji: "⏰", text: `Manus sets up a daily ${refreshLabel} scheduled task to keep all 5 data sources current automatically` },
+                      { emoji: "🔒", text: "Note: internalfb.com is only accessible via your personal Meta SSO session — browser takeover is required for all 4 data sources" },
+                      { emoji: "⏰", text: `Manus sets up a daily ${refreshLabel} scheduled task to keep all 4 data sources current automatically` },
                       { emoji: "🚀", text: "Manus tells you it's ready — you click Publish and your dashboard goes live at a permanent URL" },
                     ].map(({ emoji, text }, i) => (
                       <li key={i} className="flex gap-2.5 items-start">
@@ -899,6 +899,84 @@ ${configText}`;
               <p className="text-sm text-gray-500">Once Manus finishes setting up your project, click <strong>Publish</strong> in the Manus Management UI. Your dashboard will be live at a permanent URL you can bookmark and share.</p>
             </div>
           </div>
+
+          {/* ── Internal Resources ─────────────────────────── */}
+          <div className="border-t pt-5 mb-5">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Internal Resources</p>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { label: "CRM FYI", url: "https://fb.workplace.com/groups/crm.fyi", desc: "CRM tips & updates" },
+                { label: "DCMP FYI", url: "https://fb.workplace.com/groups/dcmpfyi", desc: "CI & DCMP updates" },
+                { label: "xRS Wiki", url: "https://www.internalfb.com/intern/wiki/XRS/", desc: "RS methodology" },
+                { label: "CRM Pipeline", url: "https://www.internalfb.com/crm/guidance_home", desc: "Scorecard & guidance" },
+                { label: "Unidash", url: "https://fburl.com/datainsights/x5oismt6", desc: "AR & RS data" },
+                { label: "BAS KPI Framework", url: "https://www.internalfb.com/intern/wiki/BAS_KPI_Framework/", desc: "KPI definitions" },
+              ].map(({ label, url, desc }) => (
+                <a
+                  key={label}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-2 p-2.5 rounded-lg border border-gray-100 hover:border-purple-200 hover:bg-purple-50 transition-all group"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-purple-400 group-hover:text-purple-600 flex-shrink-0 mt-0.5" />
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium text-gray-800 group-hover:text-purple-700 truncate">{label}</p>
+                    <p className="text-xs text-gray-400 truncate">{desc}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Verify your links ─────────────────────────── */}
+          {(data.crmCiUrl || data.fbid || data.salesRepName) && (
+            <div className="border border-amber-200 bg-amber-50 rounded-xl p-4 mb-5">
+              <p className="text-xs font-semibold text-amber-800 uppercase tracking-wide mb-2">✓ Verify your links before sending</p>
+              <div className="space-y-2">
+                {data.fbid && (
+                  <a
+                    href={`https://www.internalfb.com/crm/client_interactions?view=list&filters=[{%22field%22:%22participant%22,%22operator%22:%22fbid_set_participant_in_book_of_business%22,%22value%22:{%22type%22:%22empty%22}},{%22field%22:%22interaction_time%22,%22operator%22:%22timestamp_in_range_within_this_quarter%22,%22value%22:{%22type%22:%22empty%22}},{%22field%22:%22is_qualified%22,%22operator%22:%22bool_is_true%22,%22value%22:{%22type%22:%22empty%22}},{%22field%22:%22participant%22,%22operator%22:%22fbid_set_contains_any_of%22,%22value%22:{%22type%22:%22fbid_list%22,%22fbid_list%22:[%22${data.fbid}%22]}}]&direction=descending&sortKey=INTERACTION_TIME`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-xs text-amber-800 hover:text-amber-900 underline"
+                  >
+                    <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                    CRM CI filter (auto-generated from FBID {data.fbid}) — click to verify it shows your CIs
+                  </a>
+                )}
+                {data.crmCiUrl && !data.fbid && (
+                  <a
+                    href={data.crmCiUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-xs text-amber-800 hover:text-amber-900 underline"
+                  >
+                    <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                    Your CRM CI filter URL — click to verify it shows your CIs
+                  </a>
+                )}
+                <a
+                  href={`https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-xs text-amber-800 hover:text-amber-900 underline"
+                >
+                  <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                  Unidash AI Usage — verify "Sales Rep" filter shows "{data.salesRepName || 'your name'}"
+                </a>
+                <a
+                  href="https://fburl.com/datainsights/x5oismt6"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-xs text-amber-800 hover:text-amber-900 underline"
+                >
+                  <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                  Unidash RS Pipeline — verify "Specialist(s) Contributor(s)" filter shows "{data.salesRepName || 'your name'}"
+                </a>
+              </div>
+            </div>
+          )}
 
           {/* Divider + advanced */}
           <div className="border-t pt-5">
