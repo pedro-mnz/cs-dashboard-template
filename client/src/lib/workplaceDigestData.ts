@@ -1,5 +1,5 @@
 // workplaceDigestData.ts
-// Populated by Manus on 2026-03-14 from Workplace (fb.workplace.com)
+// Populated by Manus on 2026-03-18 from Workplace (fb.workplace.com)
 // Sources: Personal feed (@mentions/tags), Creative Shop Brazil group, Meta Business Brazil group
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
@@ -18,27 +18,27 @@ export interface WorkplacePost {
 // ── mentionsAndTags (personal feed — @mentions and tags of Pedro Menezes) ─────
 export const mentionsAndTags: WorkplacePost[] = [
   // Workplace login required to scrape live data.
-  // Last attempted: 2026-03-14. Re-run after granting Workplace access.
+  // Last attempted: 2026-03-18. Re-run after granting Workplace access.
 ];
 
 // ── creativeShopPosts (Creative Shop Brazil group) ────────────────────────────
 export const creativeShopPosts: WorkplacePost[] = [
   // Workplace login required to scrape live data.
-  // Last attempted: 2026-03-14. Re-run after granting Workplace access.
+  // Last attempted: 2026-03-18. Re-run after granting Workplace access.
 ];
 
 // ── metaBusinessPosts (Meta Business Brazil group) ───────────────────────────
 export const metaBusinessPosts: WorkplacePost[] = [
   // Workplace login required to scrape live data.
-  // Last attempted: 2026-03-14. Re-run after granting Workplace access.
+  // Last attempted: 2026-03-18. Re-run after granting Workplace access.
 ];
 
 // ── highlightOfTheDay ─────────────────────────────────────────────────────────
 export const highlightOfTheDay: WorkplacePost | null = null;
 
 // ── Digest metadata ───────────────────────────────────────────────────────────
-export const digestDate = "2026-03-14";
-export const digestTime = "09:00";
+export const digestDate = "2026-03-18";
+export const digestTime = "07:00";
 
 // ── Legacy workplacePosts array (kept for backward compatibility) ─────────────
 export const workplacePosts: WorkplacePost[] = [

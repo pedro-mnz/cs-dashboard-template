@@ -1,6 +1,6 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-03-16 from Meta Calendar (internalfb.com/calendar)
+// Populated by Manus on 2026-03-18 from Meta Calendar (internalfb.com/calendar)
 // Current week: March 16–20, 2026 (Week 12) | Next: March 23–27 | Timezone: GMT-3 (America/Sao_Paulo)
 // Source: https://www.internalfb.com/calendar — live scrape, authenticated session
 // DO NOT edit manually — changes will be overwritten on next refresh.
@@ -37,7 +37,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Meta & Omnicom Summit | Alinhamento Atividade Evento",
     type: "external",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
     id: "w12-mon-2",
@@ -47,7 +47,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Block Time",
     type: "focus",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
     id: "w12-mon-3",
@@ -58,7 +58,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.09 Padmasana",
     type: "internal",
     client: null,
-    isToday: true,
+    isToday: false,
     canceled: true,
   },
   {
@@ -69,7 +69,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Focus Time",
     type: "focus",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
     id: "w12-mon-5",
@@ -79,7 +79,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Global ABI Core Team Weekly",
     type: "client",
     client: null,
-    isToday: true,
+    isToday: false,
     canceled: true,
   },
 
@@ -137,7 +137,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
 
-  // ── Wednesday, March 18 ──────────────────────────────────────────────────
+  // ── Wednesday, March 18 (TODAY) ───────────────────────────────────────────
   {
     id: "w12-wed-1",
     date: "2026-03-18",
@@ -147,7 +147,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.08 Trancoso; BAI7208.24 Piazzolla; MEX 24.21 The Clown Carried you",
     type: "client",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w12-wed-2",
@@ -158,7 +158,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.09 Consolação",
     type: "client",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w12-wed-3",
@@ -168,7 +168,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Focus Time",
     type: "focus",
     client: null,
-    isToday: false,
+    isToday: true,
   },
 
   // ── Thursday, March 19 ───────────────────────────────────────────────────
@@ -366,7 +366,7 @@ export const weeklyMeetings: CalendarEvent[] = [
 ];
 
 export const weekSummary = {
-  weekLabel: "Mar 16–27, 2026",
+  weekLabel: "Mar 18–27, 2026",
   totalMeetings: weeklyMeetings.length,
   totalHours: 20,
   focusHours: 5,
@@ -374,7 +374,7 @@ export const weekSummary = {
   internalMeetings: weeklyMeetings.filter(e => e.type === "internal").length,
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
-  dataAsOf: "2026-03-16",
+  dataAsOf: "2026-03-18",
 };
 
 // Type styling
