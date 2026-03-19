@@ -1,7 +1,7 @@
 // crmInteractionsData.ts
-// Populated by Manus on 2026-03-18 from Meta CRM (internalfb.com/crm/client_interactions)
+// Populated by Manus on 2026-03-19 from Meta CRM (internalfb.com/crm/client_interactions)
 // Filters: Participant in BoB + This Quarter (Q1 2026) + Is Qualified + Participant = Pedro Menezes
-// Last refreshed: 2026-03-18 (Manus daily refresh)
+// Last refreshed: 2026-03-19 (Manus daily refresh)
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
 export interface CIRecord {
@@ -129,7 +129,7 @@ export const ciSummary = {
     "amazon.com": crmInteractions.filter(ci => ci.clientId === "amazon.com").length,
     "samsung-electronics-co-ltd---kr(usd)": crmInteractions.filter(ci => ci.clientId === "samsung-electronics-co-ltd---kr(usd)").length,
   },
-  dataAsOf: "2026-03-18",
+  dataAsOf: "2026-03-19",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
 };
 
@@ -138,7 +138,7 @@ export const crmSummary = {
   totalQualifiedCIs: crmInteractions.filter(ci => ci.isQualified).length,
   totalCIs: crmInteractions.length,
   quarter: "Q1 2026",
-  dataAsOfDate: "2026-03-18",
+  dataAsOfDate: "2026-03-19",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
 };
 

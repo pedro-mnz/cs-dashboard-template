@@ -1,9 +1,9 @@
 // aiUsageData.ts
-// Populated by Manus on 2026-03-18 from Unidash My AI Usage dashboard
+// Populated by Manus on 2026-03-19 from Unidash My AI Usage dashboard
 // Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
 // User: @pedromenezes (userId: 1084877300)
-// Last refreshed: 2026-03-18 (Manus daily refresh — Wednesday Week 12)
-// NOTE: AI4P By Pillar breakdown is currently delayed due to S632317.
+// Last refreshed: 2026-03-19 (Manus daily refresh — Thursday Week 12)
+// NOTE: AI4P By Pillar breakdown is currently delayed due to Meta SEV; skip if unavailable.
 //       Weekly day-count data is live; pillar breakdown will be updated when the SEV is resolved.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
@@ -28,14 +28,14 @@ export interface AIUsageWeek {
 }
 
 // Weekly AI usage history for Pedro Menezes (last 14 weeks)
-// Last refreshed: 2026-03-18 (Wednesday — Week 12 Day 3 in progress)
+// Last refreshed: 2026-03-19 (Thursday — Week 12 Day 4 in progress)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
-// Summary: 🔵 Awaiting: 2 | ✅ Over L4+/7: 7 | ➖ Not Applicable: 4 | ❌ Under: 1
+// Summary: 🔵 Awaiting: 1 | ✅ Over L4+/7: 7 | ⟖ Not Applicable: 4 | ❌ Under: 1 | 🔵 In Progress: 1
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
     year: 2026, week: 12, weekStarts: "2026-03-16",
-    aiDaysThisWeek: 2, daysInWeek: 3, status: "awaiting",
-    dailyUsage: ["used", "used", "awaiting", "not_applicable", "not_applicable", "not_applicable", "not_applicable"],
+    aiDaysThisWeek: 3, daysInWeek: 4, status: "awaiting",
+    dailyUsage: ["used", "used", "used", "awaiting", "not_applicable", "not_applicable", "not_applicable"],
   },
   {
     year: 2026, week: 11, weekStarts: "2026-03-09",
@@ -123,18 +123,18 @@ export const aiFeatureUsage: AIFeatureUsage[] = [
 ];
 
 // Q1 2026 summary stats from Unidash
-// Live data as of 2026-03-18: 8 weeks over goal, 1 under, 4 N/A, 1 awaiting (current week)
-// AI4P By Pillar breakdown delayed due to S632317 — will be updated when resolved
+// Live data as of 2026-03-19: 8 weeks over goal, 1 under, 4 N/A, 1 awaiting (current week Thu Day 4)
+// AI4P By Pillar breakdown delayed due to Meta SEV — will be updated when resolved
 export const aiUsageSummary = {
   totalSessions: 0,
   weeksOverGoal: 8,         // Weeks 3–7, 10–11 confirmed over goal
   weeksUnderGoal: 1,        // Week 2
   weeksNotApplicable: 4,    // Weeks 1, 8, 9, 52
-  weeksAwaitingData: 1,     // Week 12 (current — in progress)
+  weeksAwaitingData: 1,     // Week 12 (current — Thu Day 4 in progress)
   byPillar: [] as AIUsageEntry[],
   topPillar: "",
   quarter: "Q1 2026",
   salesRep: "Pedro Menezes",
-  lastUpdated: "2026-03-18",
+  lastUpdated: "2026-03-19",
   sourceUrl: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage",
 };
