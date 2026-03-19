@@ -1,7 +1,8 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-03-18 from Meta Calendar (internalfb.com/calendar)
+// Populated by Manus on 2026-03-19 from Meta Calendar (internalfb.com/calendar)
 // Current week: March 16–20, 2026 (Week 12) | Next: March 23–27 | Timezone: GMT-3 (America/Sao_Paulo)
+// TODAY: Thursday, March 19, 2026
 // Source: https://www.internalfb.com/calendar — live scrape, authenticated session
 // DO NOT edit manually — changes will be overwritten on next refresh.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -28,7 +29,7 @@ export const weeklyMeetings: CalendarEvent[] = [
   // WEEK 12 — March 16–20, 2026
   // ════════════════════════════════════════════════════════════════════════
 
-  // ── Monday, March 16 ─────────────────────────────────────────────────────
+  // ── Monday, March 16 (past) ───────────────────────────────────────────────
   {
     id: "w12-mon-1",
     date: "2026-03-16",
@@ -83,7 +84,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     canceled: true,
   },
 
-  // ── Tuesday, March 17 ────────────────────────────────────────────────────
+  // ── Tuesday, March 17 (past) ──────────────────────────────────────────────
   {
     id: "w12-tue-1",
     date: "2026-03-17",
@@ -137,7 +138,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
 
-  // ── Wednesday, March 18 (TODAY) ───────────────────────────────────────────
+  // ── Wednesday, March 18 (past) ────────────────────────────────────────────
   {
     id: "w12-wed-1",
     date: "2026-03-18",
@@ -147,7 +148,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.08 Trancoso; BAI7208.24 Piazzolla; MEX 24.21 The Clown Carried you",
     type: "client",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
     id: "w12-wed-2",
@@ -158,7 +159,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.09 Consolação",
     type: "client",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
     id: "w12-wed-3",
@@ -168,10 +169,10 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Focus Time",
     type: "focus",
     client: null,
-    isToday: true,
+    isToday: false,
   },
 
-  // ── Thursday, March 19 ───────────────────────────────────────────────────
+  // ── Thursday, March 19 (TODAY) ────────────────────────────────────────────
   {
     id: "w12-thu-1",
     date: "2026-03-19",
@@ -181,7 +182,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "https://figma.zoom.us/j/91402480973",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w12-thu-2",
@@ -191,7 +192,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Strategic Weekly Meeting | Magalu Full Journey at Meta | 2026",
     type: "client",
     client: "magazine-luiza",
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w12-thu-3",
@@ -201,7 +202,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Focus Time",
     type: "focus",
     client: null,
-    isToday: false,
+    isToday: true,
   },
 
   // ── Friday, March 20 ─────────────────────────────────────────────────────
@@ -366,7 +367,7 @@ export const weeklyMeetings: CalendarEvent[] = [
 ];
 
 export const weekSummary = {
-  weekLabel: "Mar 18–27, 2026",
+  weekLabel: "Mar 19–27, 2026",
   totalMeetings: weeklyMeetings.length,
   totalHours: 20,
   focusHours: 5,
@@ -374,7 +375,7 @@ export const weekSummary = {
   internalMeetings: weeklyMeetings.filter(e => e.type === "internal").length,
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
-  dataAsOf: "2026-03-18",
+  dataAsOf: "2026-03-19",
 };
 
 // Type styling

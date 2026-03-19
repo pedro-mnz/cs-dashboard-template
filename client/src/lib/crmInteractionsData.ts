@@ -1,7 +1,7 @@
 // crmInteractionsData.ts
-// Populated by Manus on 2026-03-18 from Meta CRM (internalfb.com/crm/client_interactions)
+// Populated by Manus on 2026-03-19 from Meta CRM (internalfb.com/crm/client_interactions)
 // Filters: Participant in BoB + This Quarter (Q1 2026) + Is Qualified + Participant = Pedro Menezes
-// Last refreshed: 2026-03-18 (Manus daily refresh)
+// Last refreshed: 2026-03-19 (Manus daily refresh — Week 12, Thursday)
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
 export interface CIRecord {
@@ -129,7 +129,7 @@ export const ciSummary = {
     "amazon.com": crmInteractions.filter(ci => ci.clientId === "amazon.com").length,
     "samsung-electronics-co-ltd---kr(usd)": crmInteractions.filter(ci => ci.clientId === "samsung-electronics-co-ltd---kr(usd)").length,
   },
-  dataAsOf: "2026-03-18",
+  dataAsOf: "2026-03-19",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
 };
 
@@ -138,17 +138,23 @@ export const crmSummary = {
   totalQualifiedCIs: crmInteractions.filter(ci => ci.isQualified).length,
   totalCIs: crmInteractions.length,
   quarter: "Q1 2026",
-  dataAsOfDate: "2026-03-18",
+  dataAsOfDate: "2026-03-19",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
 };
 
 // ── crmCoverage (used by CRMInteractionsSection — Coverage Deep Dive table) ──
+// QTD metrics as of 2026-03-19 (Week 12, Thursday)
+// Live CIs: Netshoes/Magalu (Mar 12 In-Person), Magalu (Mar 12 VC), Samsung (Mar 10 Messaging→Live),
+//           Amazon (Mar 4 In-Person), Magalu (Mar 4 Messaging→Live), Samsung (Jan 21 VC),
+//           Amazon (Jan 14 VC x2), Samsung (Jan 7 In-Person)
+// Messaging CIs: Samsung Mar 10, Magalu Mar 4 (2 total)
+// Live CIs (non-messaging): 7 total
 export const crmCoverage = {
   totalClients: 3,
-  totalLiveCIQTD: 6,
+  totalLiveCIQTD: 7,
   totalMessagingCIQTD: 2,
-  totalLiveAndMessagingCIQTD: 8,
-  futureCIScheduledByEOQ: 0,
+  totalLiveAndMessagingCIQTD: 9,
+  futureCIScheduledByEOQ: 1,
   outreachPct: 100,
   pctClients1PlusCI: 100,
   pctClients4PlusCI: 33,

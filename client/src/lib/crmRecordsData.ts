@@ -1,6 +1,6 @@
 // crmRecordsData.ts
-// Populated by Manus on 2026-03-18 from Meta CRM
-// Last refreshed: 2026-03-18 (Manus daily refresh)
+// Populated by Manus on 2026-03-19 from Meta CRM
+// Last refreshed: 2026-03-19 (Manus daily refresh — Week 12, Thursday)
 // DO NOT edit manually — changes will be overwritten on next refresh.
 import { dashboardConfig } from "./dashboard.config";
 
@@ -158,11 +158,15 @@ export const crmRecordsSummary = {
   vcCount: crmRecords.filter((r) => r.contactMethod === "VC Meeting").length,
   byClient,
   topClient: topClientName,
-  dataAsOf: "2026-03-18",
+  dataAsOf: "2026-03-19",
   sourceUrl: dashboardConfig.crm?.ciUrl || dashboardConfig.unidash.ciUrl || "",
 };
 
 // ── clientCIGoals (used by CRMInteractionsSection and OverviewSection) ────────
+// Q1 2026 validated CI counts as of 2026-03-19:
+//   Magalu:  3 CIs (Mar 12 In-Person, Mar 12 VC, Mar 4 Messaging) → goal MET ✅
+//   Amazon:  3 CIs (Mar 4 In-Person, Jan 14 VC x2) → goal MET ✅
+//   Samsung: 3 CIs (Mar 10 Messaging, Jan 21 VC, Jan 7 In-Person) → goal MET ✅
 export interface ClientCIGoal {
   clientId: string;
   label: string;
