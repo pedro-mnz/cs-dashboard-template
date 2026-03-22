@@ -41,7 +41,7 @@ export const metaBusinessPosts: WorkplacePost[] = [
 export const highlightOfTheDay: WorkplacePost | null = null;
 
 // ── Digest metadata ───────────────────────────────────────────────────────────
-export const digestDate = "2026-03-20";
+export const digestDate = "2026-03-22";
 export const digestTime = "07:00";
 
 // ── Legacy workplacePosts array (kept for backward compatibility) ─────────────

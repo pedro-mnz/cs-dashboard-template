@@ -276,5 +276,5 @@ export const portfolioARSummary = {
   lastQuarterLabel: "Q4 2025",
   topOpportunity: "Magazine Luiza — $1.33M AR Headroom",
   dataAsOf: "2026-03-20",
-  lastRefreshed: "2026-03-20 07:00 BRT",
+  lastRefreshed: "2026-03-22 07:00 BRT",
 };

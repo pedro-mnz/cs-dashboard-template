@@ -1,5 +1,62 @@
 [
   {
+    "timestamp": "2026-03-22T07:00:00.000000-03:00",
+    "date": "2026-03-22",
+    "type": "daily-refresh",
+    "triggeredBy": "Manus",
+    "refreshTime": "07:00 BRT",
+    "timezone": "America/Sao_Paulo",
+    "results": {
+      "calendar": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "weeklyMeetingsData.ts \u2014 Week 13 Sunday. New week (Mar 23\u201327) data pending Meta Calendar access."
+      },
+      "aiUsage": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "aiUsageData.ts updated to 2026-03-22 07:00 BRT \u2014 Week 13 Sunday."
+      },
+      "workplace": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "workplaceDigestData.ts digestDate updated to 2026-03-22 \u2014 SSO session required for live digest."
+      },
+      "ci": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "crmInteractionsData.ts \u2014 Unidash session required for live CI count refresh. Last known: 9 qualified CIs QTD."
+      },
+      "rsPipeline": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "rsPipelineData.ts updated to 2026-03-22 07:00 BRT \u2014 CRM session required for live RS pipeline refresh."
+      }
+    },
+    "configCheck": {
+      "profile": "Pedro Menezes | Creative Strategist | CS Americas - LATAM | Meta",
+      "clients": [
+        "Magazine Luiza (Tier A)",
+        "Amazon.Com (Tier A)",
+        "Samsung Electronics Co Ltd - KR(USD) (Tier A)"
+      ],
+      "schedule": {
+        "dailyRefreshTime": "07:00",
+        "timezone": "America/Sao_Paulo"
+      },
+      "scheduleValid": true,
+      "ciTarget": "Q1 2026 \u2014 min 3 CIs",
+      "quarter": "Q1 2026"
+    },
+    "serverStatus": {
+      "devServer": "running",
+      "port": "3000",
+      "framework": "React + Vite + Express (tsx watch)",
+      "dependencies": "installed (pnpm)",
+      "healthCheck": "Server running on http://localhost:3000/"
+    }
+  },
+  {
     "timestamp": "2026-03-21T07:05:05.483710-03:00",
     "date": "2026-03-21",
     "type": "daily-refresh",
