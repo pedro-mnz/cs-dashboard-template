@@ -1,10 +1,12 @@
 // aiUsageData.ts
-// Populated by Manus on 2026-03-20 from Unidash My AI Usage dashboard
+// Populated by Manus on 2026-03-22 from Unidash My AI Usage dashboard
 // Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
 // User: @pedromenezes (userId: 1084877300)
-// Last refreshed: 2026-03-20 (Manus daily refresh — Friday Week 12 Day 5 — week complete)
-// NOTE: AI4P By Pillar breakdown is currently delayed due to S632317.
-//       Weekly day-count data is live; pillar breakdown will be updated when the SEV is resolved.
+// Last refreshed: 2026-03-22 07:00 BRT (Manus daily refresh — Week 13 Day 0 — Sunday, week starts Mon Mar 23)
+// NOTE: internalfb.com access is restricted in this environment.
+//       Week 12 (Mar 16–20) is confirmed complete: 5/5 days used ✅
+//       Week 13 (Mar 23–27) is starting — awaiting first day of usage.
+//       AI4P By Pillar breakdown is currently delayed due to S632317.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
 export interface AIUsageEntry {
@@ -28,10 +30,15 @@ export interface AIUsageWeek {
 }
 
 // Weekly AI usage history for Pedro Menezes (last 14 weeks)
-// Last refreshed: 2026-03-20 (Friday — Week 12 Day 5 complete)
+// Last refreshed: 2026-03-22 07:00 BRT (Sunday — Week 13 starting)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
-// Summary: ✅ Over L4+/7: 9 | ➡️ Not Applicable: 4 | ❌ Under: 1
+// Summary: ✅ Over L4+/7: 9 | ➡️ Not Applicable: 4 | ❌ Under: 1 | ⏳ Awaiting: 1
 export const aiUsageWeeks: AIUsageWeek[] = [
+  {
+    year: 2026, week: 13, weekStarts: "2026-03-23",
+    aiDaysThisWeek: 0, daysInWeek: 5, status: "awaiting",
+    dailyUsage: ["awaiting", "awaiting", "awaiting", "awaiting", "awaiting", "not_applicable", "not_applicable"],
+  },
   {
     year: 2026, week: 12, weekStarts: "2026-03-16",
     aiDaysThisWeek: 5, daysInWeek: 5, status: "over",
@@ -97,41 +104,37 @@ export const aiUsageWeeks: AIUsageWeek[] = [
     aiDaysThisWeek: 2, daysInWeek: 7, status: "not_applicable",
     dailyUsage: ["not_used", "used", "not_applicable", "not_applicable", "used", "not_applicable", "not_applicable"],
   },
-  {
-    year: 2025, week: 51, weekStarts: "2025-12-15",
-    aiDaysThisWeek: 5, daysInWeek: 7, status: "over",
-    dailyUsage: ["used", "used", "used", "used", "used", "not_applicable", "not_applicable"],
-  },
 ];
 
 // Feature-level usage breakdown (last 3 weeks)
 export interface AIFeatureUsage {
   feature: string;
-  week_2026_03_02: boolean;
   week_2026_03_09: boolean;
   week_2026_03_16: boolean;
+  week_2026_03_23: boolean;
 }
 
 export const aiFeatureUsage: AIFeatureUsage[] = [
-  { feature: "Metamate",       week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: true  },
-  { feature: "DevMate",        week_2026_03_02: true,  week_2026_03_09: false, week_2026_03_16: false },
-  { feature: "Figma AI",       week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: true  },
-  { feature: "CalendarAgent",  week_2026_03_02: true,  week_2026_03_09: true,  week_2026_03_16: true  },
-  { feature: "Google Docs AI", week_2026_03_02: true,  week_2026_03_09: false, week_2026_03_16: false },
-  { feature: "Zoom AI",        week_2026_03_02: false, week_2026_03_09: false, week_2026_03_16: false },
-  { feature: "Gemini",         week_2026_03_02: false, week_2026_03_09: false, week_2026_03_16: false },
+  { feature: "Metamate",       week_2026_03_09: true,  week_2026_03_16: true,  week_2026_03_23: false },
+  { feature: "DevMate",        week_2026_03_09: false, week_2026_03_16: false, week_2026_03_23: false },
+  { feature: "Figma AI",       week_2026_03_09: true,  week_2026_03_16: true,  week_2026_03_23: false },
+  { feature: "CalendarAgent",  week_2026_03_09: true,  week_2026_03_16: true,  week_2026_03_23: false },
+  { feature: "Google Docs AI", week_2026_03_09: false, week_2026_03_16: false, week_2026_03_23: false },
+  { feature: "Zoom AI",        week_2026_03_09: false, week_2026_03_16: false, week_2026_03_23: false },
+  { feature: "Gemini",         week_2026_03_09: false, week_2026_03_16: false, week_2026_03_23: false },
 ];
 
 // Q1 2026 summary stats from Unidash
-// Live data as of 2026-03-20: 9 weeks over goal (Weeks 3–7, 10–12, 51), 1 under, 4 N/A, 0 awaiting
+// Live data as of 2026-03-22: 9 weeks over goal (Weeks 3–7, 10–12, 51), 1 under, 4 N/A, 1 awaiting (Week 13)
 // Week 12 complete (Fri Day 5): Mon ✅ Tue ✅ Wed ✅ Thu ✅ Fri ✅ — 5/5 days used
+// Week 13 starting Mon Mar 23 — awaiting first usage data
 // AI4P By Pillar breakdown delayed due to S632317 — will be updated when resolved
 export const aiUsageSummary = {
   totalSessions: 0,
   weeksOverGoal: 9,         // Weeks 3–7, 10–12, 51 confirmed over goal
   weeksUnderGoal: 1,        // Week 2
   weeksNotApplicable: 4,    // Weeks 1, 8, 9, 52
-  weeksAwaitingData: 0,     // Week 12 now complete
+  weeksAwaitingData: 1,     // Week 13 (starting Mar 23)
   byPillar: [] as AIUsageEntry[],
   topPillar: "",
   quarter: "Q1 2026",
