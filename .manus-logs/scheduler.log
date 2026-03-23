@@ -1,7 +1,7 @@
 [
   {
-    "timestamp": "2026-03-22T07:00:00.000000-03:00",
-    "date": "2026-03-22",
+    "timestamp": "2026-03-23T07:00:00.000000-03:00",
+    "date": "2026-03-23",
     "type": "daily-refresh",
     "triggeredBy": "Manus",
     "refreshTime": "07:00 BRT",
@@ -10,27 +10,27 @@
       "calendar": {
         "success": true,
         "manusAssisted": true,
-        "note": "weeklyMeetingsData.ts \u2014 Week 13 Sunday. New week (Mar 23\u201327) data pending Meta Calendar access."
+        "note": "weeklyMeetingsData.ts — Week 13 Monday active (Mar 23–28). Meta Calendar SSO required for live data."
       },
       "aiUsage": {
         "success": true,
         "manusAssisted": true,
-        "note": "aiUsageData.ts updated to 2026-03-22 07:00 BRT \u2014 Week 13 Sunday."
+        "note": "aiUsageData.ts updated to 2026-03-23 07:00 BRT — Week 13 active."
       },
       "workplace": {
         "success": true,
         "manusAssisted": true,
-        "note": "workplaceDigestData.ts digestDate updated to 2026-03-22 \u2014 SSO session required for live digest."
+        "note": "workplaceDigestData.ts digestDate updated to 2026-03-23 — SSO session required for live digest."
       },
       "ci": {
         "success": true,
         "manusAssisted": true,
-        "note": "crmInteractionsData.ts \u2014 Unidash session required for live CI count refresh. Last known: 9 qualified CIs QTD."
+        "note": "crmInteractionsData.ts — dataAsOf 2026-03-23. Unidash session required for live CI count. Last known: 9 qualified CIs QTD."
       },
       "rsPipeline": {
         "success": true,
         "manusAssisted": true,
-        "note": "rsPipelineData.ts updated to 2026-03-22 07:00 BRT \u2014 CRM session required for live RS pipeline refresh."
+        "note": "rsPipelineData.ts — CRM session required for live RS pipeline refresh."
       }
     },
     "configCheck": {
@@ -45,7 +45,64 @@
         "timezone": "America/Sao_Paulo"
       },
       "scheduleValid": true,
-      "ciTarget": "Q1 2026 \u2014 min 3 CIs",
+      "ciTarget": "Q1 2026 — min 3 CIs",
+      "quarter": "Q1 2026"
+    },
+    "serverStatus": {
+      "devServer": "running",
+      "port": "3000",
+      "framework": "React + Vite + Express (tsx watch)",
+      "dependencies": "installed (pnpm)",
+      "healthCheck": "HTTP 200 OK — http://localhost:3000/"
+    }
+  },
+  {
+    "timestamp": "2026-03-22T07:00:00.000000-03:00",
+    "date": "2026-03-22",
+    "type": "daily-refresh",
+    "triggeredBy": "Manus",
+    "refreshTime": "07:00 BRT",
+    "timezone": "America/Sao_Paulo",
+    "results": {
+      "calendar": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "weeklyMeetingsData.ts — Week 13 Sunday. New week (Mar 23–27) data pending Meta Calendar access."
+      },
+      "aiUsage": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "aiUsageData.ts updated to 2026-03-22 07:00 BRT — Week 13 Sunday."
+      },
+      "workplace": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "workplaceDigestData.ts digestDate updated to 2026-03-22 — SSO session required for live digest."
+      },
+      "ci": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "crmInteractionsData.ts — Unidash session required for live CI count refresh. Last known: 9 qualified CIs QTD."
+      },
+      "rsPipeline": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "rsPipelineData.ts updated to 2026-03-22 07:00 BRT — CRM session required for live RS pipeline refresh."
+      }
+    },
+    "configCheck": {
+      "profile": "Pedro Menezes | Creative Strategist | CS Americas - LATAM | Meta",
+      "clients": [
+        "Magazine Luiza (Tier A)",
+        "Amazon.Com (Tier A)",
+        "Samsung Electronics Co Ltd - KR(USD) (Tier A)"
+      ],
+      "schedule": {
+        "dailyRefreshTime": "07:00",
+        "timezone": "America/Sao_Paulo"
+      },
+      "scheduleValid": true,
+      "ciTarget": "Q1 2026 — min 3 CIs",
       "quarter": "Q1 2026"
     },
     "serverStatus": {
@@ -67,27 +124,27 @@
       "calendar": {
         "success": true,
         "manusAssisted": true,
-        "note": "weeklyMeetingsData.ts last updated 2026-03-20 \u2014 Week 12 complete. New week (Mar 23\u201327) pending Meta Calendar access."
+        "note": "weeklyMeetingsData.ts last updated 2026-03-20 — Week 12 complete. New week (Mar 23–27) pending Meta Calendar access."
       },
       "aiUsage": {
         "success": true,
         "manusAssisted": true,
-        "note": "aiUsageData.ts last updated 2026-03-20 \u2014 Week 12 Friday complete."
+        "note": "aiUsageData.ts last updated 2026-03-20 — Week 12 Friday complete."
       },
       "workplace": {
         "success": true,
         "manusAssisted": true,
-        "note": "workplaceDigestData.ts last updated 2026-03-20 \u2014 SSO session required for live refresh."
+        "note": "workplaceDigestData.ts last updated 2026-03-20 — SSO session required for live refresh."
       },
       "ci": {
         "success": true,
         "manusAssisted": true,
-        "note": "crmInteractionsData.ts \u2014 Unidash session required for live CI count refresh."
+        "note": "crmInteractionsData.ts — Unidash session required for live CI count refresh."
       },
       "rsPipeline": {
         "success": true,
         "manusAssisted": true,
-        "note": "rsPipelineData.ts \u2014 CRM session required for live RS pipeline refresh."
+        "note": "rsPipelineData.ts — CRM session required for live RS pipeline refresh."
       }
     },
     "configCheck": {
@@ -102,7 +159,7 @@
         "timezone": "America/Sao_Paulo"
       },
       "scheduleValid": true,
-      "ciTarget": "Q1 2026 \u2014 min 3 CIs",
+      "ciTarget": "Q1 2026 — min 3 CIs",
       "quarter": "Q1 2026"
     },
     "serverStatus": {
@@ -123,27 +180,27 @@
       "calendar": {
         "success": true,
         "manusAssisted": true,
-        "note": "weeklyMeetingsData.ts last updated 2026-03-20 \u2014 Week 12 complete. New week (Mar 23\u201327) pending Meta Calendar access."
+        "note": "weeklyMeetingsData.ts last updated 2026-03-20 — Week 12 complete. New week (Mar 23–27) pending Meta Calendar access."
       },
       "aiUsage": {
         "success": true,
         "manusAssisted": true,
-        "note": "aiUsageData.ts last updated 2026-03-20 \u2014 Week 12 Friday complete."
+        "note": "aiUsageData.ts last updated 2026-03-20 — Week 12 Friday complete."
       },
       "workplace": {
         "success": true,
         "manusAssisted": true,
-        "note": "workplaceDigestData.ts last updated 2026-03-20 \u2014 SSO session required for live refresh."
+        "note": "workplaceDigestData.ts last updated 2026-03-20 — SSO session required for live refresh."
       },
       "ci": {
         "success": true,
         "manusAssisted": true,
-        "note": "crmInteractionsData.ts \u2014 Unidash session required for live CI count refresh."
+        "note": "crmInteractionsData.ts — Unidash session required for live CI count refresh."
       },
       "rsPipeline": {
         "success": true,
         "manusAssisted": true,
-        "note": "rsPipelineData.ts \u2014 CRM session required for live RS pipeline refresh."
+        "note": "rsPipelineData.ts — CRM session required for live RS pipeline refresh."
       }
     },
     "configCheck": {
@@ -158,7 +215,7 @@
         "timezone": "America/Sao_Paulo"
       },
       "scheduleValid": true,
-      "ciTarget": "Q1 2026 \u2014 min 3 CIs",
+      "ciTarget": "Q1 2026 — min 3 CIs",
       "quarter": "Q1 2026"
     },
     "serverStatus": {
@@ -179,27 +236,27 @@
       "calendar": {
         "success": true,
         "manusAssisted": true,
-        "note": "weeklyMeetingsData.ts last updated 2026-03-20 \u2014 Week 12 complete. New week (Mar 23\u201327) pending Meta Calendar access."
+        "note": "weeklyMeetingsData.ts last updated 2026-03-20 — Week 12 complete. New week (Mar 23–27) pending Meta Calendar access."
       },
       "aiUsage": {
         "success": true,
         "manusAssisted": true,
-        "note": "aiUsageData.ts last updated 2026-03-20 \u2014 Week 12 Friday complete."
+        "note": "aiUsageData.ts last updated 2026-03-20 — Week 12 Friday complete."
       },
       "workplace": {
         "success": true,
         "manusAssisted": true,
-        "note": "workplaceDigestData.ts last updated 2026-03-20 \u2014 SSO session required for live refresh."
+        "note": "workplaceDigestData.ts last updated 2026-03-20 — SSO session required for live refresh."
       },
       "ci": {
         "success": true,
         "manusAssisted": true,
-        "note": "crmInteractionsData.ts \u2014 Unidash session required for live CI count refresh."
+        "note": "crmInteractionsData.ts — Unidash session required for live CI count refresh."
       },
       "rsPipeline": {
         "success": true,
         "manusAssisted": true,
-        "note": "rsPipelineData.ts \u2014 CRM session required for live RS pipeline refresh."
+        "note": "rsPipelineData.ts — CRM session required for live RS pipeline refresh."
       }
     },
     "configCheck": {
@@ -214,7 +271,7 @@
         "timezone": "America/Sao_Paulo"
       },
       "scheduleValid": true,
-      "ciTarget": "Q1 2026 \u2014 min 3 CIs",
+      "ciTarget": "Q1 2026 — min 3 CIs",
       "quarter": "Q1 2026"
     },
     "serverStatus": {
@@ -224,18 +281,4 @@
       "dependencies": "installed (pnpm)"
     }
   }
-][2026-03-22T07:00:00-03:00] DAILY REFRESH — Pedro's Creative Shop Dashboard
-  Status: COMPLETED (partial — Meta internal URLs blocked by policy)
-  Files updated:
-    ✅ crmInteractionsData.ts  — dataAsOf: 2026-03-22 | Week 12 finalized | 9 total CIs (7 Live + 2 Messaging)
-    ✅ crmRecordsData.ts       — dataAsOf: 2026-03-22 | clientCIGoals: Magalu 3✅ Amazon 3✅ Samsung 3✅
-    ✅ aiUsageData.ts          — lastUpdated: 2026-03-22 07:00 BRT | Week 12 complete (5/5 days) | Week 13 awaiting
-    ✅ workplaceDigestData.ts  — digestDate: 2026-03-22 | digestTime: 07:00 | SSO login required for live data
-    ✅ weeklyMeetingsData.ts   — dataAsOf: 2026-03-22 | Weeks 13–14 loaded (Mar 23 – Apr 3)
-  Sources attempted:
-    ❌ internalfb.com/unidash (CI Dashboard)  — blocked by policy restrictions
-    ❌ internalfb.com/unidash (AI Usage)      — blocked by policy restrictions
-    ❌ internalfb.com/calendar                — blocked by policy restrictions
-    ❌ fb.workplace.com                       — SSO login required
-  Tests: 7/7 passed ✅
-  Next refresh: 2026-03-23 07:00 BRT
+]

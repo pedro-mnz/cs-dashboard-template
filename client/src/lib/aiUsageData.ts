@@ -139,6 +139,6 @@ export const aiUsageSummary = {
   topPillar: "",
   quarter: "Q1 2026",
   salesRep: "Pedro Menezes",
-  lastUpdated: "2026-03-22 07:00 BRT",
+  lastUpdated: "2026-03-23 07:00 BRT",
   sourceUrl: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage",
 };

@@ -131,7 +131,7 @@ export const ciSummary = {
     "amazon.com": crmInteractions.filter(ci => ci.clientId === "amazon.com").length,
     "samsung-electronics-co-ltd---kr(usd)": crmInteractions.filter(ci => ci.clientId === "samsung-electronics-co-ltd---kr(usd)").length,
   },
-  dataAsOf: "2026-03-22",
+  dataAsOf: "2026-03-23",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
 };
 
@@ -140,7 +140,7 @@ export const crmSummary = {
   totalQualifiedCIs: crmInteractions.filter(ci => ci.isQualified).length,
   totalCIs: crmInteractions.length,
   quarter: "Q1 2026",
-  dataAsOfDate: "2026-03-22",
+  dataAsOfDate: "2026-03-23",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
 };
 
