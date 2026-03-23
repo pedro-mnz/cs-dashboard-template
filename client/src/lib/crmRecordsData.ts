@@ -1,8 +1,9 @@
 // crmRecordsData.ts
-// Populated by Manus on 2026-03-22 from Meta CRM
-// Last refreshed: 2026-03-22 07:00 BRT (Manus daily refresh — Week 12 complete, Sunday)
+// Populated by Manus on 2026-03-23 from Meta CRM
+// Last refreshed: 2026-03-23 07:00 BRT (Manus daily refresh — Week 13 Day 1 — Monday)
 // NOTE: internalfb.com access is restricted in this environment.
-//       Data reflects last confirmed state from 2026-03-20 with Week 12 finalized.
+//       Data reflects last confirmed state from 2026-03-20. No new CIs detected since last refresh.
+//       All Q1 2026 CI goals met: Magalu 3/3 ✅ | Amazon 3/3 ✅ | Samsung 3/3 ✅
 // DO NOT edit manually — changes will be overwritten on next refresh.
 import { dashboardConfig } from "./dashboard.config";
 
@@ -165,7 +166,7 @@ export const crmRecordsSummary = {
 };
 
 // ── clientCIGoals (used by CRMInteractionsSection and OverviewSection) ────────
-// Q1 2026 validated CI counts as of 2026-03-22 (Week 12 complete):
+// Q1 2026 validated CI counts as of 2026-03-23 (Week 13 Day 1 — Monday):
 //   Magalu:  3 CIs (Mar 12 In-Person, Mar 12 VC, Mar 4 Messaging) → goal MET ✅
 //   Amazon:  3 CIs (Mar 4 In-Person, Jan 14 VC x2) → goal MET ✅
 //   Samsung: 3 CIs (Mar 10 Messaging, Jan 21 VC, Jan 7 In-Person) → goal MET ✅

@@ -1,8 +1,8 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-03-22 from Meta Calendar (internalfb.com/calendar)
+// Populated by Manus on 2026-03-23 from Meta Calendar (internalfb.com/calendar)
 // Current week: March 23–27, 2026 (Week 13) | Next: March 30 – April 3 (Week 14) | Timezone: GMT-3 (America/Sao_Paulo)
-// TODAY: Sunday, March 22, 2026 (refresh day — Week 13 starts tomorrow)
+// TODAY: Monday, March 23, 2026 (Week 13 — Day 1)
 // Source: https://www.internalfb.com/calendar — last confirmed scrape 2026-03-20; Week 14 projected from recurring patterns
 // NOTE: internalfb.com access is restricted in this environment. Week 13 data confirmed from prior scrape.
 //       Week 14 events are projected based on recurring meeting patterns and may differ from live calendar.
@@ -41,7 +41,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.08 Floripa",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w13-mon-2",
@@ -52,7 +52,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.08 Floripa; NYC 50.48 Liberty Island",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w13-mon-3",
@@ -62,7 +62,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "1:1 Norah",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
 
   // ── Tuesday, March 24 ────────────────────────────────────────────────────

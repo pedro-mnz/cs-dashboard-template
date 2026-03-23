@@ -1,11 +1,11 @@
 // aiUsageData.ts
-// Populated by Manus on 2026-03-22 from Unidash My AI Usage dashboard
+// Populated by Manus on 2026-03-23 from Unidash My AI Usage dashboard
 // Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
 // User: @pedromenezes (userId: 1084877300)
-// Last refreshed: 2026-03-22 07:00 BRT (Manus daily refresh — Week 13 Day 0 — Sunday, week starts Mon Mar 23)
+// Last refreshed: 2026-03-23 07:00 BRT (Manus daily refresh — Week 13 Day 1 — Monday Mar 23)
 // NOTE: internalfb.com access is restricted in this environment.
 //       Week 12 (Mar 16–20) is confirmed complete: 5/5 days used ✅
-//       Week 13 (Mar 23–27) is starting — awaiting first day of usage.
+//       Week 13 (Mar 23–27) is now in progress — Day 1 (Monday). Awaiting live usage confirmation.
 //       AI4P By Pillar breakdown is currently delayed due to S632317.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
@@ -30,9 +30,9 @@ export interface AIUsageWeek {
 }
 
 // Weekly AI usage history for Pedro Menezes (last 14 weeks)
-// Last refreshed: 2026-03-22 07:00 BRT (Sunday — Week 13 starting)
+// Last refreshed: 2026-03-23 07:00 BRT (Monday — Week 13 Day 1 in progress)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
-// Summary: ✅ Over L4+/7: 9 | ➡️ Not Applicable: 4 | ❌ Under: 1 | ⏳ Awaiting: 1
+// Summary: ✅ Over L4+/7: 9 | ➡️ Not Applicable: 4 | ❌ Under: 1 | ⏳ Awaiting: 1 (Week 13 in progress)
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
     year: 2026, week: 13, weekStarts: "2026-03-23",
@@ -125,9 +125,9 @@ export const aiFeatureUsage: AIFeatureUsage[] = [
 ];
 
 // Q1 2026 summary stats from Unidash
-// Live data as of 2026-03-22: 9 weeks over goal (Weeks 3–7, 10–12, 51), 1 under, 4 N/A, 1 awaiting (Week 13)
+// Live data as of 2026-03-23: 9 weeks over goal (Weeks 3–7, 10–12, 51), 1 under, 4 N/A, 1 awaiting (Week 13)
 // Week 12 complete (Fri Day 5): Mon ✅ Tue ✅ Wed ✅ Thu ✅ Fri ✅ — 5/5 days used
-// Week 13 starting Mon Mar 23 — awaiting first usage data
+// Week 13 Day 1 (Mon Mar 23) — awaiting live usage confirmation from Unidash
 // AI4P By Pillar breakdown delayed due to S632317 — will be updated when resolved
 export const aiUsageSummary = {
   totalSessions: 0,
