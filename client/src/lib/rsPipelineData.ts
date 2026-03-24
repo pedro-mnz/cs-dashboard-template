@@ -1,8 +1,8 @@
 // RS Pipeline Data — sourced from Unidash Individual Opportunities CSV export
 // Source: fburl.com/datainsights/x5oismt6 | Filtered: cs_ics = Pedro Menezes | Date: 2026-03-20
-// Last refreshed: 2026-03-23 10:07 BRT (Manus daily refresh — Week 13 Day 1, Monday)
+// Last refreshed: 2026-03-24 07:00 BRT (Manus daily refresh — Week 13 Day 2, Tuesday)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
-//       Pipeline data reflects last confirmed state from 2026-03-20. No stage changes expected over weekend.
+//       Pipeline data reflects last confirmed state from 2026-03-20. No stage changes confirmed since last refresh.
 
 export type RSStage = "discovery" | "pitching" | "scoping" | "committed" | "actioned" | "partial" | "adopted" | "closed";
 
@@ -277,7 +277,7 @@ export const portfolioARSummary = {
   accruedARLastQuarter: 480000,
   lastQuarterLabel: "Q4 2025",
   topOpportunity: "Magazine Luiza — $1.33M AR Headroom",
-  dataAsOf: "2026-03-23",
-  lastRefreshed: "2026-03-23 10:07 BRT",
-  lastUpdated: "2026-03-23 10:07 BRT",
+  dataAsOf: "2026-03-24",
+  lastRefreshed: "2026-03-24 07:00 BRT",
+  lastUpdated: "2026-03-24 07:00 BRT",
 };
