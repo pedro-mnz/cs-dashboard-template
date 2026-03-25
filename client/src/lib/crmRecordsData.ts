@@ -1,6 +1,6 @@
 // crmRecordsData.ts
 // Populated by Manus on 2026-03-25 from Meta CRM
-// Last refreshed: 2026-03-25 07:03 BRT (Manus daily refresh — Week 13 Day 3, Wednesday)
+// Last refreshed: 2026-03-25 10:05 BRT (Manus daily refresh — Week 13 Day 3, Wednesday)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
 //       Data reflects last confirmed state from 2026-03-20 with Week 12 finalized.
 //       No new CIs confirmed since last refresh. Week 13 Day 3 in progress.
@@ -163,7 +163,7 @@ export const crmRecordsSummary = {
   topClient: topClientName,
   dataAsOf: "2026-03-25",
   sourceUrl: dashboardConfig.crm?.ciUrl || dashboardConfig.unidash.ciUrl || "",
-  lastUpdated: "2026-03-25 07:03 BRT",
+  lastUpdated: "2026-03-25 10:05 BRT",
 };
 
 // ── clientCIGoals (used by CRMInteractionsSection and OverviewSection) ────────

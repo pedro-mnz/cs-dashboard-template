@@ -1,7 +1,7 @@
 // crmInteractionsData.ts
 // Populated by Manus on 2026-03-25 from Meta CRM (internalfb.com/crm/client_interactions)
 // Filters: Participant in BoB + This Quarter (Q1 2026) + Is Qualified + Participant = Pedro Menezes
-// Last refreshed: 2026-03-25 07:03 BRT (Manus daily refresh — Week 13 Day 3, Wednesday)
+// Last refreshed: 2026-03-25 10:05 BRT (Manus daily refresh — Week 13 Day 3, Wednesday)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
 //       Data reflects last confirmed state from 2026-03-20 with Week 12 finalized.
 //       No new CIs confirmed since last refresh. Week 13 Day 3 in progress.
@@ -134,7 +134,7 @@ export const ciSummary = {
   },
   dataAsOf: "2026-03-25",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
-  lastUpdated: "2026-03-25 07:03 BRT",
+  lastUpdated: "2026-03-25 10:05 BRT",
 };
 
 // ── crmSummary (used by CRMInteractionsSection) ──────────────────────────────────────────────────
@@ -144,7 +144,7 @@ export const crmSummary = {
   quarter: "Q1 2026",
   dataAsOfDate: "2026-03-25",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
-  lastUpdated: "2026-03-25 07:03 BRT",
+  lastUpdated: "2026-03-25 10:05 BRT",
 };
 
 // ── crmCoverage (used by CRMInteractionsSection — Coverage Deep Dive table) ──
@@ -169,7 +169,7 @@ export const crmCoverage = {
   pctToInPersonGoal: 15,
   pitchedCIsWithBDM: 3,
   qualifyingInteractionPerClient: "3.0",
-  lastUpdated: "2026-03-25 07:03 BRT",
+  lastUpdated: "2026-03-25 10:05 BRT",
 };
 
 // ── topicWeeks (weekly CI breakdown by topic, used for bar chart) ─────────────
