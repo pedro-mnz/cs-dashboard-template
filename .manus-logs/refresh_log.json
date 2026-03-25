@@ -10,38 +10,38 @@
       "aiUsage": {
         "success": true,
         "manusAssisted": true,
-        "note": "aiUsageData.ts updated to 2026-03-23 10:07 BRT \u2014 Week 13 Day 1 (Mon). Week 12 confirmed 5/5 days. Week 13 awaiting first usage data.",
-        "accessStatus": "BLOCKED \u2014 internalfb.com sandbox policy restriction"
+        "note": "aiUsageData.ts updated to 2026-03-23 10:07 BRT — Week 13 Day 1 (Mon). Week 12 confirmed 5/5 days. Week 13 awaiting first usage data.",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
       },
       "ciDashboard": {
         "success": true,
         "manusAssisted": true,
-        "note": "crmInteractionsData.ts updated to 2026-03-23 10:07 BRT \u2014 9 qualified CIs QTD, all 3 clients at goal (3/3 each).",
-        "accessStatus": "BLOCKED \u2014 internalfb.com sandbox policy restriction"
+        "note": "crmInteractionsData.ts updated to 2026-03-23 10:07 BRT — 9 qualified CIs QTD, all 3 clients at goal (3/3 each).",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
       },
       "crmRecords": {
         "success": true,
         "manusAssisted": true,
-        "note": "crmRecordsData.ts updated to 2026-03-23 10:07 BRT \u2014 9 records, dataAsOf 2026-03-23.",
-        "accessStatus": "BLOCKED \u2014 internalfb.com sandbox policy restriction"
+        "note": "crmRecordsData.ts updated to 2026-03-23 10:07 BRT — 9 records, dataAsOf 2026-03-23.",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
       },
       "rsPipeline": {
         "success": true,
         "manusAssisted": true,
-        "note": "rsPipelineData.ts updated to 2026-03-23 10:07 BRT \u2014 Pipeline unchanged over weekend. lastRefreshed updated.",
-        "accessStatus": "BLOCKED \u2014 internalfb.com sandbox policy restriction"
+        "note": "rsPipelineData.ts updated to 2026-03-23 10:07 BRT — Pipeline unchanged over weekend. lastRefreshed updated.",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
       },
       "calendar": {
         "success": true,
         "manusAssisted": true,
-        "note": "weeklyMeetingsData.ts updated to 2026-03-23 10:07 BRT \u2014 Mon Mar 23 marked isToday:true (3 meetings: 1:1 Bruna 9AM, Global ABI 12:30PM, 1:1 Norah 2PM).",
-        "accessStatus": "BLOCKED \u2014 internalfb.com sandbox policy restriction"
+        "note": "weeklyMeetingsData.ts updated to 2026-03-23 10:07 BRT — Mon Mar 23 marked isToday:true (3 meetings: 1:1 Bruna 9AM, Global ABI 12:30PM, 1:1 Norah 2PM).",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
       },
       "workplace": {
         "success": false,
         "manusAssisted": true,
-        "note": "workplaceDigestData.ts updated to 2026-03-23 10:07 BRT \u2014 Workplace SSO session required. digestDate/digestTime updated. Pedro must re-authenticate for live data.",
-        "accessStatus": "SSO LOGIN REQUIRED \u2014 fb.workplace.com session expired"
+        "note": "workplaceDigestData.ts updated to 2026-03-23 10:07 BRT — Workplace SSO session required. digestDate/digestTime updated. Pedro must re-authenticate for live data.",
+        "accessStatus": "SSO LOGIN REQUIRED — fb.workplace.com session expired"
       }
     },
     "configCheck": {
@@ -58,8 +58,8 @@
         "timezone": "America/Sao_Paulo"
       },
       "scheduleValid": true,
-      "ciTarget": "Q1 2026 \u2014 min 3 CIs per client",
-      "ciStatus": "ALL GOALS MET \u2014 Magalu 3/3, Amazon 3/3, Samsung 3/3",
+      "ciTarget": "Q1 2026 — min 3 CIs per client",
+      "ciStatus": "ALL GOALS MET — Magalu 3/3, Amazon 3/3, Samsung 3/3",
       "quarter": "Q1 2026"
     },
     "gitStatus": {
@@ -68,6 +68,82 @@
       "remote": "pedro-mnz/cs-dashboard-template",
       "branch": "main",
       "commitHash": "9008cff"
+    }
+  },
+  {
+    "timestamp": "2026-03-25T07:09:03.198750-03:00",
+    "date": "2026-03-25",
+    "type": "daily-refresh",
+    "triggeredBy": "Manus",
+    "refreshTime": "07:03 BRT",
+    "timezone": "America/Sao_Paulo",
+    "results": {
+      "calendar": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "weeklyMeetingsData.ts updated to 2026-03-25 07:03 BRT — Wed Mar 25 marked isToday:true (2 events: Focus Time 2:30PM, CS BR Team Meeting 4:30PM @ SAO3732.09 Largo da Batata).",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
+      },
+      "aiUsage": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "aiUsageData.ts updated to 2026-03-25 07:03 BRT — Week 13 Day 3 (Wed). Mon ✅ Tue ✅ confirmed; Wed in progress. Week 12 confirmed 5/5 days.",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
+      },
+      "ciDashboard": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "crmInteractionsData.ts updated to 2026-03-25 07:03 BRT — 9 qualified CIs QTD, all 3 clients at goal (3/3 each). No new CIs confirmed.",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
+      },
+      "crmRecords": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "crmRecordsData.ts updated to 2026-03-25 07:03 BRT — dataAsOf updated. Pipeline unchanged.",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
+      },
+      "rsPipeline": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "rsPipelineData.ts updated to 2026-03-25 07:03 BRT — Pipeline unchanged since 2026-03-20. lastRefreshed updated.",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
+      },
+      "workplace": {
+        "success": false,
+        "manusAssisted": true,
+        "note": "workplaceDigestData.ts — Workplace SSO session required. Pedro must re-authenticate for live digest data.",
+        "accessStatus": "SSO LOGIN REQUIRED — fb.workplace.com session expired"
+      }
+    },
+    "configCheck": {
+      "profile": "Pedro Menezes | Creative Strategist | CS Americas - LATAM | Meta",
+      "fbid": "1084877300",
+      "clients": [
+        "Magazine Luiza (Tier A)",
+        "Amazon.Com (Tier A)",
+        "Samsung Electronics Co Ltd - KR(USD) (Tier A)"
+      ],
+      "schedule": {
+        "dailyRefreshTime": "07:00",
+        "timezone": "America/Sao_Paulo"
+      },
+      "scheduleValid": true,
+      "ciTarget": "Q1 2026 — min 3 CIs per client",
+      "ciStatus": "ALL GOALS MET — Magalu 3/3, Amazon 3/3, Samsung 3/3",
+      "quarter": "Q1 2026"
+    },
+    "serverStatus": {
+      "devServer": "running",
+      "port": "3000",
+      "framework": "React + Vite + Express (tsx watch)",
+      "httpStatus": "200 OK",
+      "dependencies": "installed (pnpm)"
+    },
+    "gitStatus": {
+      "committed": true,
+      "pushed": true,
+      "remote": "pedro-mnz/cs-dashboard-template",
+      "branch": "main"
     }
   }
 ]
