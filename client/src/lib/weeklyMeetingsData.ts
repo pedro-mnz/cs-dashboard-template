@@ -7,7 +7,7 @@
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
 //       Week 13 data confirmed from prior scrape. Today's meetings (Thu Mar 26) marked as isToday: true.
 //       Week 14 events are projected based on recurring meeting patterns and may differ from live calendar.
-// Last refreshed: 2026-03-26 07:30 BRT
+// Last refreshed: 2026-03-26 11:05 BRT
 // DO NOT edit manually — changes will be overwritten on next refresh.
 // ─────────────────────────────────────────────────────────────────────────────
 import { dashboardConfig } from "./dashboard.config";
@@ -287,7 +287,7 @@ export const weekSummary = {
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
   dataAsOf: "2026-03-26",
-  lastUpdated: "2026-03-26 07:30 BRT",
+  lastUpdated: "2026-03-26 11:05 BRT",
 };
 
 // Type styling
