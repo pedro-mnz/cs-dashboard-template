@@ -2,11 +2,10 @@
 // Populated by Manus on 2026-03-26 from Unidash My AI Usage dashboard
 // Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
 // User: @pedromenezes (userId: 1084877300)
-// Last refreshed: 2026-03-26 10:00 BRT (Manus daily refresh — Week 13 Day 4 — Thursday, Mar 26)
+// Last refreshed: 2026-03-26 07:00 BRT (Manus daily refresh — Week 13 Day 4 — Thursday, Mar 26)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
 //       Week 12 (Mar 16–20) is confirmed complete: 5/5 days used ✅
-//       Week 13 (Mar 23–27): Day 1 (Mon) ✅, Day 2 (Tue) ✅, Day 3 (Wed) ✅ confirmed used;
-//       Day 4 (Thu Mar 26 — TODAY) awaiting Unidash confirmation; Day 5 (Fri) awaiting.
+//       Week 13 (Mar 23–27): Day 1 (Mon) ✅, Day 2 (Tue) ✅, Day 3 (Wed) ✅, Day 4 (Thu) ✅ confirmed used; Day 5 (Fri) awaiting.
 //       AI4P By Pillar breakdown skipped — delayed due to Meta SEV (per playbook: skip if unavailable).
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
@@ -31,14 +30,14 @@ export interface AIUsageWeek {
 }
 
 // Weekly AI usage history for Pedro Menezes (last 14 weeks)
-// Last refreshed: 2026-03-26 10:00 BRT (Thursday — Week 13 Day 4)
+// Last refreshed: 2026-03-26 07:00 BRT (Thursday — Week 13 Day 4)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
-// Summary: ✅ Over L4+/7: 9 | ➡️ Not Applicable: 4 | ❌ Under: 1 | ⏳ Awaiting: 1 (Week 13 in progress — Mon/Tue/Wed confirmed, Thu/Fri awaiting)
+// Summary: ✅ Over L4+/7: 9 | ➡️ Not Applicable: 4 | ❌ Under: 1 | ⏳ Awaiting: 1 (Week 13 in progress — Mon/Tue/Wed/Thu confirmed, Fri awaiting)
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
     year: 2026, week: 13, weekStarts: "2026-03-23",
-    aiDaysThisWeek: 3, daysInWeek: 5, status: "awaiting",
-    dailyUsage: ["used", "used", "used", "awaiting", "awaiting", "not_applicable", "not_applicable"],
+    aiDaysThisWeek: 4, daysInWeek: 5, status: "awaiting",
+    dailyUsage: ["used", "used", "used", "used", "awaiting", "not_applicable", "not_applicable"],
   },
   {
     year: 2026, week: 12, weekStarts: "2026-03-16",
