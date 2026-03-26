@@ -2,7 +2,7 @@
 // Populated by Manus on 2026-03-26 from Unidash My AI Usage dashboard
 // Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
 // User: @pedromenezes (userId: 1084877300)
-// Last refreshed: 2026-03-26 07:00 BRT (Manus daily refresh — Week 13 Day 4 — Thursday, Mar 26)
+// Last refreshed: 2026-03-26 07:30 BRT (Manus daily refresh — Week 13 Day 4 — Thursday, Mar 26)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
 //       Week 12 (Mar 16–20) is confirmed complete: 5/5 days used ✅
 //       Week 13 (Mar 23–27): Day 1 (Mon) ✅, Day 2 (Tue) ✅, Day 3 (Wed) ✅, Day 4 (Thu) ✅ confirmed used; Day 5 (Fri) awaiting.
@@ -30,7 +30,7 @@ export interface AIUsageWeek {
 }
 
 // Weekly AI usage history for Pedro Menezes (last 14 weeks)
-// Last refreshed: 2026-03-26 07:00 BRT (Thursday — Week 13 Day 4)
+// Last refreshed: 2026-03-26 07:30 BRT (Thursday — Week 13 Day 4)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
 // Summary: ✅ Over L4+/7: 9 | ➡️ Not Applicable: 4 | ❌ Under: 1 | ⏳ Awaiting: 1 (Week 13 in progress — Mon/Tue/Wed/Thu confirmed, Fri awaiting)
 export const aiUsageWeeks: AIUsageWeek[] = [
