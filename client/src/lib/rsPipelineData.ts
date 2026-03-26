@@ -1,8 +1,8 @@
 // RS Pipeline Data — sourced from Unidash Individual Opportunities CSV export
 // Source: fburl.com/datainsights/x5oismt6 | Filtered: Specialist(s) Contributor(s): Pedro Menezes, Deployed from: 2026-01-01
-// Last refreshed: 2026-03-25 10:05 BRT (Manus daily refresh — Week 13 Day 3, Wednesday)
+// Last refreshed: 2026-03-26 07:08 BRT (Manus daily refresh — Week 13 Day 4, Thursday)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
-//       Pipeline data reflects last confirmed state from 2026-03-20. No stage changes confirmed since last refresh. Week 13 Day 3.
+//       Pipeline data reflects last confirmed state from 2026-03-20. No stage changes confirmed since last refresh. Week 13 Day 4.
 
 export type RSStage = "discovery" | "pitching" | "scoping" | "committed" | "actioned" | "partial" | "adopted" | "closed";
 

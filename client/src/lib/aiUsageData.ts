@@ -1,11 +1,11 @@
 // aiUsageData.ts
-// Populated by Manus on 2026-03-25 from Unidash My AI Usage dashboard
+// Populated by Manus on 2026-03-26 from Unidash My AI Usage dashboard
 // Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
 // User: @pedromenezes (userId: 1084877300)
-// Last refreshed: 2026-03-25 10:05 BRT (Manus daily refresh — Week 13 Day 3 — Wednesday, Mar 25)
+// Last refreshed: 2026-03-26 07:08 BRT (Manus daily refresh — Week 13 Day 4 — Thursday, Mar 26)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
 //       Week 12 (Mar 16–20) is confirmed complete: 5/5 days used ✅
-//       Week 13 (Mar 23–27): Day 1 (Mon) ✅, Day 2 (Tue) ✅, Day 3 (Wed) ✅ confirmed used; Thu/Fri awaiting.
+//       Week 13 (Mar 23–27): Day 1 (Mon) ✅, Day 2 (Tue) ✅, Day 3 (Wed) ✅ confirmed used; Day 4 (Thu) awaiting Unidash confirmation.
 //       AI4P By Pillar breakdown skipped — delayed due to Meta SEV (per playbook: skip if unavailable).
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
@@ -30,9 +30,9 @@ export interface AIUsageWeek {
 }
 
 // Weekly AI usage history for Pedro Menezes (last 14 weeks)
-// Last refreshed: 2026-03-25 10:05 BRT (Wednesday — Week 13 Day 3)
+// Last refreshed: 2026-03-26 07:08 BRT (Thursday — Week 13 Day 4)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
-// Summary: ✅ Over L4+/7: 9 | ➡️ Not Applicable: 4 | ❌ Under: 1 | ⏳ Awaiting: 1 (Week 13 in progress — Wed confirmed)
+// Summary: ✅ Over L4+/7: 9 | ➡️ Not Applicable: 4 | ❌ Under: 1 | ⏳ Awaiting: 1 (Week 13 in progress — Mon/Tue/Wed confirmed, Thu awaiting)
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
     year: 2026, week: 13, weekStarts: "2026-03-23",
@@ -125,9 +125,9 @@ export const aiFeatureUsage: AIFeatureUsage[] = [
 ];
 
 // Q1 2026 summary stats from Unidash
-// Live data as of 2026-03-25 10:05 BRT: 9 weeks over goal (Weeks 3–7, 10–12, 51), 1 under, 4 N/A, 1 awaiting (Week 13)
+// Live data as of 2026-03-26 07:08 BRT: 9 weeks over goal (Weeks 3–7, 10–12, 51), 1 under, 4 N/A, 1 awaiting (Week 13)
 // Week 12 complete (Fri Day 5): Mon ✅ Tue ✅ Wed ✅ Thu ✅ Fri ✅ — 5/5 days used
-// Week 13: Mon ✅ Tue ✅ Wed ✅ confirmed used (3/5 days); Thu/Fri awaiting Unidash confirmation
+// Week 13: Mon ✅ Tue ✅ Wed ✅ confirmed used (3/5 days); Thu (today) awaiting Unidash confirmation; Fri awaiting
 // AI4P By Pillar breakdown skipped — delayed due to Meta SEV (per playbook: skip if unavailable)
 export const aiUsageSummary = {
   totalSessions: 0,
@@ -139,6 +139,6 @@ export const aiUsageSummary = {
   topPillar: "",
   quarter: "Q1 2026",
   salesRep: "Pedro Menezes",
-  lastUpdated: "2026-03-25 10:05 BRT",
+  lastUpdated: "2026-03-26 07:08 BRT",
   sourceUrl: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage",
 };

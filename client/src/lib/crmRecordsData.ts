@@ -1,9 +1,9 @@
 // crmRecordsData.ts
-// Populated by Manus on 2026-03-25 from Meta CRM
-// Last refreshed: 2026-03-25 10:05 BRT (Manus daily refresh — Week 13 Day 3, Wednesday)
+// Populated by Manus on 2026-03-26 from Meta CRM
+// Last refreshed: 2026-03-26 07:08 BRT (Manus daily refresh — Week 13 Day 4, Thursday)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
 //       Data reflects last confirmed state from 2026-03-20 with Week 12 finalized.
-//       No new CIs confirmed since last refresh. Week 13 Day 3 in progress.
+//       No new CIs confirmed since last refresh. Week 13 Day 4 (Thu) in progress.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 import { dashboardConfig } from "./dashboard.config";
 

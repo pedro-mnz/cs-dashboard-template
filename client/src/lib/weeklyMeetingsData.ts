@@ -1,13 +1,13 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-03-25 from Meta Calendar (internalfb.com/calendar)
+// Populated by Manus on 2026-03-26 from Meta Calendar (internalfb.com/calendar)
 // Current week: March 23–27, 2026 (Week 13) | Next: March 30 – April 3 (Week 14) | Timezone: GMT-3 (America/Sao_Paulo)
-// TODAY: Wednesday, March 25, 2026 (Week 13 Day 3)
+// TODAY: Thursday, March 26, 2026 (Week 13 Day 4)
 // Source: https://www.internalfb.com/calendar — last confirmed scrape 2026-03-20; Week 14 projected from recurring patterns
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
-//       Week 13 data confirmed from prior scrape. Today's meetings (Wed Mar 25) marked as isToday: true.
+//       Week 13 data confirmed from prior scrape. Today's meetings (Thu Mar 26) marked as isToday: true.
 //       Week 14 events are projected based on recurring meeting patterns and may differ from live calendar.
-// Last refreshed: 2026-03-25 10:05 BRT
+// Last refreshed: 2026-03-26 07:08 BRT
 // DO NOT edit manually — changes will be overwritten on next refresh.
 // ─────────────────────────────────────────────────────────────────────────────
 import { dashboardConfig } from "./dashboard.config";
@@ -90,7 +90,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
 
-  // ── Wednesday, March 25 — TODAY ─────────────────────────────────────────
+  // ── Wednesday, March 25 ─────────────────────────────────────────────────
   {
     id: "w13-wed-1",
     date: "2026-03-25",
@@ -99,7 +99,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Focus Time",
     type: "focus",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
     id: "w13-wed-2",
@@ -110,10 +110,10 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.09 Largo da Batata",
     type: "internal",
     client: null,
-    isToday: true,
+    isToday: false,
   },
 
-  // ── Thursday, March 26 ───────────────────────────────────────────────────
+  // ── Thursday, March 26 — TODAY ───────────────────────────────────────────
   {
     id: "w13-thu-1",
     date: "2026-03-26",
@@ -123,7 +123,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.08 Laerte Coutinho",
     type: "client",
     client: "samsung-electronics-co-ltd---kr(usd)",
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w13-thu-2",
@@ -134,7 +134,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.08 Laerte Coutinho",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
 
   // ── Friday, March 27 ─────────────────────────────────────────────────────
@@ -286,8 +286,8 @@ export const weekSummary = {
   internalMeetings: weeklyMeetings.filter(e => e.type === "internal").length,
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
-  dataAsOf: "2026-03-25",
-  lastUpdated: "2026-03-25 10:05 BRT",
+  dataAsOf: "2026-03-26",
+  lastUpdated: "2026-03-26 07:08 BRT",
 };
 
 // Type styling
