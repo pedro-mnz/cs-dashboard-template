@@ -7,7 +7,7 @@
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
 //       Week 13 data confirmed from prior scrape. Today's meetings (Thu Mar 26) marked as isToday: true.
 //       Week 14 events are projected based on recurring meeting patterns and may differ from live calendar.
-// Last refreshed: 2026-03-26 07:08 BRT
+// Last refreshed: 2026-03-26 10:00 BRT
 // DO NOT edit manually — changes will be overwritten on next refresh.
 // ─────────────────────────────────────────────────────────────────────────────
 import { dashboardConfig } from "./dashboard.config";
@@ -33,7 +33,7 @@ export const weeklyMeetings: CalendarEvent[] = [
   // WEEK 13 — March 23–27, 2026
   // ════════════════════════════════════════════════════════════════════════
 
-  // ── Monday, March 23 ─────────────────────────────────────────────────────
+  // ── Monday, March 23 (past) ───────────────────────────────────────────────
   {
     id: "w13-mon-1",
     date: "2026-03-23",
@@ -67,7 +67,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
 
-  // ── Tuesday, March 24 ──────────────────────────────────────────────────
+  // ── Tuesday, March 24 (past) ───────────────────────────────────────────
   {
     id: "w13-tue-1",
     date: "2026-03-24",
@@ -90,7 +90,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
 
-  // ── Wednesday, March 25 ─────────────────────────────────────────────────
+  // ── Wednesday, March 25 (past) ────────────────────────────────────────────
   {
     id: "w13-wed-1",
     date: "2026-03-25",
@@ -137,7 +137,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: true,
   },
 
-  // ── Friday, March 27 ─────────────────────────────────────────────────────
+  // ── Friday, March 27 (upcoming) ──────────────────────────────────────────
   {
     id: "w13-fri-1",
     date: "2026-03-27",
@@ -287,7 +287,7 @@ export const weekSummary = {
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
   dataAsOf: "2026-03-26",
-  lastUpdated: "2026-03-26 07:08 BRT",
+  lastUpdated: "2026-03-26 10:00 BRT",
 };
 
 // Type styling

@@ -1,10 +1,11 @@
 // crmInteractionsData.ts
 // Populated by Manus on 2026-03-26 from Meta CRM (internalfb.com/crm/client_interactions)
 // Filters: Participant in BoB + This Quarter (Q1 2026) + Is Qualified + Participant = Pedro Menezes
-// Last refreshed: 2026-03-26 07:08 BRT (Manus daily refresh — Week 13 Day 4, Thursday)
+// Last refreshed: 2026-03-26 10:00 BRT (Manus daily refresh — Week 13 Day 4, Thursday)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
 //       Data reflects last confirmed state from 2026-03-20 with Week 12 finalized.
 //       No new CIs confirmed since last refresh. Week 13 Day 4 (Thu) in progress.
+//       Total QTD: 9 qualified CIs (7 live/VC/in-person + 2 messaging).
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
 export interface CIRecord {
@@ -132,9 +133,9 @@ export const ciSummary = {
     "amazon.com": crmInteractions.filter(ci => ci.clientId === "amazon.com").length,
     "samsung-electronics-co-ltd---kr(usd)": crmInteractions.filter(ci => ci.clientId === "samsung-electronics-co-ltd---kr(usd)").length,
   },
-  dataAsOf: "2026-03-25",
+  dataAsOf: "2026-03-26",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
-  lastUpdated: "2026-03-25 10:05 BRT",
+  lastUpdated: "2026-03-26 10:00 BRT",
 };
 
 // ── crmSummary (used by CRMInteractionsSection) ──────────────────────────────────────────────────
@@ -142,13 +143,13 @@ export const crmSummary = {
   totalQualifiedCIs: crmInteractions.filter(ci => ci.isQualified).length,
   totalCIs: crmInteractions.length,
   quarter: "Q1 2026",
-  dataAsOfDate: "2026-03-25",
+  dataAsOfDate: "2026-03-26",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
-  lastUpdated: "2026-03-25 10:05 BRT",
+  lastUpdated: "2026-03-26 10:00 BRT",
 };
 
 // ── crmCoverage (used by CRMInteractionsSection — Coverage Deep Dive table) ──
-// QTD metrics as of 2026-03-25 (Week 13 Day 3 — Wednesday)
+// QTD metrics as of 2026-03-26 (Week 13 Day 4 — Thursday)
 // Live CIs: Netshoes/Magalu (Mar 12 In-Person), Magalu (Mar 12 VC), Samsung (Mar 10 Messaging→Live),
 //           Amazon (Mar 4 In-Person), Magalu (Mar 4 Messaging→Live), Samsung (Jan 21 VC),
 //           Amazon (Jan 14 VC x2), Samsung (Jan 7 In-Person)
@@ -169,7 +170,7 @@ export const crmCoverage = {
   pctToInPersonGoal: 15,
   pitchedCIsWithBDM: 3,
   qualifyingInteractionPerClient: "3.0",
-  lastUpdated: "2026-03-25 10:05 BRT",
+  lastUpdated: "2026-03-26 10:00 BRT",
 };
 
 // ── topicWeeks (weekly CI breakdown by topic, used for bar chart) ─────────────
