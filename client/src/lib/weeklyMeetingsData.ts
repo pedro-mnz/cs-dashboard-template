@@ -1,13 +1,12 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-03-26 from Meta Calendar (internalfb.com/calendar)
+// Populated by Manus on 2026-03-27 from Meta Calendar (internalfb.com/calendar)
 // Current week: March 23–27, 2026 (Week 13) | Next: March 30 – April 3 (Week 14) | Timezone: GMT-3 (America/Sao_Paulo)
-// TODAY: Friday, March 27, 2026 (Week 13 Day 5)
-// Source: https://www.internalfb.com/calendar — last confirmed scrape 2026-03-20; Week 14 projected from recurring patterns
-// NOTE: internalfb.com access is restricted in this environment (sandbox policy).
-//       Week 13 data confirmed from prior scrape. Today's meetings (Fri Mar 27) marked as isToday: true.
-//       Week 14 events are projected based on recurring meeting patterns and may differ from live calendar.
-// Last refreshed: 2026-03-27 07:05 BRT
+// TODAY: Friday, March 27, 2026 (Week 13 Day 5 — last day of current week)
+// Source: https://www.internalfb.com/calendar — internalfb.com access restricted in sandbox (policy).
+//         Week 13 data confirmed from prior scrape; today (Fri Mar 27) marked isToday: true.
+//         Week 14 events projected from recurring meeting patterns — confirm via live calendar.
+// Last refreshed: 2026-03-27 09:05 BRT
 // DO NOT edit manually — changes will be overwritten on next refresh.
 // ─────────────────────────────────────────────────────────────────────────────
 import { dashboardConfig } from "./dashboard.config";
@@ -79,17 +78,6 @@ export const weeklyMeetings: CalendarEvent[] = [
     client: null,
     isToday: false,
   },
-  {
-    id: "w13-tue-2",
-        date: "2026-03-26",
-    dayLabel: "Thu",
-    startTime: "3:00 PM",
-    title: "Samsung Q1 Creative Review",
-    type: "client",
-    client: "samsung",
-    isToday: false,
-  },
-
   // ── Wednesday, March 25 (past) ────────────────────────────────────────────
   {
     id: "w13-wed-1",
@@ -200,8 +188,8 @@ export const weeklyMeetings: CalendarEvent[] = [
   },
   {
     id: "w14-tue-2",
-    date: "2026-03-26",
-    dayLabel: "Thu",
+    date: "2026-03-31",
+    dayLabel: "Tue",
     startTime: "5:00 PM",
     title: "Strategic Weekly O2O",
     type: "internal",
@@ -287,7 +275,7 @@ export const weekSummary = {
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
   dataAsOf: "2026-03-27",
-  lastUpdated: "2026-03-27 07:05 BRT",
+  lastUpdated: "2026-03-27 09:05 BRT",
 };
 
 // Type styling

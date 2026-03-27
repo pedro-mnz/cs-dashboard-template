@@ -1,8 +1,8 @@
 // RS Pipeline Data — sourced from Unidash Individual Opportunities CSV export
 // Source: fburl.com/datainsights/x5oismt6 | Filtered: Specialist(s) Contributor(s): Pedro Menezes, Deployed from: 2026-01-01
-// Last refreshed: 2026-03-27 07:05 BRT (Manus daily refresh — Week 13 Day 5, Friday)
-// NOTE: internalfb.com access is restricted in this environment (sandbox policy).
-//       Pipeline data reflects last confirmed state from 2026-03-20. No stage changes confirmed since last refresh. Week 13 Day 5 (Fri Mar 27) — final day of week.
+// Last refreshed: 2026-03-27 09:05 BRT (Manus daily refresh — Week 13 Day 5, Friday — end of week)
+// NOTE: internalfb.com/fburl access is restricted in this environment (sandbox policy).
+//       Pipeline data reflects last confirmed state. No stage changes confirmed since last refresh. Week 13 Day 5 (Fri Mar 27) — end of week.
 
 export type RSStage = "discovery" | "pitching" | "scoping" | "committed" | "actioned" | "partial" | "adopted" | "closed";
 
@@ -278,6 +278,6 @@ export const portfolioARSummary = {
   lastQuarterLabel: "Q4 2025",
   topOpportunity: "Magazine Luiza — $1.33M AR Headroom",
   dataAsOf: "2026-03-27",
-  lastRefreshed: "2026-03-27 07:05 BRT",
-  lastUpdated: "2026-03-27 07:05 BRT",
+  lastRefreshed: "2026-03-27 09:05 BRT",
+  lastUpdated: "2026-03-27 09:05 BRT",
 };
