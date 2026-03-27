@@ -1,9 +1,10 @@
 // crmRecordsData.ts
 // Populated by Manus on 2026-03-27 from Meta CRM
-// Last refreshed: 2026-03-27 09:05 BRT (Manus daily refresh — Week 13 Day 5, Friday — end of week)
+// Last refreshed: 2026-03-27 10:10 BRT (Manus daily refresh — Week 13 Day 5, Friday — end of week)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
 //       No new CIs added since last refresh. Week 13 Day 5 (Fri) — final day of week.
 //       clientCIGoals: Magalu=3 ✅, Amazon=3 ✅, Samsung=3 ✅ — all Q1 2026 quarterly goals MET.
+//       Unidash DCMP CI dashboard (Pedro FBID 498186, Q1 2026): qualifying counts confirmed unchanged.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 import { dashboardConfig } from "./dashboard.config";
 
@@ -163,7 +164,7 @@ export const crmRecordsSummary = {
   topClient: topClientName,
   dataAsOf: "2026-03-27",
   sourceUrl: dashboardConfig.crm?.ciUrl || dashboardConfig.unidash.ciUrl || "",
-  lastUpdated: "2026-03-27 09:05 BRT",
+  lastUpdated: "2026-03-27 10:10 BRT",
 };
 
 // ── clientCIGoals (used by CRMInteractionsSection and OverviewSection) ────────

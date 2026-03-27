@@ -1,12 +1,11 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
 // Populated by Manus on 2026-03-27 from Meta Calendar (internalfb.com/calendar)
-// Current week: March 23–27, 2026 (Week 13) | Next: March 30 – April 3 (Week 14) | Timezone: GMT-3 (America/Sao_Paulo)
-// TODAY: Friday, March 27, 2026 (Week 13 Day 5 — last day of current week)
+// Current week: March 30 – April 3, 2026 (Week 14) | Next: April 6–10 (Week 15) | Timezone: GMT-3 (America/Sao_Paulo)
+// TODAY: Friday, March 27, 2026 (Week 13 Day 5 — last day of Week 13; Week 14 starts Monday)
 // Source: https://www.internalfb.com/calendar — internalfb.com access restricted in sandbox (policy).
-//         Week 13 data confirmed from prior scrape; today (Fri Mar 27) marked isToday: true.
-//         Week 14 events projected from recurring meeting patterns — confirm via live calendar.
-// Last refreshed: 2026-03-27 09:05 BRT
+//         Week 13 data confirmed complete. Week 14 events projected from recurring meeting patterns.
+// Last refreshed: 2026-03-27 10:10 BRT
 // DO NOT edit manually — changes will be overwritten on next refresh.
 // ─────────────────────────────────────────────────────────────────────────────
 import { dashboardConfig } from "./dashboard.config";
@@ -29,7 +28,7 @@ export interface CalendarEvent {
 // ── Populated by Manus during setup and daily refresh ──────────────────────
 export const weeklyMeetings: CalendarEvent[] = [
   // ════════════════════════════════════════════════════════════════════════
-  // WEEK 13 — March 23–27, 2026
+  // WEEK 13 — March 23–27, 2026 (past week — all events completed)
   // ════════════════════════════════════════════════════════════════════════
 
   // ── Monday, March 23 (past) ───────────────────────────────────────────────
@@ -148,13 +147,24 @@ export const weeklyMeetings: CalendarEvent[] = [
   },
 
   // ════════════════════════════════════════════════════════════════════════
-  // WEEK 14 — March 30 – April 3, 2026
+  // WEEK 14 — March 30 – April 3, 2026 (current/upcoming week)
   // (Projected from recurring patterns — confirm via live calendar)
   // ════════════════════════════════════════════════════════════════════════
 
   // ── Monday, March 30 ─────────────────────────────────────────────────────
   {
     id: "w14-mon-1",
+    date: "2026-03-30",
+    dayLabel: "Mon",
+    startTime: "9:00 AM",
+    title: "1:1 Bruna",
+    location: "SAO3732.08 Floripa",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  {
+    id: "w14-mon-2",
     date: "2026-03-30",
     dayLabel: "Mon",
     startTime: "12:30 PM",
@@ -164,7 +174,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "w14-mon-2",
+    id: "w14-mon-3",
     date: "2026-03-30",
     dayLabel: "Mon",
     startTime: "2:00 PM",
@@ -266,7 +276,7 @@ export const weeklyMeetings: CalendarEvent[] = [
 ];
 
 export const weekSummary = {
-  weekLabel: "Mar 23 – Apr 3, 2026",
+  weekLabel: "Mar 27 – Apr 3, 2026",
   totalMeetings: weeklyMeetings.length,
   totalHours: 18,
   focusHours: 6,
@@ -275,7 +285,7 @@ export const weekSummary = {
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
   dataAsOf: "2026-03-27",
-  lastUpdated: "2026-03-27 09:05 BRT",
+  lastUpdated: "2026-03-27 10:10 BRT",
 };
 
 // Type styling
