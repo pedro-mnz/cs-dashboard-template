@@ -1,5 +1,86 @@
 [
   {
+    "timestamp": "2026-04-21T07:06:26-0300",
+    "date": "2026-04-21",
+    "type": "daily-refresh",
+    "triggeredBy": "Manus",
+    "refreshTime": "07:06 BRT",
+    "timezone": "America/Sao_Paulo",
+    "results": {
+      "calendar": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "weeklyMeetingsData.ts last updated 2026-04-20 07:00 BRT — Week 17 (Apr 20–24, 2026). Today is Tuesday Apr 21 (Week 17 Day 2). No live scrape available (internalfb.com sandbox policy restriction).",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
+      },
+      "aiUsage": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "aiUsageData.ts last updated 2026-04-20 07:00 BRT — Week 17 Day 7 (Sunday). No new Unidash data available (internalfb.com sandbox policy restriction). Timestamp confirmed current.",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
+      },
+      "ciDashboard": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "crmInteractionsData.ts last updated 2026-04-20 07:00 BRT — Q2 2026 CI tracking active. No live CRM access available (internalfb.com sandbox policy restriction).",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
+      },
+      "crmRecords": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "crmRecordsData.ts — dataAsOf confirmed. No new CRM records available (internalfb.com sandbox policy restriction).",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
+      },
+      "rsPipeline": {
+        "success": true,
+        "manusAssisted": true,
+        "note": "rsPipelineData.ts last refreshed 2026-03-27 09:05 BRT. No live RS pipeline access (internalfb.com sandbox policy restriction). Data reflects last confirmed state.",
+        "accessStatus": "BLOCKED — internalfb.com sandbox policy restriction"
+      },
+      "workplace": {
+        "success": false,
+        "manusAssisted": true,
+        "note": "workplaceDigestData.ts — Workplace SSO session required. Pedro must re-authenticate for live digest data.",
+        "accessStatus": "SSO LOGIN REQUIRED — fb.workplace.com session expired"
+      }
+    },
+    "configCheck": {
+      "profile": "Pedro Menezes | Creative Strategist | CS Americas - LATAM | Meta",
+      "fbid": "1084877300",
+      "employee_id": "498186",
+      "clients": [
+        "Magazine Luiza (Tier A)",
+        "Amazon.Com (Tier A)",
+        "Samsung Electronics Co Ltd - KR(USD) (Tier A)",
+        "L'Oréal SA (Tier A) — newly assigned Q2 2026"
+      ],
+      "schedule": {
+        "dailyRefreshTime": "07:00",
+        "timezone": "America/Sao_Paulo"
+      },
+      "scheduleValid": true,
+      "configChanges": "L'Oréal SA added as 4th Tier-A client (Q2 2026, previously under Jackeline Salomão). Q2 2026 active.",
+      "ciTarget": "Q2 2026 — min 3 CIs per client",
+      "quarter": "Q2 2026"
+    },
+    "serverStatus": {
+      "devServer": "running",
+      "port": "3000",
+      "framework": "React + Vite + Express (tsx watch)",
+      "httpStatus": "200 OK",
+      "dependencies": "installed (pnpm)",
+      "schedulerStatus": "ACTIVE — Daily auto-refresh 7:00 AM BRT (10:00 AM UTC)"
+    },
+    "gitStatus": {
+      "committed": false,
+      "pushed": false,
+      "remote": "pedro-mnz/cs-dashboard-template",
+      "branch": "main",
+      "lastCommit": "14ad791 — feat: Q1/Q2/H1 period toggle + Q2 CI data + L'Oréal + Gmail widget (2026-04-21 00:11 UTC)",
+      "note": "Repo up to date. No new data files to commit this cycle."
+    }
+  },
+  {
     "timestamp": "2026-03-26T07:08:11.000000-03:00",
     "date": "2026-03-26",
     "type": "daily-refresh",
@@ -144,7 +225,8 @@
       "port": "3000",
       "framework": "React + Vite + Express (tsx watch)",
       "httpStatus": "200 OK",
-      "dependencies": "installed (pnpm)"
+      "dependencies": "installed (pnpm)",
+      "schedulerStatus": "ACTIVE"
     },
     "gitStatus": {
       "committed": true,
