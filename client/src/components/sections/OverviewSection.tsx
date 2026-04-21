@@ -6,7 +6,7 @@ import { clients, formatCurrency, stageConfig } from "@/lib/dashboardData";
 import { rsPipeline, clientARData, portfolioARSummary, rsStageConfig, rsClientColors, initiativeARData, stageDistribution, RSStage } from "@/lib/rsPipelineData";
 import { clientCIGoals, crmRecordsSummary } from "@/lib/crmRecordsData";
 import { weeklyMeetings, weekSummary, eventTypeConfig, calClientColors } from "@/lib/weeklyMeetingsData";
-import { aiUsageSummary, aiUsageWeeks } from "@/lib/aiUsageData";
+import { aiUsageSummary, aiUsageSummaryQ1, aiUsageSummaryQ2, aiUsageWeeks } from "@/lib/aiUsageData";
 import { currentPeriod, weeklyBreakdown, statusPageUrl } from "@/lib/inPersonData";
 import { dashboardConfig } from "@/lib/dashboard.config";
 import { RadialBarChart, RadialBar, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell } from "recharts";
@@ -357,6 +357,48 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
               );
             })()}
           </div>
+        </div>
+      </div>
+
+      {/* ── Period Summary Strip ── shows immediately when toggle changes ── */}
+      <div
+        className="rounded-xl px-5 py-3 flex items-center gap-6 flex-wrap animate-fade-in-up"
+        style={{ background: isH1 ? "linear-gradient(135deg, #EFF6FF 0%, #F0FDF4 100%)" : isQ1 ? "#F0FDF4" : "#FFFBEB", border: `1px solid ${isH1 ? "#BFDBFE" : isQ1 ? "#BBF7D0" : "#FDE68A"}` }}
+      >
+        {/* Period label */}
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full" style={{ background: isH1 ? "#3B82F6" : isQ1 ? "#059669" : "#F59E0B" }} />
+          <span className="text-sm font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: isH1 ? "#1D4ED8" : isQ1 ? "#065F46" : "#92400E" }}>
+            {periodLabel}
+          </span>
+        </div>
+        {/* CI count */}
+        <div className="flex items-center gap-2">
+          <Users size={13} style={{ color: isH1 ? "#3B82F6" : isQ1 ? "#059669" : "#F59E0B" }} />
+          <span className="text-xs font-semibold text-foreground/70">
+            {isH1
+              ? `${crmRecordsSummary.qualifiedQ1 + crmRecordsSummary.qualifiedQ2} CIs · ${clientCIGoals.filter(g => g.inQ1 && g.validatedCIsQ1 >= g.quarterlyGoal).length}/3 Q1 goals · ${clientCIGoals.filter(g => g.inQ2 && g.validatedCIsQ2 >= g.quarterlyGoal).length}/4 Q2 goals`
+              : isQ1
+              ? `${crmRecordsSummary.qualifiedQ1} CS CIs · ${clientCIGoals.filter(g => g.inQ1 && g.validatedCIsQ1 >= g.quarterlyGoal).length}/3 clients at goal ✅`
+              : `${crmRecordsSummary.qualifiedQ2} CS CIs · ${clientCIGoals.filter(g => g.inQ2 && g.validatedCIsQ2 >= g.quarterlyGoal).length}/4 clients at goal`
+            }
+          </span>
+        </div>
+        {/* AI Usage */}
+        <div className="flex items-center gap-2">
+          <Bot size={13} style={{ color: isH1 ? "#3B82F6" : isQ1 ? "#059669" : "#F59E0B" }} />
+          <span className="text-xs font-semibold text-foreground/70">
+            {isH1
+              ? `AI: ${aiUsageSummaryQ1.weeksOverGoal + aiUsageSummaryQ2.weeksOverGoal} weeks over goal (H1)`
+              : isQ1
+              ? `AI: ${aiUsageSummaryQ1.weeksOverGoal} weeks over goal · ${aiUsageSummaryQ1.weeksUnderGoal} under`
+              : `AI: ${aiUsageSummaryQ2.weeksOverGoal} weeks over goal · ${aiUsageSummaryQ2.weeksAwaitingData} awaiting`
+            }
+          </span>
+        </div>
+        {/* AR note — always QTD */}
+        <div className="ml-auto text-xs text-muted-foreground italic">
+          AR cards always show current QTD
         </div>
       </div>
 

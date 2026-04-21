@@ -1,6 +1,8 @@
 // PeriodToggle.tsx
-// Q1 / Q2 / H1 toggle pill — sits in the top header bar
-// Reads and writes to PeriodContext
+// Inline Q1 / Q2 / H1 pill toggle — matches Ceci dashboard reference style
+// Active: Meta Blue #0064E0 filled, white text
+// Inactive: transparent, gray text
+// Outer pill: light #F0F2F5 background — sits inline next to the section title
 
 import { usePeriod, type Period } from "@/contexts/PeriodContext";
 
@@ -17,8 +19,8 @@ export default function PeriodToggle() {
     <div
       className="flex items-center gap-0.5 rounded-lg p-0.5"
       style={{
-        background: "rgba(255,255,255,0.08)",
-        border: "1px solid rgba(255,255,255,0.12)",
+        background: "#F0F2F5",
+        border: "1px solid #E4E6EB",
       }}
       title="Switch between Q1, Q2, and H1 2026 views"
     >
@@ -28,20 +30,23 @@ export default function PeriodToggle() {
           <button
             key={value}
             onClick={() => setPeriod(value)}
-            className="relative px-3 py-1 text-xs font-semibold rounded-md transition-all duration-200 focus:outline-none"
+            className="relative px-3 py-1 rounded-md text-xs font-bold transition-all duration-150 focus:outline-none"
             style={{
               fontFamily: "'Montserrat', sans-serif",
+              letterSpacing: "0.02em",
               background: isActive ? "#0064E0" : "transparent",
-              color: isActive ? "#ffffff" : "rgba(255,255,255,0.55)",
-              boxShadow: isActive ? "0 1px 4px rgba(0,100,224,0.4)" : "none",
-              letterSpacing: "0.04em",
+              color: isActive ? "#ffffff" : "#65676B",
+              boxShadow: isActive ? "0 1px 3px rgba(0,100,224,0.25)" : "none",
+              cursor: "pointer",
+              border: "none",
             }}
             aria-pressed={isActive}
           >
             {label}
+            {/* Green dot on Q2 when not active — marks current quarter */}
             {value === "Q2" && !isActive && (
               <span
-                className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full"
+                className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full"
                 style={{ background: "#10B981" }}
                 title="Current quarter"
               />

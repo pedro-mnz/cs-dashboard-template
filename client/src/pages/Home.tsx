@@ -183,30 +183,16 @@ function HomeInner() {
               className="w-1 h-8 rounded-full flex-shrink-0"
               style={{ background: "linear-gradient(180deg, #8B5CF6 0%, #0064E0 100%)" }}
             />
-            <div>
+            <div className="flex items-center gap-3">
               <h1 className="text-sm font-bold text-gray-900 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif", letterSpacing: "-0.02em" }}>
                 {sectionTitles[activeSection]}
               </h1>
-              <p className="text-xs text-gray-400 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                {periodLabel} · Brazil L8 ·{" "}
-                {new Date().toLocaleDateString("en-US", {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
+              {/* ── Period Toggle inline next to title ── */}
+              <PeriodToggle />
             </div>
           </div>
 
           <div className="flex items-center gap-2.5">
-            {/* ── Period Toggle (Q1 / Q2 / H1) ── */}
-            <div
-              className="flex items-center gap-1 px-1.5 py-1 rounded-lg"
-              style={{ background: "#1a1f36" }}
-            >
-              <PeriodToggle />
-            </div>
-
             {/* Last Updated — clickable refresh button */}
             {lastUpdated && (
               <button
