@@ -1,10 +1,10 @@
 // crmRecordsData.ts
-// Populated by Manus on 2026-03-27 from Meta CRM
-// Last refreshed: 2026-03-27 10:10 BRT (Manus daily refresh — Week 13 Day 5, Friday — end of week)
+// Populated by Manus on 2026-04-20 from Meta CRM
+// Last refreshed: 2026-04-20 07:00 BRT (Manus daily refresh — Week 17 Day 7, Sunday — start of Q2 Week 4)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
-//       No new CIs added since last refresh. Week 13 Day 5 (Fri) — final day of week.
-//       clientCIGoals: Magalu=3 ✅, Amazon=3 ✅, Samsung=3 ✅ — all Q1 2026 quarterly goals MET.
-//       Unidash DCMP CI dashboard (Pedro FBID 498186, Q1 2026): qualifying counts confirmed unchanged.
+//       Q1 2026 final: Magalu=3 ✅, Amazon=3 ✅, Samsung=3 ✅ — all Q1 2026 quarterly goals MET.
+//       Q2 2026: Week 17 starts Mon Apr 21 — no new Q2 CIs logged yet.
+//       Unidash DCMP CI dashboard (Pedro FBID 498186, Q2 2026): counts pending first CI.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 import { dashboardConfig } from "./dashboard.config";
 
@@ -162,13 +162,13 @@ export const crmRecordsSummary = {
   vcCount: crmRecords.filter((r) => r.contactMethod === "VC Meeting").length,
   byClient,
   topClient: topClientName,
-  dataAsOf: "2026-03-27",
+  dataAsOf: "2026-04-20",
   sourceUrl: dashboardConfig.crm?.ciUrl || dashboardConfig.unidash.ciUrl || "",
-  lastUpdated: "2026-03-27 10:10 BRT",
+  lastUpdated: "2026-04-20 07:00 BRT",
 };
 
 // ── clientCIGoals (used by CRMInteractionsSection and OverviewSection) ────────
-// Q1 2026 validated CI counts as of 2026-03-27 (Week 13 Day 5 — Friday):
+// Q1 2026 validated CI counts as of 2026-04-20 (Week 17 Day 7 — Sunday — start of Q2 Week 4):
 //   Magalu:  3 CIs (Mar 12 In-Person, Mar 12 VC, Mar 4 Messaging) → goal MET ✅
 //   Amazon:  3 CIs (Mar 4 In-Person, Jan 14 VC x2) → goal MET ✅
 //   Samsung: 3 CIs (Mar 10 Messaging, Jan 21 VC, Jan 7 In-Person) → goal MET ✅

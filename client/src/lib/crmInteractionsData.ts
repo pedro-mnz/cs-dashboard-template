@@ -1,12 +1,11 @@
 // crmInteractionsData.ts
-// Populated by Manus on 2026-03-27 from Meta CRM (internalfb.com/crm/client_interactions)
-// Filters: Participant in BoB + This Quarter (Q1 2026) + Is Qualified + Participant = Pedro Menezes
-// Last refreshed: 2026-03-27 10:10 BRT (Manus daily refresh — Week 13 Day 5, Friday — end of week)
+// Populated by Manus on 2026-04-20 from Meta CRM (internalfb.com/crm/client_interactions)
+// Filters: Participant in BoB + This Quarter (Q2 2026) + Is Qualified + Participant = Pedro Menezes
+// Last refreshed: 2026-04-20 07:00 BRT (Manus daily refresh — Week 17 Day 7, Sunday — start of Q2 Week 4)
 // NOTE: internalfb.com access is restricted in this environment (sandbox policy).
-//       No new CIs added since last refresh. All 3 clients have met the 3-CI quarterly goal.
-//       Total QTD: 9 qualified CIs (7 live/VC/in-person + 2 messaging). Q1 2026 goal: MET ✅
-//       Unidash DCMP CI dashboard filtered to Pedro FBID 498186, Q1 2026 — confirmed counts:
-//         Magalu: 3 | Amazon: 3 | Samsung: 3 — all goals MET ✅
+//       Q1 2026 final: 9 qualified CIs — Magalu 3 | Amazon 3 | Samsung 3 — all goals MET ✅
+//       Q2 2026: Week 17 starts Mon Apr 21 — no new CIs logged yet (Q2 just started Apr 1).
+//       Unidash DCMP CI dashboard filtered to Pedro FBID 498186 — Q2 2026 counts pending first CI.
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
 export interface CIRecord {
@@ -134,23 +133,23 @@ export const ciSummary = {
     "amazon.com": crmInteractions.filter(ci => ci.clientId === "amazon.com").length,
     "samsung-electronics-co-ltd---kr(usd)": crmInteractions.filter(ci => ci.clientId === "samsung-electronics-co-ltd---kr(usd)").length,
   },
-  dataAsOf: "2026-03-27",
+  dataAsOf: "2026-04-20",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
-  lastUpdated: "2026-03-27 10:10 BRT",
+  lastUpdated: "2026-04-20 07:00 BRT",
 };
 
 // ── crmSummary (used by CRMInteractionsSection) ──────────────────────────────────────────────────
 export const crmSummary = {
   totalQualifiedCIs: crmInteractions.filter(ci => ci.isQualified).length,
   totalCIs: crmInteractions.length,
-  quarter: "Q1 2026",
-  dataAsOfDate: "2026-03-27",
+  quarter: "Q2 2026",
+  dataAsOfDate: "2026-04-20",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
-  lastUpdated: "2026-03-27 10:10 BRT",
+  lastUpdated: "2026-04-20 07:00 BRT",
 };
 
 // ── crmCoverage (used by CRMInteractionsSection — Coverage Deep Dive table) ──
-// QTD metrics as of 2026-03-27 (Week 13 Day 5 — Friday — end of Q1 week 13)
+// QTD metrics as of 2026-04-20 (Week 17 Day 7 — Sunday — start of Q2 week 4 / Week 17)
 // Live CIs: Netshoes/Magalu (Mar 12 In-Person), Magalu (Mar 12 VC), Samsung (Mar 10 Messaging→Live),
 //           Amazon (Mar 4 In-Person), Magalu (Mar 4 Messaging→Live), Samsung (Jan 21 VC),
 //           Amazon (Jan 14 VC x2), Samsung (Jan 7 In-Person)
@@ -171,7 +170,7 @@ export const crmCoverage = {
   pctToInPersonGoal: 15,
   pitchedCIsWithBDM: 3,
   qualifyingInteractionPerClient: "3.0",
-  lastUpdated: "2026-03-27 10:10 BRT",
+  lastUpdated: "2026-04-20 07:00 BRT",
 };
 
 // ── topicWeeks (weekly CI breakdown by topic, used for bar chart) ─────────────

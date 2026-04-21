@@ -11,6 +11,7 @@ import { currentPeriod, weeklyBreakdown, statusPageUrl } from "@/lib/inPersonDat
 import { dashboardConfig } from "@/lib/dashboard.config";
 import { RadialBarChart, RadialBar, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell } from "recharts";
 import { TrendingUp, Target, Users, Calendar, ExternalLink, CheckCircle2, AlertCircle, Clock, Bot, Zap, MapPin, ArrowRight, DollarSign, Activity } from "lucide-react";
+import { EmailDigestWidget } from "@/components/EmailDigestWidget";
 
 interface OverviewSectionProps {
   onClientChange: (id: string) => void;
@@ -1198,6 +1199,9 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
           ))}
         </div>
       </div>
+
+      {/* Email Digest Widget */}
+      <EmailDigestWidget />
 
       {/* In-Person Time Widget — bottom of page, only for non-remote */}
       {dashboardConfig.profile.isInOffice && (

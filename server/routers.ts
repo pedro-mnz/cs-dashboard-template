@@ -6,6 +6,7 @@ import { scraperRouter } from "./scraperRouter";
 import { profileFetchRouter } from "./profileFetchRouter";
 import { clientMaterialsRouter } from "./clientMaterialsRouter";
 import { runDailyRefresh } from "./scheduler";
+import { gmailRouter } from "./gmailRouter";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -24,6 +25,7 @@ export const appRouter = router({
   scraper: scraperRouter,
   profileFetch: profileFetchRouter,
   clientMaterials: clientMaterialsRouter,
+  gmail: gmailRouter,
 
   scheduler: router({
     runNow: publicProcedure.mutation(async () => {

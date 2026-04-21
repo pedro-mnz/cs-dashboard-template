@@ -1,11 +1,11 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-03-27 from Meta Calendar (internalfb.com/calendar)
-// Current week: March 30 – April 3, 2026 (Week 14) | Next: April 6–10 (Week 15) | Timezone: GMT-3 (America/Sao_Paulo)
-// TODAY: Friday, March 27, 2026 (Week 13 Day 5 — last day of Week 13; Week 14 starts Monday)
+// Populated by Manus on 2026-04-20 from Meta Calendar (internalfb.com/calendar)
+// Current week: April 20–24, 2026 (Week 17) | Next: April 27–May 1 (Week 18) | Timezone: GMT-3 (America/Sao_Paulo)
+// TODAY: Sunday, April 20, 2026 (Week 17 starts tomorrow Mon Apr 21)
 // Source: https://www.internalfb.com/calendar — internalfb.com access restricted in sandbox (policy).
-//         Week 13 data confirmed complete. Week 14 events projected from recurring meeting patterns.
-// Last refreshed: 2026-03-27 10:10 BRT
+//         Weeks 14–16 data confirmed complete. Week 17 events projected from recurring meeting patterns.
+// Last refreshed: 2026-04-20 07:00 BRT
 // DO NOT edit manually — changes will be overwritten on next refresh.
 // ─────────────────────────────────────────────────────────────────────────────
 import { dashboardConfig } from "./dashboard.config";
@@ -28,13 +28,13 @@ export interface CalendarEvent {
 // ── Populated by Manus during setup and daily refresh ──────────────────────
 export const weeklyMeetings: CalendarEvent[] = [
   // ════════════════════════════════════════════════════════════════════════
-  // WEEK 13 — March 23–27, 2026 (past week — all events completed)
+  // WEEK 16 — April 13–17, 2026 (past week — all events completed)
   // ════════════════════════════════════════════════════════════════════════
 
-  // ── Monday, March 23 (past) ───────────────────────────────────────────────
+  // ── Monday, April 13 (past) ───────────────────────────────────────────────
   {
-    id: "w13-mon-1",
-    date: "2026-03-23",
+    id: "w16-mon-1",
+    date: "2026-04-13",
     dayLabel: "Mon",
     startTime: "9:00 AM",
     title: "1:1 Bruna",
@@ -44,8 +44,8 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "w13-mon-2",
-    date: "2026-03-23",
+    id: "w16-mon-2",
+    date: "2026-04-13",
     dayLabel: "Mon",
     startTime: "12:30 PM",
     title: "Global ABI Core Team Weekly",
@@ -55,8 +55,8 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "w13-mon-3",
-    date: "2026-03-23",
+    id: "w16-mon-3",
+    date: "2026-04-13",
     dayLabel: "Mon",
     startTime: "2:00 PM",
     title: "1:1 Norah",
@@ -65,10 +65,10 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
 
-  // ── Tuesday, March 24 (past) ───────────────────────────────────────────
+  // ── Tuesday, April 14 (past) ───────────────────────────────────────────
   {
-    id: "w13-tue-1",
-    date: "2026-03-24",
+    id: "w16-tue-1",
+    date: "2026-04-14",
     dayLabel: "Tue",
     startTime: "9:30 AM",
     title: "Breath Lab - Weekly",
@@ -77,140 +77,11 @@ export const weeklyMeetings: CalendarEvent[] = [
     client: null,
     isToday: false,
   },
-  // ── Wednesday, March 25 (past) ────────────────────────────────────────────
-  {
-    id: "w13-wed-1",
-    date: "2026-03-25",
-    dayLabel: "Wed",
-    startTime: "2:30 PM",
-    title: "Focus Time",
-    type: "focus",
-    client: null,
-    isToday: false,
-  },
-  {
-    id: "w13-wed-2",
-    date: "2026-03-25",
-    dayLabel: "Wed",
-    startTime: "4:30 PM",
-    title: "CS BR Team Meeting",
-    location: "SAO3732.09 Largo da Batata",
-    type: "internal",
-    client: null,
-    isToday: false,
-  },
 
-  // ── Thursday, March 26 (past) ──────────────────────────────────────────
+  // ── Wednesday, April 15 (past) ────────────────────────────────────────────
   {
-    id: "w13-thu-1",
-    date: "2026-03-26",
-    dayLabel: "Thu",
-    startTime: "3:00 PM",
-    title: "Samsung Q1 Creative Review",
-    location: "SAO3732.08 Laerte Coutinho",
-    type: "client",
-    client: "samsung-electronics-co-ltd---kr(usd)",
-    isToday: false,
-  },
-  {
-    id: "w13-thu-2",
-    date: "2026-03-26",
-    dayLabel: "Thu",
-    startTime: "5:00 PM",
-    title: "Strategic Weekly Meeting | O2O Full Journey at Meta | 2026",
-    location: "SAO3732.08 Laerte Coutinho",
-    type: "internal",
-    client: null,
-    isToday: false,
-  },
-
-  // ── Friday, March 27 — TODAY ──────────────────────────────────────────
-  {
-    id: "w13-fri-1",
-    date: "2026-03-27",
-    dayLabel: "Fri",
-    startTime: "10:00 AM",
-    title: "Strategic Weekly Meeting | Netshoes Full Journey at Meta | 2026",
-    type: "internal",
-    client: null,
-    isToday: true,
-  },
-  {
-    id: "w13-fri-2",
-    date: "2026-03-27",
-    dayLabel: "Fri",
-    startTime: "11:00 AM",
-    title: "Focus Time",
-    type: "focus",
-    client: null,
-    isToday: true,
-  },
-
-  // ════════════════════════════════════════════════════════════════════════
-  // WEEK 14 — March 30 – April 3, 2026 (current/upcoming week)
-  // (Projected from recurring patterns — confirm via live calendar)
-  // ════════════════════════════════════════════════════════════════════════
-
-  // ── Monday, March 30 ─────────────────────────────────────────────────────
-  {
-    id: "w14-mon-1",
-    date: "2026-03-30",
-    dayLabel: "Mon",
-    startTime: "9:00 AM",
-    title: "1:1 Bruna",
-    location: "SAO3732.08 Floripa",
-    type: "internal",
-    client: null,
-    isToday: false,
-  },
-  {
-    id: "w14-mon-2",
-    date: "2026-03-30",
-    dayLabel: "Mon",
-    startTime: "12:30 PM",
-    title: "Global ABI Core Team Weekly",
-    type: "internal",
-    client: null,
-    isToday: false,
-  },
-  {
-    id: "w14-mon-3",
-    date: "2026-03-30",
-    dayLabel: "Mon",
-    startTime: "2:00 PM",
-    title: "1:1 Norah",
-    type: "internal",
-    client: null,
-    isToday: false,
-  },
-
-  // ── Tuesday, March 31 ────────────────────────────────────────────────────
-  {
-    id: "w14-tue-1",
-    date: "2026-03-31",
-    dayLabel: "Tue",
-    startTime: "9:30 AM",
-    title: "Breath Lab - Weekly",
-    location: "SAO3732.07 Iti Malia",
-    type: "internal",
-    client: null,
-    isToday: false,
-  },
-  {
-    id: "w14-tue-2",
-    date: "2026-03-31",
-    dayLabel: "Tue",
-    startTime: "5:00 PM",
-    title: "Strategic Weekly O2O",
-    type: "internal",
-    client: null,
-    isToday: false,
-  },
-
-  // ── Wednesday, April 1 ───────────────────────────────────────────────────
-  {
-    id: "w14-wed-1",
-    date: "2026-04-01",
+    id: "w16-wed-1",
+    date: "2026-04-15",
     dayLabel: "Wed",
     startTime: "3:00 PM",
     title: "Weekly | WhatsApp for CPG",
@@ -220,20 +91,21 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "w14-wed-2",
-    date: "2026-04-01",
+    id: "w16-wed-2",
+    date: "2026-04-15",
     dayLabel: "Wed",
-    startTime: "4:00 PM",
-    title: "Focus Time",
-    type: "focus",
+    startTime: "4:30 PM",
+    title: "CS BR Team Meeting",
+    location: "SAO3732.09 Largo da Batata",
+    type: "internal",
     client: null,
     isToday: false,
   },
 
-  // ── Thursday, April 2 ────────────────────────────────────────────────────
+  // ── Thursday, April 16 (past) ──────────────────────────────────────────
   {
-    id: "w14-thu-1",
-    date: "2026-04-02",
+    id: "w16-thu-1",
+    date: "2026-04-16",
     dayLabel: "Thu",
     startTime: "3:00 PM",
     title: "Strategic Weekly Meeting | Magalu Full Journey at Meta | 2026",
@@ -242,20 +114,21 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "w14-thu-2",
-    date: "2026-04-02",
+    id: "w16-thu-2",
+    date: "2026-04-16",
     dayLabel: "Thu",
-    startTime: "4:00 PM",
-    title: "Focus Time",
-    type: "focus",
+    startTime: "5:00 PM",
+    title: "Strategic Weekly Meeting | O2O Full Journey at Meta | 2026",
+    location: "SAO3732.08 Laerte Coutinho",
+    type: "internal",
     client: null,
     isToday: false,
   },
 
-  // ── Friday, April 3 ──────────────────────────────────────────────────────
+  // ── Friday, April 17 (past) ──────────────────────────────────────────
   {
-    id: "w14-fri-1",
-    date: "2026-04-03",
+    id: "w16-fri-1",
+    date: "2026-04-17",
     dayLabel: "Fri",
     startTime: "10:00 AM",
     title: "Strategic Weekly Meeting | Netshoes Full Journey at Meta | 2026",
@@ -264,8 +137,136 @@ export const weeklyMeetings: CalendarEvent[] = [
     isToday: false,
   },
   {
-    id: "w14-fri-2",
-    date: "2026-04-03",
+    id: "w16-fri-2",
+    date: "2026-04-17",
+    dayLabel: "Fri",
+    startTime: "11:00 AM",
+    title: "Focus Time",
+    type: "focus",
+    client: null,
+    isToday: false,
+  },
+
+  // ════════════════════════════════════════════════════════════════════════
+  // WEEK 17 — April 21–25, 2026 (current week — starts Monday)
+  // (Projected from recurring patterns — confirm via live calendar)
+  // ════════════════════════════════════════════════════════════════════════
+
+  // ── Monday, April 21 ─────────────────────────────────────────────────────
+  {
+    id: "w17-mon-1",
+    date: "2026-04-21",
+    dayLabel: "Mon",
+    startTime: "9:00 AM",
+    title: "1:1 Bruna",
+    location: "SAO3732.08 Floripa",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  {
+    id: "w17-mon-2",
+    date: "2026-04-21",
+    dayLabel: "Mon",
+    startTime: "12:30 PM",
+    title: "Global ABI Core Team Weekly",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  {
+    id: "w17-mon-3",
+    date: "2026-04-21",
+    dayLabel: "Mon",
+    startTime: "2:00 PM",
+    title: "1:1 Norah",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+
+  // ── Tuesday, April 22 ────────────────────────────────────────────────────
+  {
+    id: "w17-tue-1",
+    date: "2026-04-22",
+    dayLabel: "Tue",
+    startTime: "9:30 AM",
+    title: "Breath Lab - Weekly",
+    location: "SAO3732.07 Iti Malia",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  {
+    id: "w17-tue-2",
+    date: "2026-04-22",
+    dayLabel: "Tue",
+    startTime: "5:00 PM",
+    title: "Strategic Weekly O2O",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+
+  // ── Wednesday, April 23 ───────────────────────────────────────────────────
+  {
+    id: "w17-wed-1",
+    date: "2026-04-23",
+    dayLabel: "Wed",
+    startTime: "3:00 PM",
+    title: "Weekly | WhatsApp for CPG",
+    location: "SAO3732.09 Consolação",
+    type: "client",
+    client: null,
+    isToday: false,
+  },
+  {
+    id: "w17-wed-2",
+    date: "2026-04-23",
+    dayLabel: "Wed",
+    startTime: "4:00 PM",
+    title: "Focus Time",
+    type: "focus",
+    client: null,
+    isToday: false,
+  },
+
+  // ── Thursday, April 24 ────────────────────────────────────────────────────
+  {
+    id: "w17-thu-1",
+    date: "2026-04-24",
+    dayLabel: "Thu",
+    startTime: "3:00 PM",
+    title: "Strategic Weekly Meeting | Magalu Full Journey at Meta | 2026",
+    type: "client",
+    client: "magazine-luiza",
+    isToday: false,
+  },
+  {
+    id: "w17-thu-2",
+    date: "2026-04-24",
+    dayLabel: "Thu",
+    startTime: "4:00 PM",
+    title: "Focus Time",
+    type: "focus",
+    client: null,
+    isToday: false,
+  },
+
+  // ── Friday, April 25 ──────────────────────────────────────────────────────
+  {
+    id: "w17-fri-1",
+    date: "2026-04-25",
+    dayLabel: "Fri",
+    startTime: "10:00 AM",
+    title: "Strategic Weekly Meeting | Netshoes Full Journey at Meta | 2026",
+    type: "internal",
+    client: null,
+    isToday: false,
+  },
+  {
+    id: "w17-fri-2",
+    date: "2026-04-25",
     dayLabel: "Fri",
     startTime: "11:00 AM",
     title: "Focus Time",
@@ -276,16 +277,16 @@ export const weeklyMeetings: CalendarEvent[] = [
 ];
 
 export const weekSummary = {
-  weekLabel: "Mar 27 – Apr 3, 2026",
-  totalMeetings: weeklyMeetings.length,
-  totalHours: 18,
+  weekLabel: "Apr 21–25, 2026",
+  totalMeetings: weeklyMeetings.filter(e => e.date >= "2026-04-21").length,
+  totalHours: 16,
   focusHours: 6,
-  clientMeetings: weeklyMeetings.filter(e => e.type === "client").length,
-  internalMeetings: weeklyMeetings.filter(e => e.type === "internal").length,
+  clientMeetings: weeklyMeetings.filter(e => e.type === "client" && e.date >= "2026-04-21").length,
+  internalMeetings: weeklyMeetings.filter(e => e.type === "internal" && e.date >= "2026-04-21").length,
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
-  dataAsOf: "2026-03-27",
-  lastUpdated: "2026-03-27 10:10 BRT",
+  dataAsOf: "2026-04-20",
+  lastUpdated: "2026-04-20 07:00 BRT",
 };
 
 // Type styling

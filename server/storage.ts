@@ -100,3 +100,38 @@ export async function storageGet(relKey: string): Promise<{ key: string; url: st
     url: await buildDownloadUrl(baseUrl, key, apiKey),
   };
 }
+
+// ── Gmail OAuth Token Storage ─────────────────────────────────────────────────
+// Tokens are stored as JSON files in the storage proxy under gmail-tokens/{userId}.json
+
+interface GmailTokens {
+  accessToken: string;
+  refreshToken: string | null;
+  expiresAt: number;
+  email?: string;
+}
+
+export async function saveGmailTokens(userId: string, tokens: GmailTokens): Promise<void> {
+  const key = `gmail-tokens/${userId}.json`;
+  await storagePut(key, JSON.stringify(tokens), "application/json");
+}
+
+export async function getGmailTokens(userId: string): Promise<GmailTokens | null> {
+  try {
+    const { url } = await storageGet(`gmail-tokens/${userId}.json`);
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return await res.json() as GmailTokens;
+  } catch {
+    return null;
+  }
+}
+
+export async function deleteGmailTokens(userId: string): Promise<void> {
+  try {
+    // Overwrite with empty marker to effectively delete
+    await storagePut(`gmail-tokens/${userId}.json`, JSON.stringify({ deleted: true }), "application/json");
+  } catch {
+    // ignore
+  }
+}
