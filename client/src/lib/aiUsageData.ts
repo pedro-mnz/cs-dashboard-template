@@ -164,3 +164,25 @@ export const aiUsageSummary = {
   lastUpdated: "2026-04-20 07:00 BRT",
   sourceUrl: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage",
 };
+
+// Q1 2026: Weeks 1–13 (Dec 29 2025 – Mar 29 2026)
+// Q2 2026: Weeks 14–26 (Mar 30 – Jun 28 2026)
+export const Q1_WEEK_STARTS = "2025-12-29"; // Week 1 start
+export const Q1_WEEK_ENDS   = "2026-03-29"; // Week 13 end (Sun)
+export const Q2_WEEK_STARTS = "2026-03-30"; // Week 14 start
+
+export const aiUsageSummaryQ1 = {
+  weeksOverGoal: 9,        // Weeks 3–7, 10–13
+  weeksUnderGoal: 1,       // Week 2
+  weeksNotApplicable: 4,   // Weeks 1, 8, 9, 52
+  weeksAwaitingData: 0,
+  totalWeeks: 14,          // Weeks 52 (2025) + 1–13 (2026)
+};
+
+export const aiUsageSummaryQ2 = {
+  weeksOverGoal: 4,        // Weeks 14–16 confirmed over; Week 17 awaiting
+  weeksUnderGoal: 0,
+  weeksNotApplicable: 0,
+  weeksAwaitingData: 1,    // Week 17
+  totalWeeks: 5,           // Weeks 14–17 so far
+};

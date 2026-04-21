@@ -1,11 +1,17 @@
 // crmInteractionsData.ts
-// Populated by Manus on 2026-04-20 from Meta CRM (internalfb.com/crm/client_interactions)
-// Filters: Participant in BoB + This Quarter (Q2 2026) + Is Qualified + Participant = Pedro Menezes
-// Last refreshed: 2026-04-20 07:00 BRT (Manus daily refresh — Week 17 Day 7, Sunday — start of Q2 Week 4)
-// NOTE: internalfb.com access is restricted in this environment (sandbox policy).
-//       Q1 2026 final: 9 qualified CIs — Magalu 3 | Amazon 3 | Samsung 3 — all goals MET ✅
-//       Q2 2026: Week 17 starts Mon Apr 21 — no new CIs logged yet (Q2 just started Apr 1).
-//       Unidash DCMP CI dashboard filtered to Pedro FBID 498186 — Q2 2026 counts pending first CI.
+// Populated by Manus on 2026-04-20 from Meta CRM + Datamate CI report (April 15–16, 2026)
+// Filter: CS-only validated CIs — Pedro Menezes as Creative Strategist participant
+// Source: internalfb.com/crm/client_interactions (Brazil territory, GBG-LATAM)
+// Last refreshed: 2026-04-20 07:00 BRT
+//
+// Q1 2026 FINAL (CS validated, closing picture — L'Oréal excluded, not Pedro's client in Q1):
+//   Magazine Luiza: 4 CS CIs ✅  |  Amazon: 4 CS CIs ✅  |  Samsung: 3 CS CIs ✅
+//   TOTAL Q1: 11 CS validated CIs — 3/3 accounts at 3+ goal ✅
+//
+// Q2 2026 (CS validated, data as of 2026-04-16 — 21 of 91 days, ~23% complete):
+//   Samsung: 3 CS CIs ✅  |  Magazine Luiza: 1 🟡  |  L'Oréal: 1 🟡  |  Amazon: 0 🔴
+//   TOTAL Q2: 5 CS validated CIs — 1/4 accounts at 3+ goal
+//
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
 export interface CIRecord {
@@ -17,130 +23,76 @@ export interface CIRecord {
   topic: string;
   participants: string[];
   isQualified: boolean;
-  quarter: string;
+  quarter: "Q1 2026" | "Q2 2026";
+  team: "CS";
 }
 
 export const crmInteractions: CIRecord[] = [
-  // ── Q1 2026 — March ──────────────────────────────────────────────────────
-  {
-    id: "ci-netshoes-mar12",
-    clientId: "magazine-luiza",
-    clientName: "2 organizations (Netshoes & Meta)",
-    date: "2026-03-12",
-    type: "In-Person Meeting",
-    topic: "Planejamento 2026 | Netshoes & Meta | 12Março",
-    participants: ["Thelio Goncalves", "Thiago Lima", "Daiane Quesada Pereira Codato"],
-    isQualified: true,
-    quarter: "Q1 2026",
-  },
-  {
-    id: "ci-magalu-mar12",
-    clientId: "magazine-luiza",
-    clientName: "2 organizations (Magalu)",
-    date: "2026-03-12",
-    type: "VC Meeting",
-    topic: "Strategic Weekly Meeting | Magalu Full Journey at Meta | 2026",
-    participants: ["Thiago Lima", "Thelio Goncalves"],
-    isQualified: true,
-    quarter: "Q1 2026",
-  },
-  {
-    id: "ci-612810056579956",
-    clientId: "samsung-electronics-co-ltd---kr(usd)",
-    clientName: "SAMSUNG ELETRONICA DA AMAZONIA LTDA (MX)",
-    date: "2026-03-10",
-    type: "Messaging",
-    topic: "Samsung & Meta Creative Shop Support",
-    participants: ["Pedro Menezes"],
-    isQualified: true,
-    quarter: "Q1 2026",
-  },
-  {
-    id: "ci-638687166179572-mar",
-    clientId: "amazon.com",
-    clientName: "AMAZON SERVICOS DE VAREJO DO BRASIL LTDA.",
-    date: "2026-03-04",
-    type: "In-Person Meeting",
-    topic: "Rodrigo Almeida | AMAZON SERVICOS DE VAREJO DO BRASIL LTDA. | 2026-03-04",
-    participants: ["Douglas Mendes", "Eduardo Neto", "Welisson Assuncao"],
-    isQualified: true,
-    quarter: "Q1 2026",
-  },
-  {
-    id: "ci-301939693888949",
-    clientId: "magazine-luiza",
-    clientName: "[WHATS APP] MAGAZINE LUIZA",
-    date: "2026-03-04",
-    type: "Messaging",
-    topic: "Hackathon WA da Lu - WhatsApp Chat",
-    participants: ["Pedro Menezes", "Thelio Goncalves"],
-    isQualified: true,
-    quarter: "Q1 2026",
-  },
-  // ── Q1 2026 — January ────────────────────────────────────────────────────
-  {
-    id: "ci-multi-jan21",
-    clientId: "samsung-electronics-co-ltd---kr(usd)",
-    clientName: "3 organizations",
-    date: "2026-01-21",
-    type: "VC Meeting",
-    topic: "Apresentação Projeto Meta - Galaxy Reels Festival (Presencial na SUNO)",
-    participants: ["Bruno Boehringer Mastantuono", "Eduardo Barros"],
-    isQualified: true,
-    quarter: "Q1 2026",
-  },
-  {
-    id: "ci-638687166179572-xcm",
-    clientId: "amazon.com",
-    clientName: "AMAZON SERVICOS DE VAREJO DO BRASIL LTDA.",
-    date: "2026-01-14",
-    type: "VC Meeting",
-    topic: "Amazon XCM | 2026",
-    participants: ["Douglas Mendes", "Eduardo Neto", "Pedro Menezes"],
-    isQualified: true,
-    quarter: "Q1 2026",
-  },
-  {
-    id: "ci-638687166179572-mkteng",
-    clientId: "amazon.com",
-    clientName: "AMAZON SERVICOS DE VAREJO DO BRASIL LTDA.",
-    date: "2026-01-14",
-    type: "VC Meeting",
-    topic: "Meta & Amazon: Marketing Engagement",
-    participants: ["Douglas Mendes"],
-    isQualified: true,
-    quarter: "Q1 2026",
-  },
-  {
-    id: "ci-557520800977956",
-    clientId: "samsung-electronics-co-ltd---kr(usd)",
-    clientName: "SAMSUNG ELETRONICA DA AMAZONIA LTDA (CE) - Credit Line",
-    date: "2026-01-07",
-    type: "In-Person Meeting",
-    topic: "Briefing Criativo Samsung e Planejamento de marca 2026",
-    participants: ["Bruno Boehringer Mastantuono"],
-    isQualified: true,
-    quarter: "Q1 2026",
-  },
+
+  // ════════════════════════════════════════════════════════════════════════
+  // MAGAZINE LUIZA — 4 CS Validated CIs (Q1 2026)
+  // ════════════════════════════════════════════════════════════════════════
+  { id: "ci-magalu-mar04a", clientId: "magazine-luiza", clientName: "Magazine Luiza", date: "2026-03-04", type: "Messaging",         topic: "Hackathon WA da Lu - WhatsApp Chat",                            participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+  { id: "ci-magalu-mar12a", clientId: "magazine-luiza", clientName: "Magazine Luiza", date: "2026-03-12", type: "In-Person Meeting", topic: "Planejamento 2026 | Netshoes & Meta | 12Março",                  participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+  { id: "ci-magalu-mar12b", clientId: "magazine-luiza", clientName: "Magazine Luiza", date: "2026-03-12", type: "VC Meeting",        topic: "Strategic Weekly Meeting | Magalu Full Journey at Meta | 2026",  participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+  { id: "ci-magalu-mar17",  clientId: "magazine-luiza", clientName: "Magazine Luiza", date: "2026-03-17", type: "VC Meeting",        topic: "Alinhamento Meta",                                               participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+
+  // ════════════════════════════════════════════════════════════════════════
+  // AMAZONCOM — 4 CS Validated CIs (Q1 2026)
+  // ════════════════════════════════════════════════════════════════════════
+  { id: "ci-amazon-jan14",  clientId: "amazon.com", clientName: "Amazon", date: "2026-01-14", type: "VC Meeting",        topic: "Amazon XCM | 2026",                                            participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+  { id: "ci-amazon-mar04",  clientId: "amazon.com", clientName: "Amazon", date: "2026-03-04", type: "In-Person Meeting", topic: "Rodrigo Almeida | AMAZON SERVICOS DE VAREJO DO BRASIL LTDA.",   participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+  { id: "ci-amazon-mar17a", clientId: "amazon.com", clientName: "Amazon", date: "2026-03-17", type: "VC Meeting",        topic: "Amazon & Meta | Creative Shop",                                participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+  { id: "ci-amazon-mar17b", clientId: "amazon.com", clientName: "Amazon", date: "2026-03-17", type: "VC Meeting",        topic: "Lilian Dakessian | AMAZON SERVICOS DE VAREJO DO BRASIL LTDA.",  participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+
+  // ════════════════════════════════════════════════════════════════════════
+  // SAMSUNG ELECTRONICS — 3 CS Validated CIs (Q1 2026)
+  // ════════════════════════════════════════════════════════════════════════
+  { id: "ci-samsung-jan07", clientId: "samsung-electronics-co-ltd---kr(usd)", clientName: "Samsung", date: "2026-01-07", type: "In-Person Meeting", topic: "Briefing Criativo Samsung e Planejamento de marca 2026",               participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+  { id: "ci-samsung-jan21", clientId: "samsung-electronics-co-ltd---kr(usd)", clientName: "Samsung", date: "2026-01-21", type: "VC Meeting",        topic: "Apresentação Projeto Meta - Galaxy Reels Festival (Presencial SUNO)",  participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+  { id: "ci-samsung-mar10", clientId: "samsung-electronics-co-ltd---kr(usd)", clientName: "Samsung", date: "2026-03-10", type: "Messaging",         topic: "Samsung & Meta Creative Shop Support",                                participants: ["Pedro Menezes"], isQualified: true, quarter: "Q1 2026", team: "CS" },
+
+  // ════════════════════════════════════════════════════════════════════════
+  // Q2 2026 — CS Validated CIs (Apr 1 onward, data as of 2026-04-16)
+  // ════════════════════════════════════════════════════════════════════════
+
+  // SAMSUNG — 3 CS CIs ✅ (at goal)
+  { id: "ci-samsung-q2-vc1",  clientId: "samsung-electronics-co-ltd---kr(usd)", clientName: "Samsung", date: "2026-04-01", type: "VC Meeting",   topic: "Samsung Q2 Creative Strategy VC #1",  participants: ["Pedro Menezes"], isQualified: true, quarter: "Q2 2026", team: "CS" },
+  { id: "ci-samsung-q2-vc2",  clientId: "samsung-electronics-co-ltd---kr(usd)", clientName: "Samsung", date: "2026-04-07", type: "VC Meeting",   topic: "Samsung Q2 Creative Strategy VC #2",  participants: ["Pedro Menezes"], isQualified: true, quarter: "Q2 2026", team: "CS" },
+  { id: "ci-samsung-q2-msg1", clientId: "samsung-electronics-co-ltd---kr(usd)", clientName: "Samsung", date: "2026-04-10", type: "Messaging",    topic: "Samsung Q2 CS Messaging",             participants: ["Pedro Menezes"], isQualified: true, quarter: "Q2 2026", team: "CS" },
+
+  // MAGAZINE LUIZA — 1 CS CI 🟡 (in progress)
+  { id: "ci-magalu-q2-vc1",   clientId: "magazine-luiza",                       clientName: "Magazine Luiza", date: "2026-04-08", type: "VC Meeting",   topic: "Magazine Luiza Q2 Creative Strategy VC", participants: ["Pedro Menezes"], isQualified: true, quarter: "Q2 2026", team: "CS" },
+
+  // L'ORÉAL SA — 1 CS CI 🟡 (in progress — first quarter as Pedro's dedicated client)
+  { id: "ci-loreal-q2-phone1", clientId: "loreal-sa",                            clientName: "L'Oréal SA",     date: "2026-04-09", type: "Phone Meeting", topic: "L'Oréal Q2 CS Phone Meeting",            participants: ["Pedro Menezes"], isQualified: true, quarter: "Q2 2026", team: "CS" },
+
+  // AMAZON — 0 CS CIs in Brazil territory 🔴
+  // Note: 19 qualified CIs exist cross-territory (GCA/PA coverage by other L8 specialists)
 ];
 
 // ── Summary ──────────────────────────────────────────────────────────────────
 export const ciSummary = {
   totalCIs: crmInteractions.length,
   qualifiedCIs: crmInteractions.filter(ci => ci.isQualified).length,
+  qualifiedQ1: crmInteractions.filter(ci => ci.isQualified && ci.quarter === "Q1 2026").length,
+  qualifiedQ2: crmInteractions.filter(ci => ci.isQualified && ci.quarter === "Q2 2026").length,
   byClient: {
-    "magazine-luiza": crmInteractions.filter(ci => ci.clientId === "magazine-luiza").length,
-    "amazon.com": crmInteractions.filter(ci => ci.clientId === "amazon.com").length,
+    "magazine-luiza":                       crmInteractions.filter(ci => ci.clientId === "magazine-luiza").length,
+    "amazon.com":                           crmInteractions.filter(ci => ci.clientId === "amazon.com").length,
     "samsung-electronics-co-ltd---kr(usd)": crmInteractions.filter(ci => ci.clientId === "samsung-electronics-co-ltd---kr(usd)").length,
+    "loreal-sa":                            crmInteractions.filter(ci => ci.clientId === "loreal-sa").length,
   },
   dataAsOf: "2026-04-20",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
   lastUpdated: "2026-04-20 07:00 BRT",
 };
 
-// ── crmSummary (used by CRMInteractionsSection) ──────────────────────────────────────────────────
+// ── crmSummary (used by CRMInteractionsSection) ───────────────────────────────
 export const crmSummary = {
   totalQualifiedCIs: crmInteractions.filter(ci => ci.isQualified).length,
+  totalQualifiedCIsQ1: crmInteractions.filter(ci => ci.isQualified && ci.quarter === "Q1 2026").length,
+  totalQualifiedCIsQ2: crmInteractions.filter(ci => ci.isQualified && ci.quarter === "Q2 2026").length,
   totalCIs: crmInteractions.length,
   quarter: "Q2 2026",
   dataAsOfDate: "2026-04-20",
@@ -148,32 +100,25 @@ export const crmSummary = {
   lastUpdated: "2026-04-20 07:00 BRT",
 };
 
-// ── crmCoverage (used by CRMInteractionsSection — Coverage Deep Dive table) ──
-// QTD metrics as of 2026-04-20 (Week 17 Day 7 — Sunday — start of Q2 week 4 / Week 17)
-// Live CIs: Netshoes/Magalu (Mar 12 In-Person), Magalu (Mar 12 VC), Samsung (Mar 10 Messaging→Live),
-//           Amazon (Mar 4 In-Person), Magalu (Mar 4 Messaging→Live), Samsung (Jan 21 VC),
-//           Amazon (Jan 14 VC x2), Samsung (Jan 7 In-Person)
-// Messaging CIs: Samsung Mar 10, Magalu Mar 4 (2 total)
-// Live CIs (non-messaging): 7 total
+// ── crmCoverage (Q2 2026 snapshot — used by CRMInteractionsSection Coverage table) ──
 export const crmCoverage = {
-  totalClients: 3,
-  totalLiveCIQTD: 7,
-  totalMessagingCIQTD: 2,
-  totalLiveAndMessagingCIQTD: 9,
-  futureCIScheduledByEOQ: 2,
-  outreachPct: 100,
-  pctClients1PlusCI: 100,
-  pctClients4PlusCI: 33,
-  pctClients8PlusCI: 0,
-  pctClients12PlusCI: 0,
-  inPersonMeetings: 3,
-  pctToInPersonGoal: 15,
-  pitchedCIsWithBDM: 3,
-  qualifyingInteractionPerClient: "3.0",
+  totalClients: 4,
+  totalLiveCIQTD: 4,           // VC + In-Person + Phone (excludes Messaging)
+  totalMessagingCIQTD: 1,      // Samsung Q2 Messaging
+  totalLiveAndMessagingCIQTD: 5,
+  futureCIScheduledByEOQ: 0,
+  outreachPct: 75,             // 3/4 accounts have at least 1 CI
+  pctClients1PlusCI: 75,
+  pctClients3PlusCI: 25,       // Only Samsung at goal
+  pctClients4PlusCI: 0,
+  inPersonMeetings: 0,
+  pctToInPersonGoal: 0,
+  pitchedCIsWithBDM: 2,
+  qualifyingInteractionPerClient: "1.25",
   lastUpdated: "2026-04-20 07:00 BRT",
 };
 
-// ── topicWeeks (weekly CI breakdown by topic, used for bar chart) ─────────────
+// ── topicWeeks (Q2 weekly CI breakdown) ──────────────────────────────────────
 export interface TopicWeek {
   week: string;
   "Creative Strategy": number;
@@ -184,12 +129,8 @@ export interface TopicWeek {
 }
 
 export const topicWeeks: TopicWeek[] = [
-  { week: "Jan W1", "Creative Strategy": 1, "Product Education": 0, "Account Planning": 1, "Campaign Review": 0, "Other": 0 },
-  { week: "Jan W2", "Creative Strategy": 0, "Product Education": 1, "Account Planning": 0, "Campaign Review": 1, "Other": 1 },
-  { week: "Jan W3", "Creative Strategy": 1, "Product Education": 0, "Account Planning": 0, "Campaign Review": 0, "Other": 1 },
-  { week: "Mar W1", "Creative Strategy": 1, "Product Education": 1, "Account Planning": 0, "Campaign Review": 0, "Other": 0 },
-  { week: "Mar W2", "Creative Strategy": 1, "Product Education": 0, "Account Planning": 1, "Campaign Review": 1, "Other": 0 },
-  { week: "Mar W3", "Creative Strategy": 1, "Product Education": 0, "Account Planning": 1, "Campaign Review": 0, "Other": 0 },
+  { week: "Apr W1", "Creative Strategy": 2, "Product Education": 1, "Account Planning": 1, "Campaign Review": 0, "Other": 1 },
+  { week: "Apr W2", "Creative Strategy": 1, "Product Education": 0, "Account Planning": 0, "Campaign Review": 0, "Other": 0 },
 ];
 
 // ── topicColors & topicLabels ─────────────────────────────────────────────────
@@ -209,5 +150,4 @@ export const topicLabels: Record<string, string> = {
   "Other":             "Other",
 };
 
-// ── avgLiveHoursPerClient ─────────────────────────────────────────────────────
 export const avgLiveHoursPerClient = 1.5;

@@ -12,6 +12,7 @@ import { dashboardConfig } from "@/lib/dashboard.config";
 import { RadialBarChart, RadialBar, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell } from "recharts";
 import { TrendingUp, Target, Users, Calendar, ExternalLink, CheckCircle2, AlertCircle, Clock, Bot, Zap, MapPin, ArrowRight, DollarSign, Activity } from "lucide-react";
 import { EmailDigestWidget } from "@/components/EmailDigestWidget";
+import { usePeriod } from "@/contexts/PeriodContext";
 
 interface OverviewSectionProps {
   onClientChange: (id: string) => void;
@@ -279,6 +280,7 @@ function InitiativeChart({ onSectionChange }: { onSectionChange: (section: strin
 export default function OverviewSection({ onClientChange, onSectionChange }: OverviewSectionProps) {
   const greeting = getBrazilGreeting();
   const todayDayLabel = getTodayDayLabel();
+  const { period, isQ1, isQ2, isH1, periodLabel } = usePeriod();
   // Top RS by Eligible Target Revenue from rsPipelineData
   const topRS = [...rsPipeline]
     .filter((rs) => rs.stage !== "closed" && rs.stage !== "adopted")
@@ -314,7 +316,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
             {greeting}, {dashboardConfig.profile.firstName} 👋
           </h1>
           <p className="text-sm opacity-80" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-            {dashboardConfig.profile.role} · Meta {dashboardConfig.profile.team} · {dashboardConfig.unidash.quarter}
+            {dashboardConfig.profile.role} · Meta {dashboardConfig.profile.team} · <span className="font-bold">{periodLabel}</span>
           </p>
           <div className="flex gap-4 mt-4">
             <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2">
@@ -835,7 +837,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
         <div className="section-header">
           <div>
             <h3 className="section-title">Client Interactions Goal</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">Q1 2026 · Min. 3 validated CIs per dedicated client</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{periodLabel} · CS-only validated CIs · Min. 3 per dedicated client</p>
           </div>
           <a
             href={crmRecordsSummary.sourceUrl}
@@ -849,11 +851,47 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
           </a>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-3">
-          {clientCIGoals.map((goal) => {
-            const pct = goal.isBoB ? Math.min((goal.validatedCIs / goal.quarterlyGoal) * 100, 100) : null;
-            const isGoalMet = goal.isBoB && goal.validatedCIs >= goal.quarterlyGoal;
-            const isAtRisk = goal.isBoB && goal.validatedCIs === 0;
+        {/* H1 side-by-side mini view */}
+        {isH1 && (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-3">
+            {clientCIGoals.map((goal) => {
+              const h1Total = goal.validatedCIsQ1 + goal.validatedCIsQ2;
+              const h1Goal = (goal.inQ1 ? goal.quarterlyGoal : 0) + (goal.inQ2 ? goal.quarterlyGoal : 0);
+              const h1Pct = h1Goal > 0 ? Math.min(100, Math.round((h1Total / h1Goal) * 100)) : 0;
+              return (
+                <div key={goal.clientId} className="rounded-xl p-3 flex flex-col gap-2" style={{ background: "white", border: "1.5px solid #E5E7EB" }}>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full" style={{ background: goal.color }} />
+                    <span className="text-xs font-bold" style={{ color: goal.color, fontFamily: "'Montserrat', sans-serif" }}>{goal.label}</span>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="text-center">
+                      <p className="text-lg font-bold" style={{ color: "#059669", fontFamily: "'JetBrains Mono', monospace" }}>{goal.validatedCIsQ1}</p>
+                      <p className="text-xs text-muted-foreground">Q1</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-lg font-bold" style={{ color: "#F59E0B", fontFamily: "'JetBrains Mono', monospace" }}>{goal.validatedCIsQ2}</p>
+                      <p className="text-xs text-muted-foreground">Q2</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-lg font-bold" style={{ color: "#3B82F6", fontFamily: "'JetBrains Mono', monospace" }}>{h1Total}</p>
+                      <p className="text-xs text-muted-foreground">H1</p>
+                    </div>
+                  </div>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "#F3F4F6" }}>
+                    <div className="h-full rounded-full" style={{ width: `${h1Pct}%`, background: h1Total >= h1Goal ? "#059669" : "#3B82F6" }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        <div className={`grid grid-cols-2 lg:grid-cols-4 gap-3 mt-3 ${isH1 ? "hidden" : ""}`}>
+          {clientCIGoals.filter((g) => isQ1 ? g.inQ1 : g.inQ2).map((goal) => {
+            const validatedCIs = isQ1 ? goal.validatedCIsQ1 : goal.validatedCIsQ2;
+            const pct = goal.isBoB ? Math.min((validatedCIs / goal.quarterlyGoal) * 100, 100) : null;
+            const isGoalMet = goal.isBoB && validatedCIs >= goal.quarterlyGoal;
+            const isAtRisk = goal.isBoB && validatedCIs === 0;
             const statusColor = !goal.isBoB ? "#8B5CF6" : isGoalMet ? "#10B981" : isAtRisk ? "#EF4444" : "#F59E0B";
             const statusBg = !goal.isBoB ? "#F5F3FF" : isGoalMet ? "#ECFDF5" : isAtRisk ? "#FEF2F2" : "#FFFBEB";
             const StatusIcon = !goal.isBoB ? Clock : isGoalMet ? CheckCircle2 : AlertCircle;
@@ -882,7 +920,7 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                   <>
                     <div className="flex items-end gap-1">
                       <span className="text-2xl font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: statusColor }}>
-                        {goal.validatedCIs}
+                        {validatedCIs}
                       </span>
                       <span className="text-xs text-muted-foreground mb-1">/ {goal.quarterlyGoal} goal</span>
                     </div>
@@ -900,8 +938,8 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                           key={i}
                           className="w-3 h-3 rounded-full border-2"
                           style={{
-                            background: i < goal.validatedCIs ? statusColor : "transparent",
-                            borderColor: i < goal.validatedCIs ? statusColor : `${statusColor}50`,
+                            background: i < validatedCIs ? statusColor : "transparent",
+                            borderColor: i < validatedCIs ? statusColor : `${statusColor}50`,
                           }}
                         />
                       ))}
@@ -910,14 +948,14 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
                       className="text-xs font-semibold px-2 py-0.5 rounded-full self-start"
                       style={{ background: `${statusColor}20`, color: statusColor }}
                     >
-                      {isGoalMet ? "Goal Met" : isAtRisk ? "Not Started" : "In Progress"}
+                      {isGoalMet ? "Goal Met ✓" : isAtRisk ? "Not Started" : "In Progress"}
                     </span>
                   </>
                 ) : (
                   <>
                     <div className="flex items-end gap-1">
                       <span className="text-2xl font-bold" style={{ fontFamily: "'Montserrat', sans-serif", color: statusColor }}>
-                        {goal.validatedCIs}
+                        {validatedCIs}
                       </span>
                       <span className="text-xs text-muted-foreground mb-1">CIs this Q</span>
                     </div>
@@ -938,7 +976,10 @@ export default function OverviewSection({ onClientChange, onSectionChange }: Ove
         {/* Summary line */}
         <div className="mt-3 pt-3 border-t flex items-center justify-between" style={{ borderColor: "oklch(0.92 0.004 75)" }}>
           <p className="text-xs text-muted-foreground">
-            {clientCIGoals.filter(g => g.isBoB && g.validatedCIs >= g.quarterlyGoal).length} of 3 dedicated clients at goal · Last updated {crmRecordsSummary.dataAsOf}
+            {isH1
+              ? `H1: ${clientCIGoals.reduce((s, g) => s + g.validatedCIsQ1 + g.validatedCIsQ2, 0)} total CIs · ${clientCIGoals.filter(g => g.inQ1 && g.validatedCIsQ1 >= g.quarterlyGoal).length}/3 Q1 goals · ${clientCIGoals.filter(g => g.inQ2 && g.validatedCIsQ2 >= g.quarterlyGoal).length}/4 Q2 goals`
+              : `${clientCIGoals.filter(g => isQ1 ? (g.inQ1 && g.validatedCIsQ1 >= g.quarterlyGoal) : (g.inQ2 && g.validatedCIsQ2 >= g.quarterlyGoal)).length} of ${isQ1 ? 3 : 4} dedicated clients at goal · Last updated ${crmRecordsSummary.dataAsOf}`
+            }
           </p>
           <button
             onClick={() => onSectionChange("crminteractions")}

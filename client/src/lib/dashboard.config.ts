@@ -19,7 +19,7 @@ export const dashboardConfig = {
 
   unidash: {
     salesRepName: "Pedro Menezes",
-    quarter: "Q1 2026",
+    quarter: "Q2 2026",
     ciMinTarget: 3,
     ciUrl: "https://www.internalfb.com/unidash/dashboard/engagement_management_process_dashboard/dcmp_client_interaction_insights/",
     aiUsageUrl: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage",
@@ -88,6 +88,17 @@ export const dashboardConfig = {
       lightColor: "#F5F5FF",
       logo: "🏢",
       summary: "",
+      materials: [],
+    },
+    {
+      id: "loreal-sa",
+      name: "L'Oréal SA",
+      shortName: "L'Oréal",
+      tier: "A",
+      color: "#C8102E",
+      lightColor: "#FFF5F5",
+      logo: "🏢",
+      summary: "Newly assigned in Q2 2026 (previously under Jackeline Salomão per Anaplan H1 FY26 partition).",
       materials: [],
     }
   ],

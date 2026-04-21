@@ -25,6 +25,8 @@ import { aiUsageSummary } from "@/lib/aiUsageData";
 import { portfolioARSummary } from "@/lib/rsPipelineData";
 import { crmSummary } from "@/lib/crmInteractionsData";
 import { weekSummary } from "@/lib/weeklyMeetingsData";
+import { PeriodProvider, usePeriod } from "@/contexts/PeriodContext";
+import PeriodToggle from "@/components/PeriodToggle";
 
 const sectionTitles: Record<string, string> = {
   overview: "Dashboard Overview",
@@ -38,12 +40,14 @@ const sectionTitles: Record<string, string> = {
   metrics101: "CS Metrics 101",
 };
 
-export default function Home() {
+// Inner component that consumes PeriodContext (must be inside PeriodProvider)
+function HomeInner() {
   const [activeSection, setActiveSection] = useState("overview");
   const [sectionFilter, setSectionFilter] = useState<string | null>(null);
   const [activeClient, setActiveClient] = useState<string | null>(null);
   const mainRef = useRef<HTMLElement>(null);
   const scrollTargetRef = useRef<string | null>(null);
+  const { periodLabel } = usePeriod();
 
   // Scroll to top on every section change
   useEffect(() => {
@@ -55,7 +59,6 @@ export default function Home() {
     if (!scrollTargetRef.current) return;
     const targetId = scrollTargetRef.current;
     scrollTargetRef.current = null;
-    // Wait for the new section to render
     const timer = setTimeout(() => {
       const el = document.getElementById(`client-card-${targetId}`);
       if (el) {
@@ -85,7 +88,6 @@ export default function Home() {
 
   const lastUpdated = refreshedAt ?? baseUpdated;
 
-  // Per-source refresh dates for tooltip
   const sourceDates = [
     { label: "AI Usage", date: aiUsageSummary.lastUpdated ?? "—" },
     { label: "AR / Unidash", date: portfolioARSummary.dataAsOf ?? "—" },
@@ -96,12 +98,11 @@ export default function Home() {
   const isRefreshing = refreshStatus !== "idle";
 
   const fastRefresh = trpc.scraper.refreshFast.useMutation({
-      onMutate: () => setRefreshStatus("Checking data freshness..."),
+    onMutate: () => setRefreshStatus("Checking data freshness..."),
     onSuccess: () => {
       const now = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
       setRefreshedAt(now);
       setRefreshStatus("idle");
-      // All data sources are Manus-assisted — show a clear, helpful message
       toast.info("Data is refreshed daily by Manus at 7 AM BRT", {
         description: "To refresh now, say \"refresh my dashboard\" in the Manus chat. Calendar, AI Usage, Workplace, and CRM are all updated automatically.",
         duration: 6000,
@@ -171,7 +172,7 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Top Bar — Meta-style clean white header */}
+        {/* Top Bar — Meta-style clean header with dark period toggle area */}
         <header
           className="flex-shrink-0 flex items-center justify-between px-6 py-3 bg-white border-b"
           style={{ borderColor: "#E4E6EB" }}
@@ -187,7 +188,7 @@ export default function Home() {
                 {sectionTitles[activeSection]}
               </h1>
               <p className="text-xs text-gray-400 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                Q1 2026 · Brazil L8 ·{" "}
+                {periodLabel} · Brazil L8 ·{" "}
                 {new Date().toLocaleDateString("en-US", {
                   weekday: "long",
                   month: "long",
@@ -198,6 +199,14 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-2.5">
+            {/* ── Period Toggle (Q1 / Q2 / H1) ── */}
+            <div
+              className="flex items-center gap-1 px-1.5 py-1 rounded-lg"
+              style={{ background: "#1a1f36" }}
+            >
+              <PeriodToggle />
+            </div>
+
             {/* Last Updated — clickable refresh button */}
             {lastUpdated && (
               <button
@@ -226,7 +235,8 @@ export default function Home() {
                 </span>
               </button>
             )}
-            {/* Workplace primary group quick link — reads from dashboardConfig.workplace.primaryGroup */}
+
+            {/* Workplace primary group quick link */}
             {dashboardConfig.workplace.primaryGroup && (
               <a
                 href={dashboardConfig.workplace.primaryGroup.url}
@@ -292,5 +302,14 @@ export default function Home() {
         </main>
       </div>
     </div>
+  );
+}
+
+// Outer wrapper that provides PeriodContext to the entire app
+export default function Home() {
+  return (
+    <PeriodProvider>
+      <HomeInner />
+    </PeriodProvider>
   );
 }
