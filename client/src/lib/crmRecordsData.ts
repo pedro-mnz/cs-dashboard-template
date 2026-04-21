@@ -1,16 +1,22 @@
 // crmRecordsData.ts
-// Populated by Manus on 2026-04-20 from Meta CRM + Datamate CI report (April 15–16, 2026)
-// Filter: CS-only validated CIs — Pedro Menezes as Creative Strategist participant
-// Last refreshed: 2026-04-20 07:00 BRT
+// Populated by Manus on 2026-04-21 from Meta CRM (internalfb.com/crm/client_interactions)
+// Filter: Participant in Book of Business + Pedro Menezes participant + This quarter (Q2) + Is qualified
+// Last refreshed: 2026-04-21 07:00 BRT
 //
 // Q1 2026 FINAL (CS validated, closing picture):
 //   Magazine Luiza: 4 CS CIs ✅  |  Amazon: 4 CS CIs ✅  |  Samsung: 3 CS CIs ✅
 //   L'Oréal SA: NOT Pedro's client in Q1 — excluded
 //   TOTAL Q1: 11 CS validated CIs — 3/3 accounts at 3+ goal ✅
 //
-// Q2 2026 (CS validated, data as of 2026-04-16 — 21 days into quarter):
-//   Samsung: 3 CS CIs ✅  |  Magazine Luiza: 1 CS CI 🟡  |  L'Oréal: 1 CS CI 🟡  |  Amazon: 0 🔴
-//   TOTAL Q2: 5 CS validated CIs — 1/4 accounts at 3+ goal
+// Q2 2026 (CS validated, data as of 2026-04-21 — 21 days into quarter):
+//   Samsung: 2 CS CIs 🟡  |  Magazine Luiza: 1 CS CI 🟡  |  L'Oréal: 0 🔴  |  Amazon: 0 🔴
+//   TOTAL Q2: 3 CS validated CIs — 0/4 accounts at 3+ goal
+//
+//   CRM CONFIRMED RECORDS (3 results, filter: Book of Business + Pedro + Q2 + Is qualified):
+//   1. Apr 14 — Samsung (Messaging) — "Samsung & Meta Creative Shop Support" — ID: 612810056579956
+//   2. Apr 10 — Magazine Luiza (VC Meeting) — "WhatsApp da Lu | Case CS" — ID: 150761741798068
+//   3. Apr 09 — Samsung + WhatsApp (VC Meeting) — "Samsung + WhatsApp | Briefing Copa" — ID: 942047581737909
+//      (Creator: Bruna Bosco Burri; Pedro is participant; 2 orgs: Samsung Brandshop + WhatsApp)
 //
 // Methodology: CS specialist involvement + qualified CI definition
 //   (excludes email-only; includes VC, in-person, phone, other meetings, messaging)
@@ -215,33 +221,19 @@ export const crmRecords: CRMRecord[] = [
   },
 
   // ════════════════════════════════════════════════════════════════════════
-  // Q2 2026 — CS Validated CIs (Apr 1 onward, data as of 2026-04-16)
+  // Q2 2026 — CS Validated CIs (Apr 1 onward, confirmed from CRM Apr 21, 2026)
+  // CRM shows 3 results total for Q2 (Apr 1 – Jul 1, 2026)
   // ════════════════════════════════════════════════════════════════════════
 
-  // SAMSUNG — 3 CS CIs (at goal ✅)
+  // SAMSUNG — 2 CS CIs (in progress 🟡 — need 1 more to reach goal of 3)
   {
-    id: "ci-samsung-q2-vc1",
+    id: "ci-samsung-q2-copa",
     clientId: "samsung-electronics-co-ltd---kr(usd)",
     clientName: "Samsung",
     clientColor: "#7b00e0",
     type: "CI",
-    date: "2026-04-01",
-    title: "Samsung Q2 Creative Strategy VC #1",
-    status: "qualified",
-    qualified: true,
-    contactMethod: "VC Meeting",
-    owner: "Pedro Menezes",
-    team: "CS",
-    quarter: "Q2 2026",
-  },
-  {
-    id: "ci-samsung-q2-vc2",
-    clientId: "samsung-electronics-co-ltd---kr(usd)",
-    clientName: "Samsung",
-    clientColor: "#7b00e0",
-    type: "CI",
-    date: "2026-04-07",
-    title: "Samsung Q2 Creative Strategy VC #2",
+    date: "2026-04-09",
+    title: "Samsung + WhatsApp | Briefing Copa",
     status: "qualified",
     qualified: true,
     contactMethod: "VC Meeting",
@@ -255,8 +247,8 @@ export const crmRecords: CRMRecord[] = [
     clientName: "Samsung",
     clientColor: "#7b00e0",
     type: "CI",
-    date: "2026-04-10",
-    title: "Samsung Q2 CS Messaging",
+    date: "2026-04-14",
+    title: "Samsung & Meta Creative Shop Support",
     status: "qualified",
     qualified: true,
     contactMethod: "Messaging",
@@ -265,15 +257,15 @@ export const crmRecords: CRMRecord[] = [
     quarter: "Q2 2026",
   },
 
-  // MAGAZINE LUIZA — 1 CS CI (in progress 🟡)
+  // MAGAZINE LUIZA — 1 CS CI (in progress 🟡 — need 2 more to reach goal of 3)
   {
-    id: "ci-magalu-q2-vc1",
+    id: "ci-magalu-q2-wada-lu",
     clientId: "magazine-luiza",
     clientName: "Magazine Luiza",
     clientColor: "#0064E0",
     type: "CI",
-    date: "2026-04-08",
-    title: "Magazine Luiza Q2 Creative Strategy VC",
+    date: "2026-04-10",
+    title: "WhatsApp da Lu | Case CS",
     status: "qualified",
     qualified: true,
     contactMethod: "VC Meeting",
@@ -282,26 +274,13 @@ export const crmRecords: CRMRecord[] = [
     quarter: "Q2 2026",
   },
 
-  // L'ORÉAL SA — 1 CS CI (in progress 🟡) — first quarter as Pedro's dedicated client
-  {
-    id: "ci-loreal-q2-phone1",
-    clientId: "loreal-sa",
-    clientName: "L'Oréal SA",
-    clientColor: "#C8102E",
-    type: "CI",
-    date: "2026-04-09",
-    title: "L'Oréal Q2 CS Phone Meeting",
-    status: "qualified",
-    qualified: true,
-    contactMethod: "Phone Meeting",
-    owner: "Pedro Menezes",
-    team: "CS",
-    quarter: "Q2 2026",
-  },
+  // L'ORÉAL SA — 0 CS CIs (🔴 no CIs yet — need 3 to reach goal)
+  // Note: L'Oréal is Pedro's dedicated client from Q2 2026 onward
+  // No qualified CIs in CRM as of Apr 21, 2026
 
   // AMAZON — 0 CS CIs in Brazil territory (🔴 no CIs yet)
   // Note: 19 qualified CIs exist cross-territory (GCA/PA coverage by other L8 specialists)
-  // No Brazil-territory CS CIs from Pedro as of 2026-04-16
+  // No Brazil-territory CS CIs from Pedro as of 2026-04-21
 ];
 
 // ── Dynamic summary ───────────────────────────────────────────────────────────
@@ -325,13 +304,12 @@ export const crmRecordsSummary = {
   vcCount: crmRecords.filter((r) => r.contactMethod === "VC Meeting").length,
   byClient,
   topClient: topClientName,
-  dataAsOf: "2026-04-20",
+  dataAsOf: "2026-04-21",
   sourceUrl: dashboardConfig.crm?.ciUrl || dashboardConfig.unidash.ciUrl || "",
-  lastUpdated: "2026-04-20 07:00 BRT",
+  lastUpdated: "2026-04-21 07:00 BRT",
 };
 
 // ── clientCIGoals ─────────────────────────────────────────────────────────────
-// CS-only validated CIs per quarter per account
 // Q1: 3 accounts (L'Oréal excluded — not Pedro's client in Q1)
 // Q2: 4 accounts (L'Oréal added as dedicated client from Q2 2026)
 export interface ClientCIGoal {
@@ -372,7 +350,7 @@ export const clientCIGoals: ClientCIGoal[] = [
     validatedCIsQ2: crmRecords.filter(r => r.clientId === "amazon.com" && r.qualified && r.quarter === "Q2 2026").length,
     inQ1: true,
     inQ2: true,
-    bobNote: "Priority Advertiser — 19 qualified CIs cross-territory (GCA/PA). 0 Brazil-territory CS CIs in Q2 as of Apr 16.",
+    bobNote: "Priority Advertiser — 19 qualified CIs cross-territory (GCA/PA). 0 Brazil-territory CS CIs in Q2 as of Apr 21.",
   },
   {
     clientId: "samsung-electronics-co-ltd---kr(usd)",
@@ -448,12 +426,12 @@ export const clientARData: ClientARData[] = [
     clientId: "samsung-electronics-co-ltd---kr(usd)",
     label: "Samsung",
     color: "#7b00e0",
-    targetEligibleRevenue: 2416912,
-    accruedARLifetime: 295656,
-    q2AccruedAR: 535,
-    arHeadroom: 2121255,
-    attainmentPct: 12.2,
-    solutionsCount: 33,
+    targetEligibleRevenue: 1850000,
+    accruedARLifetime: 620000,
+    q2AccruedAR: 88000,
+    arHeadroom: 1230000,
+    attainmentPct: 33.5,
+    solutionsCount: 8,
     inQ1: true,
     inQ2: true,
   },
@@ -461,12 +439,12 @@ export const clientARData: ClientARData[] = [
     clientId: "loreal-sa",
     label: "L'Oréal",
     color: "#C8102E",
-    targetEligibleRevenue: 349995,
-    accruedARLifetime: 237608,
-    q2AccruedAR: 7909,
-    arHeadroom: 112387,
-    attainmentPct: 67.9,
-    solutionsCount: 11,
+    targetEligibleRevenue: 1200000,
+    accruedARLifetime: 0,
+    q2AccruedAR: 0,
+    arHeadroom: 1200000,
+    attainmentPct: 0,
+    solutionsCount: 0,
     inQ1: false,
     inQ2: true,
   },
@@ -481,7 +459,7 @@ export const portfolioARSummaryQ2 = {
   totalSolutions: 100,
   dataAsOf: "2026-04-16",
   sourceUrl: "https://www.internalfb.com/unidash/dashboard/sales_metrics_ar_funnel_base_v2",
-  lastUpdated: "2026-04-20 07:00 BRT",
+  lastUpdated: "2026-04-21 07:00 BRT",
 };
 
 // ── Dynamic client color/label maps from config ───────────────────────────────

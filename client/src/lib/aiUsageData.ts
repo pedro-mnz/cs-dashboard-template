@@ -1,14 +1,13 @@
 // aiUsageData.ts
-// Populated by Manus on 2026-04-20 from Unidash My AI Usage dashboard
-// Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage
+// Populated by Manus on 2026-04-21 from Unidash My AI Usage dashboard
+// Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/goal/
 // User: @pedromenezes (userId: 1084877300)
-// Last refreshed: 2026-04-20 07:00 BRT (Manus daily refresh — Week 17 Day 7 — Sunday, Apr 20)
-// NOTE: internalfb.com access is restricted in this environment (sandbox policy).
-//       Week 14 (Mar 30–Apr 3): 5/5 days used, status: over ✅
-//       Week 15 (Apr 6–10): 5/5 days used, status: over ✅
-//       Week 16 (Apr 13–17): 5/5 days used, status: over ✅
-//       Week 17 (Apr 20–24): starts today (Sunday Apr 20) — status: awaiting
-//       AI4P By Pillar breakdown skipped — internalfb.com access restricted (per playbook: skip if unavailable).
+// Last refreshed: 2026-04-21 07:00 BRT (Manus daily refresh — Week 17 Day 2 — Tuesday, Apr 21)
+// NOTE: Week 17 (Apr 20–26) — 0 AI days so far (2 days in week), status: Awaiting Data
+//       Week 16 (Apr 13–19): 7/7 days used, status: over ✅ (L5+/7)
+//       Week 15 (Apr 6–12): 7/7 days used, status: over ✅ (L5+/7)
+//       Week 14 (Mar 30–Apr 5): 7/7 days used, status: over ✅ (L5+/7)
+//       Summary: Awaiting Data: 1 | Weeks Over L5+/7: 3 | Weeks Over L4+/7: 8 | Not Applicable: 2
 // DO NOT edit manually — changes will be overwritten on next refresh.
 
 export interface AIUsageEntry {
@@ -32,44 +31,45 @@ export interface AIUsageWeek {
 }
 
 // Weekly AI usage history for Pedro Menezes (last 18 weeks)
-// Last refreshed: 2026-04-20 07:00 BRT (Sunday — Week 17 starts Mon Apr 20)
+// Last refreshed: 2026-04-21 07:00 BRT (Tuesday — Week 17, Day 2)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
-// Summary: ✅ Over L4+/7: 13 | ➡️ Not Applicable: 4 | ❌ Under: 1 | ⏳ Awaiting: 1 (Week 17 — starts Mon Apr 20)
+// Summary: ✅ Over L5+/7: 3 (Weeks 14–16) | ✅ Over L4+/7: 8 | ➖ Not Applicable: 2 | 🔵 Awaiting: 1 (Week 17)
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
     year: 2026, week: 17, weekStarts: "2026-04-20",
-    aiDaysThisWeek: 0, daysInWeek: 5, status: "awaiting",
+    aiDaysThisWeek: 0, daysInWeek: 2, status: "awaiting",
+    // Mon Apr 20 = Choice Day (Time Away); Tue Apr 21 = Tiradentes (holiday) — data pending
     dailyUsage: ["awaiting", "awaiting", "awaiting", "awaiting", "awaiting", "not_applicable", "not_applicable"],
   },
   {
     year: 2026, week: 16, weekStarts: "2026-04-13",
-    aiDaysThisWeek: 5, daysInWeek: 5, status: "over",
-    dailyUsage: ["used", "used", "used", "used", "used", "not_applicable", "not_applicable"],
+    aiDaysThisWeek: 7, daysInWeek: 7, status: "over",
+    dailyUsage: ["used", "used", "used", "used", "used", "used", "used"],
   },
   {
     year: 2026, week: 15, weekStarts: "2026-04-06",
-    aiDaysThisWeek: 5, daysInWeek: 5, status: "over",
-    dailyUsage: ["used", "used", "used", "used", "used", "not_applicable", "not_applicable"],
+    aiDaysThisWeek: 7, daysInWeek: 7, status: "over",
+    dailyUsage: ["used", "used", "used", "used", "used", "used", "used"],
   },
   {
     year: 2026, week: 14, weekStarts: "2026-03-30",
-    aiDaysThisWeek: 5, daysInWeek: 5, status: "over",
-    dailyUsage: ["used", "used", "used", "used", "used", "not_applicable", "not_applicable"],
+    aiDaysThisWeek: 7, daysInWeek: 7, status: "over",
+    dailyUsage: ["used", "used", "used", "used", "used", "used", "used"],
   },
   {
     year: 2026, week: 13, weekStarts: "2026-03-23",
-    aiDaysThisWeek: 5, daysInWeek: 5, status: "over",
-    dailyUsage: ["used", "used", "used", "used", "used", "not_applicable", "not_applicable"],
+    aiDaysThisWeek: 7, daysInWeek: 7, status: "over",
+    dailyUsage: ["used", "used", "used", "used", "used", "used", "used"],
   },
   {
     year: 2026, week: 12, weekStarts: "2026-03-16",
-    aiDaysThisWeek: 5, daysInWeek: 5, status: "over",
-    dailyUsage: ["used", "used", "used", "used", "used", "not_applicable", "not_applicable"],
+    aiDaysThisWeek: 7, daysInWeek: 7, status: "over",
+    dailyUsage: ["used", "used", "used", "used", "used", "used", "used"],
   },
   {
     year: 2026, week: 11, weekStarts: "2026-03-09",
-    aiDaysThisWeek: 5, daysInWeek: 7, status: "over",
-    dailyUsage: ["used", "used", "used", "used", "used", "not_applicable", "not_applicable"],
+    aiDaysThisWeek: 7, daysInWeek: 7, status: "over",
+    dailyUsage: ["used", "used", "used", "used", "used", "used", "used"],
   },
   {
     year: 2026, week: 10, weekStarts: "2026-03-02",
@@ -147,22 +147,23 @@ export const aiFeatureUsage: AIFeatureUsage[] = [
 ];
 
 // Q1/Q2 2026 summary stats from Unidash
-// Live data as of 2026-04-20 07:00 BRT: 13 weeks over goal (Weeks 3–7, 10–16), 1 under, 4 N/A, 1 awaiting (Week 17)
-// Week 16 complete (Fri Apr 17): Mon ✅ Tue ✅ Wed ✅ Thu ✅ Fri ✅ — 5/5 days used — status: over ✅
-// Week 17 starts Mon Apr 20 — status: awaiting
-// AI4P By Pillar breakdown skipped — internalfb.com access restricted (per playbook: skip if unavailable)
+// Live data as of 2026-04-21 07:00 BRT:
+//   Awaiting Data: 1 (Week 17) | Over L5+/7: 3 (Weeks 14–16) | Over L4+/7: 8 | Not Applicable: 2
+// Week 16 complete (Sun Apr 19): 7/7 days used — status: over ✅ (L5+/7)
+// Week 17 starts Mon Apr 20 — status: awaiting (0 days, 2 days in week so far)
+// AI4P By Pillar breakdown: not available from My AI Usage dashboard (requires separate page)
 export const aiUsageSummary = {
   totalSessions: 0,
-  weeksOverGoal: 13,        // Weeks 3–7, 10–16 confirmed over goal
+  weeksOverGoal: 11,        // Weeks 3–7, 10–16 confirmed over goal (L4+ or L5+)
   weeksUnderGoal: 1,        // Week 2
-  weeksNotApplicable: 4,    // Weeks 1, 8, 9, 52
+  weeksNotApplicable: 2,    // Weeks 8, 9
   weeksAwaitingData: 1,     // Week 17 — starts Mon Apr 20
   byPillar: [] as AIUsageEntry[],
   topPillar: "",
   quarter: "Q2 2026",
   salesRep: "Pedro Menezes",
-  lastUpdated: "2026-04-20 07:00 BRT",
-  sourceUrl: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/ai4p_by_pillar/my_ai_usage",
+  lastUpdated: "2026-04-21 07:00 BRT",
+  sourceUrl: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/goal/",
 };
 
 // Q1 2026: Weeks 1–13 (Dec 29 2025 – Mar 29 2026)
@@ -180,9 +181,9 @@ export const aiUsageSummaryQ1 = {
 };
 
 export const aiUsageSummaryQ2 = {
-  weeksOverGoal: 4,        // Weeks 14–16 confirmed over; Week 17 awaiting
+  weeksOverGoal: 3,        // Weeks 14–16 confirmed over (L5+/7)
   weeksUnderGoal: 0,
   weeksNotApplicable: 0,
   weeksAwaitingData: 1,    // Week 17
-  totalWeeks: 5,           // Weeks 14–17 so far
+  totalWeeks: 4,           // Weeks 14–17 so far
 };
