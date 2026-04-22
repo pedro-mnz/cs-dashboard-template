@@ -1,11 +1,11 @@
 // weeklyMeetingsData.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// Populated by Manus on 2026-04-21 from Meta Calendar (internalfb.com/calendar)
+// Populated by Manus on 2026-04-21 | Refreshed by Manus on 2026-04-22 from Meta Calendar (internalfb.com/calendar)
 // Current week: April 20–24, 2026 (Week 17) | Next: April 27–May 1 (Week 18) | Timezone: GMT-3 (America/Sao_Paulo)
-// TODAY: Tuesday, April 21, 2026 (Tiradentes Day — Brazilian national holiday)
+// TODAY: Wednesday, April 22, 2026
 // NOTE: Mon Apr 20 = Pedro's Choice Day (Time Away). Tue Apr 21 = Tiradentes Day (holiday).
 // Source: https://www.internalfb.com/calendar — live data confirmed Apr 21, 2026 07:00 BRT
-// Last refreshed: 2026-04-21 07:00 BRT
+// Last refreshed: 2026-04-22 07:00 BRT
 // DO NOT edit manually — changes will be overwritten on next refresh.
 // ─────────────────────────────────────────────────────────────────────────────
 import { dashboardConfig } from "./dashboard.config";
@@ -207,7 +207,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.07 Iti Malia",
     type: "internal",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
     id: "w17-tue-2",
@@ -217,7 +217,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Simplifying Web Integrations with Meta Pixel and Conversions API",
     type: "internal",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
     id: "w17-tue-3",
@@ -227,7 +227,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Tuesdays with Boz",
     type: "internal",
     client: null,
-    isToday: true,
+    isToday: false,
   },
   {
     id: "w17-tue-4",
@@ -237,7 +237,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Global Partners AI Focus Block Weekly [1 of 2] | NORAM & LATAM",
     type: "internal",
     client: null,
-    isToday: true,
+    isToday: false,
   },
 
   // ── Wednesday, April 22 ───────────────────────────────────────────────────
@@ -250,7 +250,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.08 We will find you",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w17-wed-2",
@@ -260,7 +260,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     title: "Almoção do CS (@Águas de Março)",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w17-wed-3",
@@ -271,7 +271,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "SAO3732.09 Largo da Batata",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w17-wed-4",
@@ -282,7 +282,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "NYC 50.43 Before I Let Go",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w17-wed-5",
@@ -293,7 +293,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "ARENA MAGALU-3°-Adrenalina (3)",
     type: "client",
     client: null,
-    isToday: false,
+    isToday: true,
   },
   {
     id: "w17-wed-6",
@@ -304,7 +304,7 @@ export const weeklyMeetings: CalendarEvent[] = [
     location: "Menlo Park",
     type: "internal",
     client: null,
-    isToday: false,
+    isToday: true,
   },
 
   // ── Thursday, April 23 ────────────────────────────────────────────────────
@@ -434,8 +434,8 @@ export const weekSummary = {
   internalMeetings: weeklyMeetings.filter(e => e.type === "internal" && e.date >= "2026-04-20").length,
   todayMeetings: weeklyMeetings.filter(e => e.isToday),
   sourceUrl: "https://www.internalfb.com/calendar",
-  dataAsOf: "2026-04-21",
-  lastUpdated: "2026-04-21 07:00 BRT",
+  dataAsOf: "2026-04-22",
+  lastUpdated: "2026-04-22 07:00 BRT",
 };
 
 // Type styling

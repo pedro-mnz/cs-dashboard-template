@@ -1,5 +1,5 @@
 // crmInteractionsData.ts
-// Populated by Manus on 2026-04-20 from Meta CRM + Datamate CI report (April 15–16, 2026)
+// Populated by Manus on 2026-04-20 | Refreshed by Manus on 2026-04-22 from Meta CRM + Datamate CI report (April 15–16, 2026)
 // Filter: CS-only validated CIs — Pedro Menezes as Creative Strategist participant
 // Source: internalfb.com/crm/client_interactions (Brazil territory, GBG-LATAM)
 // Last refreshed: 2026-04-20 07:00 BRT
@@ -83,9 +83,9 @@ export const ciSummary = {
     "samsung-electronics-co-ltd---kr(usd)": crmInteractions.filter(ci => ci.clientId === "samsung-electronics-co-ltd---kr(usd)").length,
     "loreal-sa":                            crmInteractions.filter(ci => ci.clientId === "loreal-sa").length,
   },
-  dataAsOf: "2026-04-20",
+  dataAsOf: "2026-04-22",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
-  lastUpdated: "2026-04-20 07:00 BRT",
+  lastUpdated: "2026-04-22 07:00 BRT",
 };
 
 // ── crmSummary (used by CRMInteractionsSection) ───────────────────────────────
@@ -95,9 +95,9 @@ export const crmSummary = {
   totalQualifiedCIsQ2: crmInteractions.filter(ci => ci.isQualified && ci.quarter === "Q2 2026").length,
   totalCIs: crmInteractions.length,
   quarter: "Q2 2026",
-  dataAsOfDate: "2026-04-20",
+  dataAsOfDate: "2026-04-22",
   sourceUrl: "https://www.internalfb.com/crm/client_interactions",
-  lastUpdated: "2026-04-20 07:00 BRT",
+  lastUpdated: "2026-04-22 07:00 BRT",
 };
 
 // ── crmCoverage (Q2 2026 snapshot — used by CRMInteractionsSection Coverage table) ──
@@ -115,7 +115,7 @@ export const crmCoverage = {
   pctToInPersonGoal: 0,
   pitchedCIsWithBDM: 2,
   qualifyingInteractionPerClient: "1.25",
-  lastUpdated: "2026-04-20 07:00 BRT",
+  lastUpdated: "2026-04-22 07:00 BRT",
 };
 
 // ── topicWeeks (Q2 weekly CI breakdown) ──────────────────────────────────────

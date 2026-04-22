@@ -1,14 +1,14 @@
 // crmRecordsData.ts
-// Populated by Manus on 2026-04-21 from Meta CRM (internalfb.com/crm/client_interactions)
+// Populated by Manus on 2026-04-21 | Refreshed by Manus on 2026-04-22 from Meta CRM (internalfb.com/crm/client_interactions)
 // Filter: Participant in Book of Business + Pedro Menezes participant + This quarter (Q2) + Is qualified
-// Last refreshed: 2026-04-21 07:00 BRT
+// Last refreshed: 2026-04-22 07:00 BRT
 //
 // Q1 2026 FINAL (CS validated, closing picture):
 //   Magazine Luiza: 4 CS CIs ✅  |  Amazon: 4 CS CIs ✅  |  Samsung: 3 CS CIs ✅
 //   L'Oréal SA: NOT Pedro's client in Q1 — excluded
 //   TOTAL Q1: 11 CS validated CIs — 3/3 accounts at 3+ goal ✅
 //
-// Q2 2026 (CS validated, data as of 2026-04-21 — 21 days into quarter):
+// Q2 2026 (CS validated, data as of 2026-04-22 — 21 days into quarter):
 //   Samsung: 2 CS CIs 🟡  |  Magazine Luiza: 1 CS CI 🟡  |  L'Oréal: 0 🔴  |  Amazon: 0 🔴
 //   TOTAL Q2: 3 CS validated CIs — 0/4 accounts at 3+ goal
 //
@@ -276,7 +276,7 @@ export const crmRecords: CRMRecord[] = [
 
   // L'ORÉAL SA — 0 CS CIs (🔴 no CIs yet — need 3 to reach goal)
   // Note: L'Oréal is Pedro's dedicated client from Q2 2026 onward
-  // No qualified CIs in CRM as of Apr 21, 2026
+  // No qualified CIs in CRM as of Apr 22, 2026
 
   // AMAZON — 0 CS CIs in Brazil territory (🔴 no CIs yet)
   // Note: 19 qualified CIs exist cross-territory (GCA/PA coverage by other L8 specialists)
@@ -304,9 +304,9 @@ export const crmRecordsSummary = {
   vcCount: crmRecords.filter((r) => r.contactMethod === "VC Meeting").length,
   byClient,
   topClient: topClientName,
-  dataAsOf: "2026-04-21",
+  dataAsOf: "2026-04-22",
   sourceUrl: dashboardConfig.crm?.ciUrl || dashboardConfig.unidash.ciUrl || "",
-  lastUpdated: "2026-04-21 07:00 BRT",
+  lastUpdated: "2026-04-22 07:00 BRT",
 };
 
 // ── clientCIGoals ─────────────────────────────────────────────────────────────
@@ -350,7 +350,7 @@ export const clientCIGoals: ClientCIGoal[] = [
     validatedCIsQ2: crmRecords.filter(r => r.clientId === "amazon.com" && r.qualified && r.quarter === "Q2 2026").length,
     inQ1: true,
     inQ2: true,
-    bobNote: "Priority Advertiser — 19 qualified CIs cross-territory (GCA/PA). 0 Brazil-territory CS CIs in Q2 as of Apr 21.",
+    bobNote: "Priority Advertiser — 19 qualified CIs cross-territory (GCA/PA). 0 Brazil-territory CS CIs in Q2 as of Apr 22.",
   },
   {
     clientId: "samsung-electronics-co-ltd---kr(usd)",
@@ -459,7 +459,7 @@ export const portfolioARSummaryQ2 = {
   totalSolutions: 100,
   dataAsOf: "2026-04-16",
   sourceUrl: "https://www.internalfb.com/unidash/dashboard/sales_metrics_ar_funnel_base_v2",
-  lastUpdated: "2026-04-21 07:00 BRT",
+  lastUpdated: "2026-04-22 07:00 BRT",
 };
 
 // ── Dynamic client color/label maps from config ───────────────────────────────

@@ -2,7 +2,7 @@
 // Populated by Manus on 2026-04-21 from Unidash My AI Usage dashboard
 // Source: https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/goal/
 // User: @pedromenezes (userId: 1084877300)
-// Last refreshed: 2026-04-21 07:00 BRT (Manus daily refresh — Week 17 Day 2 — Tuesday, Apr 21)
+// Last refreshed: 2026-04-22 07:00 BRT (Manus daily refresh — Week 17 Day 3 — Wednesday, Apr 22)
 // NOTE: Week 17 (Apr 20–26) — 0 AI days so far (2 days in week), status: Awaiting Data
 //       Week 16 (Apr 13–19): 7/7 days used, status: over ✅ (L5+/7)
 //       Week 15 (Apr 6–12): 7/7 days used, status: over ✅ (L5+/7)
@@ -31,14 +31,14 @@ export interface AIUsageWeek {
 }
 
 // Weekly AI usage history for Pedro Menezes (last 18 weeks)
-// Last refreshed: 2026-04-21 07:00 BRT (Tuesday — Week 17, Day 2)
+// Last refreshed: 2026-04-22 07:00 BRT (Wednesday — Week 17, Day 3)
 // dailyUsage: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
 // Summary: ✅ Over L5+/7: 3 (Weeks 14–16) | ✅ Over L4+/7: 8 | ➖ Not Applicable: 2 | 🔵 Awaiting: 1 (Week 17)
 export const aiUsageWeeks: AIUsageWeek[] = [
   {
     year: 2026, week: 17, weekStarts: "2026-04-20",
-    aiDaysThisWeek: 0, daysInWeek: 2, status: "awaiting",
-    // Mon Apr 20 = Choice Day (Time Away); Tue Apr 21 = Tiradentes (holiday) — data pending
+    aiDaysThisWeek: 0, daysInWeek: 3, status: "awaiting",
+    // Mon Apr 20 = Choice Day (Time Away); Tue Apr 21 = Tiradentes (holiday); Wed Apr 22 = today — data pending (2-3 day delay)
     dailyUsage: ["awaiting", "awaiting", "awaiting", "awaiting", "awaiting", "not_applicable", "not_applicable"],
   },
   {
@@ -147,10 +147,10 @@ export const aiFeatureUsage: AIFeatureUsage[] = [
 ];
 
 // Q1/Q2 2026 summary stats from Unidash
-// Live data as of 2026-04-21 07:00 BRT:
+// Live data as of 2026-04-22 07:00 BRT:
 //   Awaiting Data: 1 (Week 17) | Over L5+/7: 3 (Weeks 14–16) | Over L4+/7: 8 | Not Applicable: 2
 // Week 16 complete (Sun Apr 19): 7/7 days used — status: over ✅ (L5+/7)
-// Week 17 starts Mon Apr 20 — status: awaiting (0 days, 2 days in week so far)
+// Week 17 in progress (Mon Apr 20 – Sun Apr 26) — status: awaiting (0 days confirmed, 3 days elapsed: Mon=Time Away, Tue=Holiday, Wed=today)
 // AI4P By Pillar breakdown: not available from My AI Usage dashboard (requires separate page)
 export const aiUsageSummary = {
   totalSessions: 0,
@@ -162,7 +162,7 @@ export const aiUsageSummary = {
   topPillar: "",
   quarter: "Q2 2026",
   salesRep: "Pedro Menezes",
-  lastUpdated: "2026-04-21 07:00 BRT",
+  lastUpdated: "2026-04-22 07:00 BRT",
   sourceUrl: "https://www.internalfb.com/unidash/dashboard/ai_usage_at_meta/goal/",
 };
 
